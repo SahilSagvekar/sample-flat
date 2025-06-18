@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import { AppointmentForm } from "@/components/forms/appointment-form";
+import { ObjectId } from "bson";
 
 type Props = {
   params: {
@@ -12,6 +13,10 @@ export default async function ListingPage({ params }: Props) {
   const property = await prisma.property.findUnique({
     where: { id: params.id },
   });
+//   const property = await prisma.property.findUnique({
+//   where: { id: new ObjectId(params.id).toHexString() },
+// });
+
 
   if (!property || property.status !== "approved") return notFound();
 

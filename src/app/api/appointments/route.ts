@@ -10,14 +10,14 @@ export async function POST(req: Request) {
     const { propertyId, sellerId, date, type } = await req.json();
 
     const appointment = await prisma.appointment.create({
-      data: {
-        buyerId: userId,
-        sellerId,
-        propertyId,
-        type,
-        date: new Date(date),
-      },
-    });
+  data: {
+    buyerId: userId,
+    sellerId,
+    propertyId, // ✅ This satisfies the relation
+    type,
+    date: new Date(date),
+  },
+});
 
     return NextResponse.json({ success: true, appointment });
   } catch (err: any) {
