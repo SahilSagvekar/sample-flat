@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  clerkId String   @unique
+  email   String?
+  role    String   @default("buyer") // buyer | seller | admin
+  name    String?
+  image   String?
+  
+  properties Property[]
+}
+
+model Property {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  price           Float
+  bhk             String
+  possessionDate  String
+  amenities       String[]
+  city            String
+  state           String
+  locality        String
+  sampleFlatVideo String
+  localityVideo   String
+  status          String   @default("pending")
+
+  sellerId        String
+  seller          User     @relation(fields: [sellerId], references: [clerkId])
+
+  createdAt       DateTime @default(now())
+
+  appointments    Appointment[]
+}
+
+
+model Appointment {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  buyerId     String
+  sellerId    String
+  propertyId  String   @db.ObjectId
+  date        DateTime
+  type        String   // "site" or "video"
+  status      String   @default("pending") // pending | confirmed | rejected
+
+  property    Property @relation(fields: [propertyId], references: [id])
+}
+
