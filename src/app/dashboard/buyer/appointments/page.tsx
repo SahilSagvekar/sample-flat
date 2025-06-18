@@ -16,20 +16,51 @@ export default async function BuyerAppointmentsPage() {
   });
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">Your Appointments</h1>
+    <div className="max-w-4xl mx-auto px-4 py-10">
+      <h1 className="text-3xl font-semibold mb-6 text-center">Your Appointments</h1>
 
       {appointments.length === 0 ? (
-        <p>You haven’t booked any appointments yet.</p>
+        <div className="text-center text-gray-600 text-lg">
+          You haven’t booked any appointments yet.
+        </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {appointments.map((appt) => (
-            <div key={appt.id} className="border rounded p-4">
-              <p><strong>Property:</strong> {appt.property.title}</p>
-              <p><strong>Date:</strong> {new Date(appt.date).toLocaleString()}</p>
-              <p><strong>Type:</strong> {appt.type === "site" ? "Site Visit" : "Video Call"}</p>
-              <p><strong>Status:</strong> {appt.status}</p>
-              <p className="text-sm text-gray-500">📍 {appt.property.city}, {appt.property.state}</p>
+            <div
+              key={appt.id}
+              className="rounded-2xl shadow-md border border-gray-200 p-6 bg-white transition hover:shadow-lg"
+            >
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="text-xl font-bold text-gray-800">
+                  {appt.property.title}
+                </h2>
+                <span
+                  className={`text-sm font-medium px-3 py-1 rounded-full ${
+                    appt.status === "confirmed"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {appt.status}
+                </span>
+              </div>
+
+              <div className="space-y-1 text-gray-700">
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(appt.date).toLocaleString(undefined, {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })}
+                </p>
+                <p>
+                  <strong>Type:</strong>{" "}
+                  {appt.type === "site" ? "Site Visit" : "Video Call"}
+                </p>
+                <p className="text-sm text-muted-foreground mt-2">
+                  📍 {appt.property.city}, {appt.property.state}
+                </p>
+              </div>
             </div>
           ))}
         </div>

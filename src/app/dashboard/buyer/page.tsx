@@ -1,7 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import PropertyCard from "@/components/shared/property-card";
 
+
 export default async function BuyerDashboardPage() {
+  
+  
   const properties = await prisma.property.findMany({
     where: {
       status: "approved",
