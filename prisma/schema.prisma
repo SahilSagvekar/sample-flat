@@ -34,9 +34,12 @@ model Property {
   status          String   @default("pending")
 
   sellerId        String
+  images          String[] @default([]) // 🆕 Add this
   seller          User     @relation(fields: [sellerId], references: [clerkId])
 
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
 
   appointments    Appointment[]
 }

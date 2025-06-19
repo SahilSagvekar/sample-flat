@@ -15,6 +15,7 @@
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
+    "@uploadthing/react": "^7.3.1",
     "bson": "^6.10.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -25,6 +26,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.58.1",
     "tailwind-merge": "^3.3.1",
+    "uploadthing": "^7.7.2",
     "zod": "^3.25.67"
   },
   "devDependencies": {

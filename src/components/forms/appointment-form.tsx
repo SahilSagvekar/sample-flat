@@ -1,3 +1,75 @@
+// "use client";
+
+// import { useState } from "react";
+
+// export default function AppointmentForm({
+//   propertyId,
+//   sellerId,
+// }: {
+//   propertyId: string;
+//   sellerId: string;
+// }) {
+//   const [date, setDate] = useState("");
+//   const [type, setType] = useState("site-visit");
+//   const [loading, setLoading] = useState(false);
+
+//   const handleSubmit = async (e: any) => {
+//     e.preventDefault();
+//     setLoading(true);
+
+//     const res = await fetch("/api/appointments", {
+//       method: "POST",
+//       body: JSON.stringify({ propertyId, sellerId, date, type }),
+//     });
+
+//     setLoading(false);
+//     if (res.ok) {
+//       alert("✅ Appointment booked!");
+//     } else {
+//       alert("❌ Failed. Try again.");
+//     }
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+//       <label className="block">
+//         Appointment Date:
+//         <input
+//           type="datetime-local"
+//           value={date}
+//           onChange={(e) => setDate(e.target.value)}
+//           required
+//           className="input w-full"
+//         />
+//       </label>
+
+//       <label className="block">
+//         Type:
+//         <select
+//           value={type}
+//           onChange={(e) => setType(e.target.value)}
+//           className="input w-full"
+//         >
+//           <option value="site-visit">Site Visit</option>
+//           <option value="video-call">Video Call</option>
+//         </select>
+//       </label>
+
+//       <button
+//         type="submit"
+//         disabled={loading}
+//         className="bg-green-600 text-white px-4 py-2 rounded"
+//       >
+//         {loading ? "Booking..." : "Book Appointment"}
+//       </button>
+//     </form>
+//   );
+// }
+
+
+
+
+
 "use client";
 
 import { useState } from "react";

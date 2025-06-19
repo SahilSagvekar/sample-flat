@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
+import { UploadDropzone } from "@uploadthing/react";
+import type { OurFileRouter } from "@/lib/uploadthing";
 
 export function AddPropertyForm({ userId }: { userId: string }) {
   const [form, setForm] = useState({
@@ -18,6 +20,7 @@ export function AddPropertyForm({ userId }: { userId: string }) {
     locality: "",
     sampleFlatVideo: "",
     localityVideo: "",
+    images: [] as string[], // ✅ New field for image URLs
   });
 
   const router = useRouter();
@@ -53,6 +56,21 @@ export function AddPropertyForm({ userId }: { userId: string }) {
       <Input name="locality" placeholder="Locality" onChange={handleChange} />
       <Input name="sampleFlatVideo" placeholder="Sample Flat Video URL" onChange={handleChange} />
       <Input name="localityVideo" placeholder="Locality Video URL" onChange={handleChange} />
+
+      {/* ✅ UploadThing Dropzone */}
+      <div>
+        <p className="text-sm font-medium">Upload Property Images:</p>
+        <UploadDropzone<OurFileRouter>
+          endpoint="propertyImage"
+          onClientUploadComplete={(res) => {
+            const urls = res.map((f) => f.url);
+            setForm((prev) => ({ ...prev, images: urls }));
+          }}
+          onUploadError={(error) => alert(`Upload error: ${error.message}`)}
+          className="border border-dashed p-4 rounded"
+        />
+      </div>
+
       <Button type="submit" className="w-full">Submit Property</Button>
     </form>
   );
