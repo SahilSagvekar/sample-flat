@@ -1,12 +1,27 @@
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
-import { AppointmentForm } from "@/components/forms/appointment-form";
+import type { Metadata } from "next";
 
 type Props = {
-  params: { id: string };
+  params: {
+    id: string;
+  };
 };
 
-export default async function PropertyDetailPage({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const property = await prisma.property.findUnique({
+    where: { id: params.id },
+  });
+
+  if (!property) return {};
+
+  return {
+    title: property.title,
+    description: `${property.bhk} | ${property.locality}, ${property.city}, ${property.state}`,
+  };
+}
+
+export default async function ListingPage({ params }: Props) {
   const property = await prisma.property.findUnique({
     where: { id: params.id },
   });
@@ -14,98 +29,67 @@ export default async function PropertyDetailPage({ params }: Props) {
   if (!property) return notFound();
 
   return (
-    <div className="p-6 space-y-4">
-      <h1 className="text-2xl font-bold">{property.title}</h1>
-      <p className="text-gray-600">{property.city}, {property.state}</p>
-      <p className="text-lg font-semibold">₹{property.price.toLocaleString()}</p>
-      <p className="text-sm">BHK: {property.bhk}</p>
-      <p>Possession: {property.possessionDate}</p>
-      <p>Amenities: {property.amenities.join(", ")}</p>
-
-      <div className="space-y-4">
-        <iframe
-          src={property.sampleFlatVideo}
-          className="w-full aspect-video"
-          allowFullScreen
-        />
-        <iframe
-          src={property.localityVideo}
-          className="w-full aspect-video"
-          allowFullScreen
-        />
+    <div className="p-6 space-y-6 max-w-5xl mx-auto">
+      <h1 className="text-3xl font-bold">{property.title}</h1>
+      <div className="text-gray-700 text-lg">
+        {property.bhk} BHK | ₹{property.price}
+      </div>
+      <div className="text-muted-foreground">
+        {property.locality}, {property.city}, {property.state}
+      </div>
+      <div className="text-sm text-gray-500">
+        Possession Date: {property.possessionDate}
       </div>
 
-      {/* We'll connect this in Step 3 */}
-      <a
-        href={`/dashboard/buyer/appointments/new?propertyId=${property.id}`}
-        className="inline-block bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        Book a Site Visit
-      </a>
-      <AppointmentForm propertyId={property.id} sellerId={property.sellerId} />
+      {/* ✅ Render Uploaded Images */}
+      {property.images?.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+          {property.images.map((url: string) => (
+            <img
+              key={url}
+              src={url}
+              alt="Property Image"
+              className="rounded-lg w-full h-48 object-cover border"
+            />
+          ))}
+        </div>
+      )}
 
+      {/* ✅ Embedded Sample Flat Video */}
+      {property.sampleFlatVideo && (
+        <div>
+          <h2 className="text-xl font-semibold mt-6 mb-2">Sample Flat Video</h2>
+          <iframe
+            className="w-full aspect-video rounded"
+            src={property.sampleFlatVideo.replace("watch?v=", "embed/")}
+            allowFullScreen
+          />
+        </div>
+      )}
+
+      {/* ✅ Embedded Locality Video */}
+      {property.localityVideo && (
+        <div>
+          <h2 className="text-xl font-semibold mt-6 mb-2">Locality Video</h2>
+          <iframe
+            className="w-full aspect-video rounded"
+            src={property.localityVideo.replace("watch?v=", "embed/")}
+            allowFullScreen
+          />
+        </div>
+      )}
+
+      {/* Amenities */}
+      {property.amenities?.length > 0 && (
+        <div>
+          <h2 className="text-xl font-semibold mt-6 mb-2">Amenities</h2>
+          <ul className="list-disc list-inside text-gray-700">
+            {property.amenities.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-// import { prisma } from "@/lib/prisma";
-// import { notFound } from "next/navigation";
-// import { AppointmentForm } from "@/components/forms/appointment-form";
-// import { ObjectId } from "bson";
-
-// type Props = {
-//   params: {
-//     id: string;
-//   };
-// };
-
-// export default async function ListingPage({ params }: Props) {
-//   const property = await prisma.property.findUnique({
-//     where: { id: params.id },
-//   });
-// //   const property = await prisma.property.findUnique({
-// //   where: { id: new ObjectId(params.id).toHexString() },
-// // });
-
-
-//   if (!property || property.status !== "approved") return notFound();
-
-//   return (
-//     <div className="max-w-3xl mx-auto py-10 space-y-4">
-//       <h1 className="text-3xl font-bold">{property.title}</h1>
-//       <p className="text-lg">{property.bhk} BHK – ₹{property.price}</p>
-//       <p className="text-sm text-gray-600">{property.city}, {property.state}, {property.locality}</p>
-//       <p className="text-sm text-gray-800">Possession: {property.possessionDate}</p>
-//       <p className="text-sm text-gray-800">Amenities: {property.amenities.join(", ")}</p>
-
-//       {property.sampleFlatVideo && (
-//         <div>
-//           <h3 className="font-semibold mt-4">Sample Flat Video</h3>
-//           <video controls className="w-full rounded">
-//             <source src={property.sampleFlatVideo} />
-//           </video>
-//         </div>
-//       )}
-
-//       {property.localityVideo && (
-//         <div>
-//           <h3 className="font-semibold mt-4">Locality Video</h3>
-//           <video controls className="w-full rounded">
-//             <source src={property.localityVideo} />
-//           </video>
-//         </div>
-//       )}
-
-//       <h3 className="text-lg font-semibold mt-8">Schedule Appointment</h3>
-// <AppointmentForm propertyId={property.id} sellerId={property.sellerId} />
-//     </div>
-//   );
-// }

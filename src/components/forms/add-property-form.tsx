@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { useRouter } from "next/navigation";
-import { UploadDropzone } from "@uploadthing/react";
-import type { OurFileRouter } from "@/lib/uploadthing";
+import { CloudinaryUpload } from "@/components/cloudinary/CloudinaryUpload";
 
 export function AddPropertyForm({ userId }: { userId: string }) {
   const [form, setForm] = useState({
@@ -20,9 +18,9 @@ export function AddPropertyForm({ userId }: { userId: string }) {
     locality: "",
     sampleFlatVideo: "",
     localityVideo: "",
-    images: [] as string[], // ✅ New field for image URLs
   });
 
+  const [images, setImages] = useState<string[]>([]);
   const router = useRouter();
 
   const handleChange = (e: any) => {
@@ -31,16 +29,21 @@ export function AddPropertyForm({ userId }: { userId: string }) {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
     const res = await fetch("/api/properties", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, sellerId: userId }),
+      body: JSON.stringify({
+        ...form,
+        images,
+        sellerId: userId,
+      }),
     });
 
     if (res.ok) {
       router.push("/dashboard/seller");
     } else {
-      alert("Submission failed");
+      alert("Failed to create property.");
     }
   };
 
@@ -57,18 +60,26 @@ export function AddPropertyForm({ userId }: { userId: string }) {
       <Input name="sampleFlatVideo" placeholder="Sample Flat Video URL" onChange={handleChange} />
       <Input name="localityVideo" placeholder="Locality Video URL" onChange={handleChange} />
 
-      {/* ✅ UploadThing Dropzone */}
-      <div>
-        <p className="text-sm font-medium">Upload Property Images:</p>
-        <UploadDropzone<OurFileRouter>
-          endpoint="propertyImage"
-          onClientUploadComplete={(res) => {
-            const urls = res.map((f) => f.url);
-            setForm((prev) => ({ ...prev, images: urls }));
-          }}
-          onUploadError={(error) => alert(`Upload error: ${error.message}`)}
-          className="border border-dashed p-4 rounded"
+      {/* ✅ Cloudinary Upload */}
+      <div className="space-y-2">
+        <label className="font-medium text-sm">Upload Property Images</label>
+        <CloudinaryUpload
+          onUpload={(url) => setImages((prev) => [...prev, url])}
         />
+
+        {/* ✅ Preview */}
+        {images.length > 0 && (
+          <div className="grid grid-cols-2 gap-2 mt-2">
+            {images.map((url, i) => (
+              <img
+                key={i}
+                src={url}
+                alt="Preview"
+                className="h-24 w-full object-cover rounded border"
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <Button type="submit" className="w-full">Submit Property</Button>
