@@ -2,6 +2,8 @@ import { UserButton } from "@clerk/nextjs";
 import Footer from "@/components/ui/footer";
 import SearchBar from "@/components/ui/searchbar";
 
+import PropertyList from "@/components/shared/home-property-card";
+
 export default function Home() {
   // const handleSearch = (query: string) => {
   //   console.log("Searching for:", query);
@@ -28,6 +30,10 @@ export default function Home() {
         <p className="text-gray-700 text-lg text-center">
           Welcome to TheSampleFlat – find your next property with ease.
         </p>
+
+        <div className="flex justify-center">
+          <PropertyList></PropertyList>
+        </div>
       </main>
 
       {/* Footer */}
