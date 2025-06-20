@@ -1,52 +1,49 @@
-import { redirect } from "next/navigation";
-import { getOrCreateUser } from "@/lib/getOrCreateUser"; // this should return DB user (with role)
+import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-import PropertyCard from "@/components/shared/property-card";
+import { redirect } from "next/navigation";
+import DeleteButton from "@/components/DeleteButton";
+import PropertyCard from "@/components/shared/property-card"; // make sure this exists and works
 
-export default async function AdminDashboardPage() {
-  const dbUser = await getOrCreateUser();
+export default async function AdminPage() {
+  const { userId } = await auth();
 
-  if (dbUser.role !== "admin") {
-    redirect("/");
-  }
+  // ❗ Replace with your Clerk user ID to restrict admin access
+  // const adminId = "user_2ydcnlDbTT7beNE55ui8p1VjphE"; // e.g. "user_abc123"
+  // if (userId !== adminId) {
+  //   redirect("/"); // not authorized
+  // }
 
-  const users = await prisma.user.findMany({ orderBy: { createdAt: "desc" } });
   const properties = await prisma.property.findMany({
+    include: {
+      seller: true, // assumes your `property` model has a relation to User
+    },
     orderBy: { createdAt: "desc" },
-    include: { seller: true },
   });
 
   return (
-    <div className="p-6 space-y-10">
-      <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+    <div className="max-w-6xl mx-auto py-10 px-4">
+      <h2 className="text-2xl font-bold mb-6">Admin Dashboard: Listings</h2>
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">All Properties</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {properties.map((property) => (
-            <div key={property.id} className="border p-4 rounded">
-              <PropertyCard property={property} />
-              <p className="text-xs text-gray-500 mt-2">
-                Seller: {property.seller?.email || "Unknown"}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {properties.map((property) => (
+          <div key={property.id} className="border p-4 rounded-xl relative">
+            <PropertyCard property={property} />
 
-      <section>
-        <h2 className="text-xl font-semibold mb-4">All Users</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {users.map((user) => (
-            <div key={user.id} className="border p-4 rounded text-sm">
-              <p><strong>Name:</strong> {user.name}</p>
-              <p><strong>Email:</strong> {user.email}</p>
-              <p><strong>Role:</strong> {user.role}</p>
-              <p><strong>Paid:</strong> {user.paid ? "✅" : "❌"}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+            <p className="text-xs text-gray-500 mt-2">
+              Seller: {property.seller?.email || "Unknown"}
+            </p>
+
+            {/* Delete Button */}
+            <DeleteButton propertyId={property.id} />
+              <button
+                type="submit"
+                className="mt-3 text-red-600 text-sm underline hover:text-red-800"
+              >
+                {/* Delete Listing */}
+              </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

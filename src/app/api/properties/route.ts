@@ -31,3 +31,48 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  
+  const location = searchParams.get("location");
+  const minPrice = searchParams.get("minPrice");
+  const maxPrice = searchParams.get("maxPrice");
+  const propertyType = searchParams.get("propertyType");
+  const bedrooms = searchParams.get("bedrooms");
+
+  const filters: any = {};
+
+  if (location) {
+    filters.OR = [
+      { title: { contains: location, mode: "insensitive" } },
+      { location: { contains: location, mode: "insensitive" } },
+    ];
+  }
+
+  if (minPrice || maxPrice) {
+    filters.price = {};
+    if (minPrice) filters.price.gte = parseInt(minPrice);
+    if (maxPrice) filters.price.lte = parseInt(maxPrice);
+  }
+
+  if (propertyType) {
+    filters.propertyType = propertyType;
+  }
+
+  if (bedrooms) {
+    filters.bedrooms = parseInt(bedrooms);
+  }
+
+  try {
+    const properties = await prisma.property.findMany({
+      where: filters,
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json(properties);
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: "Error fetching properties" }, { status: 500 });
+  }
+}
