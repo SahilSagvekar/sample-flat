@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import PropertyCard from "@/components/shared/property-card";
 import SearchForm from "@/components/forms/search-form";
-import MapWrapper from "@/components/map/MapWrapper"; // ✅ Map client wrapper
+import MapClientWrapper from "@/components/map/MapClientWrapper";
+
 
 export default async function ListingPage({ searchParams }: { searchParams: any }) {
   const filters: any = {};
@@ -13,6 +14,7 @@ export default async function ListingPage({ searchParams }: { searchParams: any 
     filters.state = { contains: searchParams.state, mode: "insensitive" };
 
   if (searchParams.bhk) filters.bhk = searchParams.bhk;
+
 
   if (searchParams.minPrice || searchParams.maxPrice) {
     filters.price = {
@@ -27,10 +29,28 @@ export default async function ListingPage({ searchParams }: { searchParams: any 
       mode: "insensitive",
     };
 
-  const properties = await prisma.property.findMany({
+  // 🧠 Fetch properties with selected fields
+  let properties = await prisma.property.findMany({
     where: filters,
+    select: {
+      id: true,
+      title: true,
+      price: true,
+      city: true,
+      state: true,
+      bhk: true,
+      latitude: true,
+      longitude: true,
+    },
     orderBy: { createdAt: "desc" },
   });
+
+  // 🧪 Inject static coordinates if missing (for testing)
+  properties = properties.map((property) => ({
+    ...property,
+    latitude: property.latitude ?? 19.0760 + Math.random() * 0.05,   // Near Mumbai
+    longitude: property.longitude ?? 72.8777 + Math.random() * 0.05,
+  }));
 
   return (
     <div className="p-6">
@@ -40,9 +60,9 @@ export default async function ListingPage({ searchParams }: { searchParams: any 
 
       {properties.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 mt-6">
-          <MapWrapper properties={properties} /> {/* 🗺️ Map Column */}
+          <MapClientWrapper properties={properties} />{/* Map Column */}
 
-          <div className="lg:col-span-3 space-y-4"> {/* 🏠 Listings */}
+          <div className="lg:col-span-3 space-y-4"> {/* Listings */}
             {properties.map((property) => (
               <PropertyCard key={property.id} property={property} />
             ))}

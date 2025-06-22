@@ -1,6 +1,6 @@
 // app/api/properties/[id]/route.ts
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 interface Params {
   params: {
@@ -78,3 +78,5 @@ export async function DELETE(
 
   return NextResponse.json({ success: true });
 }
+
+
