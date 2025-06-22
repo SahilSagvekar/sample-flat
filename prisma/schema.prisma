@@ -29,21 +29,20 @@ model Property {
   city            String
   state           String
   locality        String
+  latitude        Float?   // ✅ NEW
+  longitude       Float?   // ✅ NEW
   sampleFlatVideo String
   localityVideo   String
   status          String   @default("pending")
-
   sellerId        String
-  userId          String?  
-  images          String[] @default([]) // 🆕 Add this
-  seller          User?     @relation(fields: [sellerId], references: [clerkId])
-
+  userId          String?
+  images          String[] @default([])
+  seller          User?    @relation(fields: [sellerId], references: [clerkId])
   createdAt       DateTime @default(now())
-  updatedAt DateTime? @updatedAt
-
-
+  updatedAt       DateTime? @updatedAt
   appointments    Appointment[]
 }
+
 
 
 model Appointment {

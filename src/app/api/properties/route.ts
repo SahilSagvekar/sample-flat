@@ -1,9 +1,14 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { geocodeAddress } from "@/lib/geocode"; // ✅ Import geocoder
 
 export async function POST(req: Request) {
   try {
     const data = await req.json();
+
+    // ✅ Compose address and fetch lat/lng
+    const fullAddress = `${data.locality}, ${data.city}, ${data.state}`;
+    const { latitude, longitude } = await geocodeAddress(fullAddress);
 
     const property = await prisma.property.create({
       data: {
@@ -21,7 +26,9 @@ export async function POST(req: Request) {
         localityVideo: data.localityVideo,
         status: "pending",
         sellerId: data.sellerId,
-        images: data.images || [], // ✅ New line to save image URLs
+        images: data.images || [],
+        latitude,
+        longitude, // ✅ Save coordinates
       },
     });
 
@@ -34,7 +41,7 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  
+
   const location = searchParams.get("location");
   const minPrice = searchParams.get("minPrice");
   const maxPrice = searchParams.get("maxPrice");
@@ -46,7 +53,8 @@ export async function GET(req: Request) {
   if (location) {
     filters.OR = [
       { title: { contains: location, mode: "insensitive" } },
-      { location: { contains: location, mode: "insensitive" } },
+      { locality: { contains: location, mode: "insensitive" } },
+      { city: { contains: location, mode: "insensitive" } },
     ];
   }
 
