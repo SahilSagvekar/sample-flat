@@ -1,53 +1,43 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useSearchParams } from "next/navigation";
 
-export default function SearchForm({ defaultValues }: { defaultValues?: any }) {
+export default function SearchForm() {
   const router = useRouter();
-  const params = useSearchParams();
+  const searchParams = useSearchParams();
 
-  const [form, setForm] = useState({
-    city: defaultValues?.city || "",
-    state: defaultValues?.state || "",
-    bhk: defaultValues?.bhk || "",
-    minPrice: defaultValues?.minPrice || "",
-    maxPrice: defaultValues?.maxPrice || "",
-    possessionDate: defaultValues?.possessionDate || "",
+  const [query, setQuery] = useState({
+    city: searchParams.get("city") || "",
+    bhk: searchParams.get("bhk") || "",
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e: any) => {
+    setQuery({ ...query, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    const query = new URLSearchParams();
+    const params = new URLSearchParams();
 
-    Object.entries(form).forEach(([key, value]) => {
-      if (value) query.set(key, value);
-    });
+    if (query.city) params.set("city", query.city);
+    if (query.bhk) params.set("bhk", query.bhk);
+    if (query.minPrice) params.set("minPrice", query.minPrice);
+    if (query.maxPrice) params.set("maxPrice", query.maxPrice);
 
-    router.push(`/listing?${query.toString()}`);
+    router.push(`/listing?${params.toString()}`);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-      <Input placeholder="City" name="city" value={form.city} onChange={handleChange} />
-      <Input placeholder="State" name="state" value={form.state} onChange={handleChange} />
-      <select name="bhk" value={form.bhk} onChange={handleChange} className="border rounded-md p-2">
-        <option value="">BHK</option>
-        <option value="1">1 BHK</option>
-        <option value="2">2 BHK</option>
-        <option value="3">3 BHK</option>
-        <option value="4">4+ BHK</option>
-      </select>
-      <Input type="number" placeholder="Min Price" name="minPrice" value={form.minPrice} onChange={handleChange} />
-      <Input type="number" placeholder="Max Price" name="maxPrice" value={form.maxPrice} onChange={handleChange} />
-      <Input type="month" name="possessionDate" value={form.possessionDate} onChange={handleChange} />
+    <form onSubmit={handleSubmit} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <Input name="city" placeholder="City" value={query.city} onChange={handleChange} />
+      <Input name="bhk" placeholder="BHK" value={query.bhk} onChange={handleChange} />
+      <Input name="minPrice" placeholder="Min Price" value={query.minPrice} onChange={handleChange} />
+      <Input name="maxPrice" placeholder="Max Price" value={query.maxPrice} onChange={handleChange} />
       <Button type="submit" className="col-span-2 md:col-span-1">Search</Button>
     </form>
   );

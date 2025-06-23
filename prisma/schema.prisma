@@ -15,7 +15,8 @@ model User {
   name    String?
   image   String?
   paid    Boolean  @default(false)
-  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   properties Property[]
 }
 
@@ -33,14 +34,19 @@ model Property {
   longitude       Float?   // ✅ NEW
   sampleFlatVideo String
   localityVideo   String
-  status          String   @default("pending")
+  status          String   @default("pending")  // values: "pending", "approved", "rejected"
   sellerId        String
   userId          String?
-  images          String[] @default([])
+  imageUrls       String[] @default([]) // NEW: array of image URLs
   seller          User?    @relation(fields: [sellerId], references: [clerkId])
   createdAt       DateTime @default(now())
   updatedAt       DateTime? @updatedAt
   appointments    Appointment[]
+  featured        Boolean  @default(false) // ✅ Add this
+  paymentStatus   String @default("unpaid")
+  @@index([sellerId])
+  @@index([createdAt])
+
 }
 
 
@@ -57,3 +63,17 @@ model Appointment {
   property    Property @relation(fields: [propertyId], references: [id])
 }
 
+model ListingAccess {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @unique
+  hasAccess   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Payment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String
+  amount    Int
+  status    String
+  createdAt DateTime @default(now())
+}

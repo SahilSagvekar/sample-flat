@@ -10,27 +10,47 @@ export async function POST(req: Request) {
     const fullAddress = `${data.locality}, ${data.city}, ${data.state}`;
     const { latitude, longitude } = await geocodeAddress(fullAddress);
 
+    // const property = await prisma.property.create({
+    //   data: {
+    //     title: data.title,
+    //     price: parseFloat(data.price),  
+    //     bhk: data.bhk,
+    //     possessionDate: data.possessionDate,
+    //     amenities: data.amenities
+    //       ? data.amenities.split(",").map((a: string) => a.trim())
+    //       : [],
+    //     city: data.city,
+    //     state: data.state,
+    //     locality: data.locality,
+    //     sampleFlatVideo: data.sampleFlatVideo,
+    //     localityVideo: data.localityVideo,
+    //     status: "pending",
+    //     sellerId: data.sellerId,
+    //     images: data.images || [],
+    //     latitude,
+    //     longitude, // ✅ Save coordinates
+    //   },
+    // });
+
     const property = await prisma.property.create({
-      data: {
-        title: data.title,
-        price: parseFloat(data.price),
-        bhk: data.bhk,
-        possessionDate: data.possessionDate,
-        amenities: data.amenities
-          ? data.amenities.split(",").map((a: string) => a.trim())
-          : [],
-        city: data.city,
-        state: data.state,
-        locality: data.locality,
-        sampleFlatVideo: data.sampleFlatVideo,
-        localityVideo: data.localityVideo,
-        status: "pending",
-        sellerId: data.sellerId,
-        images: data.images || [],
-        latitude,
-        longitude, // ✅ Save coordinates
-      },
-    });
+  data: {
+    title: data.title,
+    bhk: data.bhk,
+    possessionDate: data.possessionDate,
+    amenities: data.amenities?.split(",") ?? [],
+    city: data.city,
+    state: data.state,
+    locality: data.locality,
+    sampleFlatVideo: data.sampleFlatVideo,
+    localityVideo: data.localityVideo,
+    status: "pending",
+    sellerId: "",
+    imageUrls: data.imageUrls ?? [], // updated field name
+    latitude,
+    longitude,
+    price: Number(data.price), // ✅ convert string to number here
+  },
+});
 
     return NextResponse.json({ success: true, property });
   } catch (err: any) {

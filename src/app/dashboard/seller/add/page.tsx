@@ -2,10 +2,27 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { AddPropertyForm } from "@/components/forms/add-property-form";
 import Footer from "@/components/ui/footer";
+import { prisma } from "@/lib/prisma";
 
 export default async function AddPropertyPage() {
+  // const { userId } = await auth();
+  // if (!userId) redirect("/sign-in");
+
+  // const access = await prisma.listingAccess.findUnique({ where: { userId } });
+
+  // if (!access?.hasAccess) redirect("/dashboard/seller?error=access-denied");
+
   const { userId } = await auth();
   if (!userId) redirect("/sign-in");
+
+  // ✅ Check access
+  const access = await prisma.listingAccess.findUnique({
+    where: { userId },
+  });
+
+  if (!access || !access.hasAccess) {
+    redirect("/dashboard/seller/pay-to-list"); // 🔁 Redirect to payment
+  }
 
   return (
     <div className="flex flex-col min-h-screen">

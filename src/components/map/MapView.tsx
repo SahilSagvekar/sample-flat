@@ -25,7 +25,7 @@ export default function MapView({ properties }: { properties: Property[] }) {
   const defaultCenter: LatLngExpression =
     validProps.length > 0
       ? [validProps[0].latitude as number, validProps[0].longitude as number]
-      : [19.07, 72.87]; // fallback: Mumbai
+      : [19.07, 72.87]; // fallback: Mumbai 
 
   return (
     <MapContainer center={defaultCenter} zoom={12} style={{ height: "100%", width: "100%" }}>
