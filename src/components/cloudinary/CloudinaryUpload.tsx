@@ -1,52 +1,55 @@
 "use client";
 
-import { useEffect } from "react";
-
-declare global {
-  interface Window {
-    cloudinary: any;
-  }
-}
+import { useRef } from "react";
+import { Button } from "@/components/ui/button";
 
 export function CloudinaryUpload({
   onUpload,
+  folder = "sampleflat",
+  resourceType = "auto", // auto = image or video
 }: {
   onUpload: (url: string) => void;
+  folder?: string;
+  resourceType?: "image" | "video" | "auto";
 }) {
-  useEffect(() => {
-    if (!window.cloudinary) return;
+  const inputRef = useRef<HTMLInputElement>(null);
 
-    const widget = window.cloudinary.createUploadWidget(
-      {
-        cloudName: "deyxbg1hf", // 🔁 Replace with yours
-        uploadPreset: "unsigned_upload", // 🔁 Replace with your unsigned preset
-        sources: ["local", "url", "camera"],
-        multiple: false,
-        maxFileSize: 5000000, // 5MB
-        resourceType: "image",
-        cropping: false,
-      },
-      (error: any, result: any) => {
-        if (!error && result.event === "success") {
-          console.log("📸 Uploaded:", result.info.secure_url);
-          onUpload(result.info.secure_url);
-        }
-      }
-    );
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-    const btn = document.getElementById("cloudinary-upload-btn");
-    if (btn) {
-      btn.addEventListener("click", () => widget.open(), false);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "unsigned_upload"); // ⬅️ Replace with your unsigned preset name  
+    formData.append("folder", folder);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/deyxbg1hf/${resourceType}/upload`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (data.secure_url) {
+      onUpload(data.secure_url);
+    } else {
+      alert("Upload failed");
+      console.error(data);
     }
-  }, [onUpload]);
+
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
+  };
 
   return (
-    <button
-      type="button"
-      id="cloudinary-upload-btn"
-      className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-    >
-      Upload Image
-    </button>
+    <>
+      <input
+        ref={inputRef}
+        type="file"
+        accept={resourceType === "video" ? "video/*" : "image/*"}
+        onChange={handleFileChange}
+        className="text-sm"
+      />
+    </>
   );
 }
