@@ -1,0 +1,4 @@
+// how much price for property ListingPage
+//how much for featured post and how long will it be featured
+// domain will cost more money
+// whatsapp and sms cost more money 

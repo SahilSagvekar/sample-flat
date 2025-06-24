@@ -3,14 +3,14 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
 export default async function AdminAppointmentsPage() {
-  const user = await currentUser();
-  if (!user) redirect("/sign-in");
+  // const user = await currentUser();
+  // if (!user) redirect("/sign-in");
 
-  const dbUser = await prisma.user.findUnique({
-    where: { clerkId: user.id },
-  });
+  // const dbUser = await prisma.user.findUnique({
+  //   where: { clerkId: user.id },
+  // });
 
-  if (dbUser?.role !== "admin") redirect("/");
+  // if (dbUser?.role !== "admin") redirect("/");
 
   const appointments = await prisma.appointment.findMany({
     include: {

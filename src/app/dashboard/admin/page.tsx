@@ -20,41 +20,43 @@ export default async function AdminPage() {
   // });
 
   const users = await prisma.user.findMany({
-  include: {
-    properties: true, // get how many properties they listed
-  },
-});
+    include: {
+      properties: true, // get how many properties they listed
+    },
+  });
 
-
-   const [properties, stats] = await Promise.all([
-      prisma.property.findMany({
-        include: { seller: true },
-        orderBy: { createdAt: "desc" },
-      }),
-      getStats(),
-    ]);
-
-  // ✅ Stats Helper
-async function getStats() {
-  const [totalUsers, totalListings, approvedListings, pendingListings] = await Promise.all([
-    prisma.user.count(),
-    prisma.property.count(),
-    prisma.property.count({ where: { status: "approved" } }),
-    prisma.property.count({ where: { status: "pending" } }),
+  const [properties, stats] = await Promise.all([
+    prisma.property.findMany({
+      include: { seller: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    getStats(),
   ]);
 
-  return { totalUsers, totalListings, approvedListings, pendingListings };
-}
+  // ✅ Stats Helper
+  async function getStats() {
+    const [totalUsers, totalListings, approvedListings, pendingListings] =
+      await Promise.all([
+        prisma.user.count(),
+        prisma.property.count(),
+        prisma.property.count({ where: { status: "approved" } }),
+        prisma.property.count({ where: { status: "pending" } }),
+      ]);
 
-// ✅ StatCard Component
-function StatCard({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="bg-white dark:bg-zinc-900 rounded-xl shadow p-4 text-center">
-      <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{label}</h3>
-      <p className="text-2xl font-bold">{value}</p>
-    </div>
-  );
-}
+    return { totalUsers, totalListings, approvedListings, pendingListings };
+  }
+
+  // ✅ StatCard Component
+  function StatCard({ label, value }: { label: string; value: number }) {
+    return (
+      <div className="bg-white dark:bg-zinc-900 rounded-xl shadow p-4 text-center">
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+          {label}
+        </h3>
+        <p className="text-2xl font-bold">{value}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
@@ -66,10 +68,10 @@ function StatCard({ label, value }: { label: string; value: number }) {
       </div>
 
       <Link href="/dashboard/admin/payments">
-  <Button variant="ghost" className="w-full justify-start">
-    💳 View All Payments
-  </Button>
-</Link>
+        <Button variant="ghost" className="w-full justify-start">
+          💳 View All Payments
+        </Button>
+      </Link>
 
       {/* 📊 Stats Section */}
       <div>
@@ -102,6 +104,15 @@ function StatCard({ label, value }: { label: string; value: number }) {
         {properties.map((property) => (
           <div key={property.id} className="border p-4 rounded-xl relative">
             <PropertyCard property={property} />
+            {property.featured && (
+              <div className="absolute top-2 right-2 bg-yellow-300 text-black text-xs px-2 py-1 rounded-full font-semibold shadow">
+                ⭐ Featured
+              </div>
+            )}
+            <p className="text-xs text-yellow-700 mt-1">
+              {property.featured ? "Featured Listing ✅" : "Not Featured"}
+            </p>
+
             <p className="text-xs text-gray-500 mt-2">
               Seller: {property.seller?.email || "Unknown"}
             </p>
@@ -111,7 +122,10 @@ function StatCard({ label, value }: { label: string; value: number }) {
               <DeleteButton propertyId={property.id} />
 
               {property.status !== "approved" && (
-                <form action={`/api/properties/${property.id}/approve`} method="POST">
+                <form
+                  action={`/api/properties/${property.id}/approve`}
+                  method="POST"
+                >
                   <Button type="submit" variant="default" className="w-full">
                     ✅ Approve
                   </Button>
@@ -119,8 +133,15 @@ function StatCard({ label, value }: { label: string; value: number }) {
               )}
 
               {property.status !== "rejected" && (
-                <form action={`/api/properties/${property.id}/reject`} method="POST">
-                  <Button type="submit" variant="destructive" className="w-full">
+                <form
+                  action={`/api/properties/${property.id}/reject`}
+                  method="POST"
+                >
+                  <Button
+                    type="submit"
+                    variant="destructive"
+                    className="w-full"
+                  >
                     ❌ Reject
                   </Button>
                 </form>
@@ -131,27 +152,26 @@ function StatCard({ label, value }: { label: string; value: number }) {
       </div>
 
       <h2 className="text-xl font-bold mt-10 mb-4">Users</h2>
-<div className="overflow-auto rounded-lg border">
-  <table className="min-w-full text-sm">
-    <thead className="bg-gray-100">
-      <tr>
-        <th className="p-3 text-left">User ID</th>
-        <th className="p-3 text-left">Email</th>
-        <th className="p-3 text-left">Properties</th>
-      </tr>
-    </thead>
-    <tbody>
-      {users.map((user) => (
-        <tr key={user.id} className="border-t">
-          <td className="p-3">{user.id}</td>
-          <td className="p-3">{user.email}</td>
-          <td className="p-3">{user.properties.length}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
+      <div className="overflow-auto rounded-lg border">
+        <table className="min-w-full text-sm">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="p-3 text-left">User ID</th>
+              <th className="p-3 text-left">Email</th>
+              <th className="p-3 text-left">Properties</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id} className="border-t">
+                <td className="p-3">{user.id}</td>
+                <td className="p-3">{user.email}</td>
+                <td className="p-3">{user.properties.length}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

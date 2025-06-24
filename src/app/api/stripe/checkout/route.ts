@@ -1,55 +1,52 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { prisma } from "@/lib/prisma";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-04-10",
+  apiVersion: "2023-10-16",
 });
 
-export async function POST() {
+export async function POST(req: Request) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!userId) return NextResponse.redirect("/sign-in");
 
-  // const session = await stripe.checkout.sessions.create({
-  //   payment_method_types: ["card"],
-  //   mode: "payment",
-  //   line_items: [
-  //     {
-  //       price_data: {
-  //         currency: "inr",
-  //         product_data: { name: "SampleFlat Property Listing Fee" },
-  //         unit_amount: 9900,
-  //       },
-  //       quantity: 1,
-  //     },
-  //   ],
-  //   success_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout-success`,
-  //   cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/seller`,
-  //   metadata: { userId },
-  // });
+  const { propertyId } = await req.json(); // This will be passed only when boosting a listing
+
+  let priceInPaise = 9900; // ₹99 by default
+  let metadata: any = {
+    userId,
+    type: "listing",
+  };
+
+  if (propertyId) {
+    priceInPaise = 4900; // ₹49 to feature
+    metadata = {
+      ...metadata,
+      type: "feature",
+      propertyId,
+    };
+  }
 
   const session = await stripe.checkout.sessions.create({
-  payment_method_types: ["card"],
-  mode: "payment",
-  line_items: [
-    {
-      price_data: {
-        currency: "inr",
-        unit_amount: 9900, // ₹99
-        product_data: {
-          name: "Property Listing Access",
+    payment_method_types: ["card"],
+    mode: "payment",
+    line_items: [
+      {
+        price_data: {
+          currency: "inr",
+          unit_amount: priceInPaise,
+          product_data: {
+            name: propertyId ? "Feature Property Listing" : "Seller Listing Access",
+          },
         },
+        quantity: 1,
       },
-      quantity: 1,
-    },
-  ],
-  metadata: {
-    userId, // 👈 pass Clerk userId here
-  },
-  success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/seller/add`,
-  cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/seller/pay-to-list`,
-});
-
+    ],
+    metadata,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/seller`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/seller?error=payment-cancelled`,
+  });
 
   return NextResponse.json({ url: session.url });
 }

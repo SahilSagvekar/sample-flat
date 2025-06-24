@@ -18,6 +18,7 @@ type Props = {
     sellerId?: string;
     sampleFlatVideo?: string;
     localityVideo?: string;
+    featured?: boolean;
   };
   currentUserId?: string;
 };
@@ -31,7 +32,9 @@ export default function PropertyCard({ property, currentUserId }: Props) {
     fetch("/api/favorites")
       .then((res) => res.json())
       .then((favorites) => {
-        const exists = favorites.find((fav: any) => fav.propertyId === property.id);
+        const exists = favorites.find(
+          (fav: any) => fav.propertyId === property.id
+        );
         setIsFavorite(!!exists);
       });
   }, [currentUserId, property.id]);
@@ -85,14 +88,25 @@ export default function PropertyCard({ property, currentUserId }: Props) {
       <Link href={`/listing/${property.id}`} className="block">
         <Card className="h-full">
           <CardContent className="p-4 space-y-2">
+            {property.featured && (
+              <span className="inline-block bg-yellow-300 text-black text-xs font-semibold px-2 py-1 rounded-full mb-1">
+                ⭐ Featured
+              </span>
+            )}
             <h2 className="text-xl font-semibold">{property.title}</h2>
             <p className="text-sm text-gray-600">
               {property.bhk} BHK – ₹{property.price}
             </p>
-            <p className="text-sm">📍 {property.city}, {property.state}</p>
-            <p className={`text-xs font-medium ${
-              property.status === "approved" ? "text-green-600" : "text-yellow-600"
-            }`}>
+            <p className="text-sm">
+              📍 {property.city}, {property.state}
+            </p>
+            <p
+              className={`text-xs font-medium ${
+                property.status === "approved"
+                  ? "text-green-600"
+                  : "text-yellow-600"
+              }`}
+            >
               Status: {property.status}
             </p>
 
@@ -114,10 +128,19 @@ export default function PropertyCard({ property, currentUserId }: Props) {
       {/* ✏️ Edit/Delete for Owner */}
       {isOwner && (
         <div className="p-4 pt-0 flex gap-2">
-          <Link href={`/dashboard/seller/edit/${property.id}`} className="w-1/2">
-            <Button variant="outline" className="w-full">Edit</Button>
+          <Link
+            href={`/dashboard/seller/edit/${property.id}`}
+            className="w-1/2"
+          >
+            <Button variant="outline" className="w-full">
+              Edit
+            </Button>
           </Link>
-          <Button variant="destructive" className="w-1/2" onClick={handleDelete}>
+          <Button
+            variant="destructive"
+            className="w-1/2"
+            onClick={handleDelete}
+          >
             Delete
           </Button>
         </div>
@@ -145,24 +168,23 @@ export default function PropertyCard({ property, currentUserId }: Props) {
         Feature This Listing
       </Button>
       <Button
-  variant="secondary"
-  className="w-full"
-  onClick={async (e) => {
-    e.preventDefault();
+        variant="secondary"
+        className="w-full"
+        onClick={async (e) => {
+          e.preventDefault();
 
-    const res = await fetch("/api/favorites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ propertyId: property.id }),
-    });
+          const res = await fetch("/api/favorites", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ propertyId: property.id }),
+          });
 
-    const data = await res.json();
-    alert(data.message); // "Added to favorites" or "Removed from favorites"
-  }}
->
-  💖 Save Listing
-</Button>
-
+          const data = await res.json();
+          alert(data.message); // "Added to favorites" or "Removed from favorites"
+        }}
+      >
+        💖 Save Listing
+      </Button>
     </div>
   );
 }

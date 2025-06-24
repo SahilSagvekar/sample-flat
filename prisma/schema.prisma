@@ -55,8 +55,8 @@ model Property {
 
 model Appointment {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  buyerId     String
-  sellerId    String
+  buyerId     String?
+  sellerId    String?
   propertyId  String   @db.ObjectId
   date        DateTime
   type        String   // "site" or "video"

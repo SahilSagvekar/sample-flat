@@ -2,6 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function SellerDashboard() {
   const searchParams = useSearchParams();
@@ -30,7 +31,11 @@ export default function SellerDashboard() {
       )}
 
       <Button onClick={handlePayment}>Pay ₹99 to List Your Property</Button>
-
+      <Link href="/dashboard/seller/appointments">
+  <Button variant="ghost" className="w-full justify-start">
+    📅 My Appointments
+  </Button>
+</Link>
 
       
     </div>

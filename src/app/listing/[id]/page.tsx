@@ -25,16 +25,22 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
       <div className="mb-6">
         <img
-          src={property.images || "https://via.placeholder.com/800x400"}
+          src={property.imageUrls || "https://via.placeholder.com/800x400"}
           alt={property.title}
           className="rounded-xl w-full h-80 object-cover"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <p><strong>Price:</strong> ₹{property.price}</p>
-        <p><strong>Bedrooms:</strong> {property.bhk}</p>
-        <p><strong>Type:</strong> {property.title}</p>
+        <p>
+          <strong>Price:</strong> ₹{property.price}
+        </p>
+        <p>
+          <strong>Bedrooms:</strong> {property.bhk}
+        </p>
+        <p>
+          <strong>Type:</strong> {property.title}
+        </p>
       </div>
 
       <div className="mb-8">
@@ -42,11 +48,14 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
         {/* <p>{property.description}</p> */}
         <p>Handle Description and tpe in property schema </p>
       </div>
-      <AppointmentForm propertyId={property.id} />
+      <AppointmentForm
+        propertyId={property.id}
+        sellerId={property.sellerId} // ✅ must be passed
+      />
+
       {/* <button className="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition">
         Book Appointment
       </button> */}
-     
     </main>
   );
 }
