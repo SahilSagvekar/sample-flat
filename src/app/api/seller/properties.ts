@@ -1,9 +1,9 @@
 // /api/seller/properties.ts
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return new Response(JSON.stringify([]), { status: 401 });
@@ -15,12 +15,15 @@ export async function GET(req: Request) {
     select: {
       id: true,
       title: true,
+      // description: true,       // 🆕 In case PropertyCard uses it
       bhk: true,
       price: true,
       city: true,
       state: true,
+      imageUrls: true,            // 🆕 Needed for thumbnails
       status: true,
       paymentStatus: true,
+      createdAt: true,
     },
   });
 

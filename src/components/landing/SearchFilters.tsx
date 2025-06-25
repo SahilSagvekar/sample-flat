@@ -1,5 +1,5 @@
 // components/landing/SearchFilters.tsx
-import SearchForm  from "@/components/forms/search-form";
+import SearchForm from "@/components/forms/search-form";
 
 export function SearchFilters() {
   return (

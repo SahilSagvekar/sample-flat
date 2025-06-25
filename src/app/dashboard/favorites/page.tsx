@@ -1,10 +1,23 @@
+// app/dashboard/buyer/favorites/page.tsx
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import PropertyCard from "@/components/shared/property-card";
+import Link from "next/link";
 
 export default async function FavoritesPage() {
   const { userId } = await auth();
-  if (!userId) return <p className="text-center py-10">Please sign in</p>;
+  if (!userId) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-lg text-gray-600">Please sign in to view your saved listings.</p>
+        <Link href="/sign-in">
+          <button className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90">
+            Sign In
+          </button>
+        </Link>
+      </div>
+    );
+  }
 
   const favorites = await prisma.favorite.findMany({
     where: { userId },
@@ -20,6 +33,11 @@ export default async function FavoritesPage() {
     return (
       <div className="text-center py-20">
         <p className="text-lg text-gray-600">You haven't saved any listings yet.</p>
+        <Link href="/dashboard/buyer">
+          <button className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90">
+            Browse Properties
+          </button>
+        </Link>
       </div>
     );
   }
@@ -30,11 +48,22 @@ export default async function FavoritesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {favorites.map((fav) => (
-          <PropertyCard
-            key={fav.property.id}
-            property={fav.property}
-            currentUserId={userId}
-          />
+          <div key={fav.id} className="relative">
+            <PropertyCard property={fav.property} currentUserId={userId} />
+
+            <form
+              action={`/api/favorite/${fav.property.id}`}
+              method="POST"
+              className="absolute top-2 right-2"
+            >
+              <button
+                type="submit"
+                className="bg-white border border-gray-300 text-red-600 text-sm px-3 py-1 rounded hover:bg-red-50"
+              >
+                💔 Remove
+              </button>
+            </form>
+          </div>
         ))}
       </div>
     </div>
