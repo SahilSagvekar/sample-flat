@@ -6,15 +6,23 @@ import { WhyUs } from "@/components/landing/WhyUs";
 import { Testimonials } from "@/components/landing/Testimonials";
 import { CallToAction } from "@/components/landing/CallToAction";
 import  LandingFooter from "@/components/landing/Footer";
+import { Perks } from "@/components/landing/Perks";
+import TopProperties from "@/components/landing/TopProperties";
+import { SignupBox } from "@/components/landing/SignupBox";
+import Navbar  from "@/components/Navbar";
 
 export default function HomePage() {
   return (
     <div className="bg-white text-gray-900">
+      <Navbar />
       <Hero />
+         <SignupBox /> 
       <SearchFilters />
-      <PropertyGrid />
+      <TopProperties />
+      {/* <PropertyGrid /> */}
       <WhyUs />
-      <Testimonials />
+      {/* <Testimonials /> */}
+         <Perks /> 
       <CallToAction />
       <LandingFooter />
     </div>

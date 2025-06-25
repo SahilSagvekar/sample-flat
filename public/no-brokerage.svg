@@ -1,0 +1,6 @@
+<svg width="48" height="48" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dollar sign -->
+  <text x="12" y="32" font-size="28" font-family="Arial" fill="#1F4E79">$</text>
+  <!-- Slash -->
+  <line x1="8" y1="40" x2="40" y2="8" stroke="#D32F2F" stroke-width="4"></line>
+</svg>

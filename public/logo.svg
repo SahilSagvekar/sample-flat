@@ -1,0 +1,11 @@
+<svg width="200" height="50" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+  <!-- House & key icon -->
+  <g fill="#1F4E79">
+    <path d="M10 25 L25 10 L40 25 V45 H10 Z"></path>
+    <path d="M35 30 H50 V35 H35 Z"></path>
+  </g>
+  <!-- Text -->
+  <text x="60" y="34" font-family="Arial, sans-serif" font-size="24" fill="#1F4E79">
+    SampleFlat
+  </text>
+</svg>
