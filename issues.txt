@@ -1,1 +1,9 @@
 after sign in user data not getting stored in db
+
+buyer and seler option on sig in
+
+when user alread looogen dont allow sign-in redirect(give alert user already looged in)
+
+add description in property form    
+
+fix forms issues
