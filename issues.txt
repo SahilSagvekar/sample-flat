@@ -1,4 +1,5 @@
-after sign in user data not getting stored in db
+
+sign in as buyer or seller
 
 buyer and seler option on sig in
 
@@ -7,3 +8,5 @@ when user alread looogen dont allow sign-in redirect(give alert user already loo
 add description in property form    
 
 fix forms issues
+
+sripe payments to 

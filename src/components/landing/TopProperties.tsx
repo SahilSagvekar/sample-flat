@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/prisma";
+import BookTourButton from "@/components/BookTourButton"; // ✅ import here
+import Image from "next/image"; // optional improvement
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 export default async function TopProperties() {
   const properties = await prisma.property.findMany({
-    where: { status: "approved" }, // show only approved ones
+    where: { status: "approved" },
     orderBy: { createdAt: "desc" },
     take: 6,
     include: { seller: true },
@@ -57,11 +58,8 @@ export default async function TopProperties() {
                 </div>
 
                 <div className="mt-4">
-                  <Link href={`/listing/${property.id}`}>
-                    <Button variant="default" className="w-full bg-emerald-600 hover:bg-emerald-700">
-                      📅 Book Tour
-                    </Button>
-                  </Link>
+                  {/* ✅ Replaced button logic */}
+                  <BookTourButton propertyId={property.id} />
                 </div>
               </div>
             </div>

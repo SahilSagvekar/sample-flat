@@ -9,6 +9,9 @@
 
 
 import Link from "next/link";
+import { SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
+import { Menu } from 'lucide-react';
+import { useSignUp, SignInButton } from '@clerk/nextjs';
 
 export default function LandingFooter() {
   return (
@@ -48,12 +51,19 @@ export default function LandingFooter() {
         <div>
           <h4 className="font-semibold text-gray-900 mb-2">Join Us</h4>
           <p className="text-gray-500 mb-2">Sign in to list your property or find your next home.</p>
-          <Link
+          {/* <Link
             href="/sign-in"
             className="inline-block mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 text-sm"
           >
             Get Started
-          </Link>
+          </Link> */}
+             <SignInButton mode="modal">
+            <button
+              className="nline-block mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 text-sm"
+            >
+             Get Started
+            </button>
+            </SignInButton>
         </div>
       </div>
 

@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.22.0",
+    "@clerk/clerk-js": "^5.69.2",
+    "@clerk/nextjs": "^6.23.1",
     "@headlessui/react": "^2.2.4",
     "@hookform/resolvers": "^5.1.1",
     "@prisma/client": "^6.9.0",
@@ -36,6 +37,7 @@
     "react-leaflet": "^5.0.0",
     "resend": "^4.6.0",
     "stripe": "^18.2.1",
+    "svix": "^1.68.0",
     "tailwind-merge": "^3.3.1",
     "uploadthing": "^7.7.2",
     "zod": "^3.25.67"

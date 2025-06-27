@@ -2,6 +2,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export function Hero() {
@@ -20,9 +21,11 @@ export function Hero() {
         <p className="text-lg md:text-xl mb-6">
           Explore verified listings, book appointments, and connect with trusted sellers.
         </p>
-        <Button size="lg" className="bg-white text-black hover:bg-gray-200">
-          Explore Listings
-        </Button>
+        <Link href="/listing">
+  <Button size="lg" className="bg-white text-black hover:bg-gray-200">
+    Explore Listings
+  </Button>
+</Link>
       </motion.div>
     </section>
   );

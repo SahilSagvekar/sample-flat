@@ -6,3 +6,11 @@ will the properties be from muiltiple cities
 logo
 ssl
 clerk - 5%
+
+
+
+
+
+
+
+inform : all the accounts will be craeted new for the client
