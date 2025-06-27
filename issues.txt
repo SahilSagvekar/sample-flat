@@ -1,7 +1,6 @@
 
-sign in as buyer or seller
+/delete user also from db
 
-buyer and seler option on sig in
 
 when user alread looogen dont allow sign-in redirect(give alert user already looged in)
 
@@ -12,3 +11,13 @@ fix forms issues
 sripe payments to razorpay
 
 amenities
+
+admin ka route lock krna hai
+
+add calendar in add property date
+
+properties not loading on seller dashboard
+
+add seller name or nuyer name
+
+create buyer and seller profiles
