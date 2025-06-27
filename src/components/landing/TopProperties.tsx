@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 
 export default async function TopProperties() {
   const properties = await prisma.property.findMany({
-    where: { status: "approved" }, // show only approved ones
+    where: { status: "approved" },
     orderBy: { createdAt: "desc" },
-    take: 6,
+    take: 10,
     include: { seller: true },
   });
 
@@ -25,47 +25,45 @@ export default async function TopProperties() {
           🏗 Top New Launches
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {properties.map((property) => (
-            <div
-              key={property.id}
-              className="flex border bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"
-            >
-              <img
-                src={
-                  property.imageUrls?.[0] ||
-                  "https://via.placeholder.com/200x150"
-                }
-                alt={property.title}
-                className="w-36 h-full object-cover"
-              />
+        {/* Full-width scrollable section */}
+        <div className="overflow-x-auto">
+          <div className="flex gap-6 px-2 w-full">
+            {properties.map((property) => (
+              <div
+                key={property.id}
+                className="min-w-[240px] max-w-[240px] flex-shrink-0 border bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+              >
+                <img
+                  src={
+                    property.imageUrls?.[0] ||
+                    "https://via.placeholder.com/240x150"
+                  }
+                  alt={property.title}
+                  className="w-full h-40 object-cover"
+                />
 
-              <div className="flex flex-col justify-between p-4 w-full">
-                <div>
-                  <h3 className="text-lg font-semibold">{property.title}</h3>
-                  <p className="text-sm text-gray-500">
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold truncate">{property.title}</h3>
+                  <p className="text-sm text-gray-500 truncate">
                     {property.locality || "—"} ·{" "}
                     {property.seller?.email || "Seller"}
                   </p>
                   <p className="text-sm mt-2">🛏 {property.bhk} BHK</p>
-                  <p className="text-sm">📐 {property.area || "N/A"} sqft</p>
                   <p className="text-sm">📆 {property.possessionDate || "—"}</p>
                   <p className="text-sm font-bold mt-1 text-green-700">
-                    ₹{property.price}{" "}
-                    <span className="text-xs text-gray-500">(All Inc)</span>
+                    ₹{property.price}
+                    <span className="text-xs text-gray-500"> (All Inc)</span>
                   </p>
-                </div>
 
-                <div className="mt-4">
                   <Link href={`/listing/${property.id}`}>
-                    <Button variant="default" className="w-full bg-emerald-600 hover:bg-emerald-700">
+                    <Button className="w-full mt-3 bg-emerald-600 hover:bg-emerald-700">
                       📅 Book Tour
                     </Button>
                   </Link>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

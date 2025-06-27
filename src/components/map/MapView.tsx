@@ -3,33 +3,45 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, Icon } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
 
-// Fix for missing default marker icon in Leaflet
+// Custom marker icon
 const icon = new Icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
 });
 
 type Property = {
   id: string;
   title: string;
+  price: number;
   latitude: number | null;
   longitude: number | null;
-  price: number;
+  city?: string;
+  state?: string;
+  bhk?: string;
 };
 
 export default function MapView({ properties }: { properties: Property[] }) {
   const validProps = properties.filter(p => p.latitude !== null && p.longitude !== null);
-  const defaultCenter: LatLngExpression =
-    validProps.length > 0
-      ? [validProps[0].latitude as number, validProps[0].longitude as number]
-      : [19.07, 72.87]; // fallback: Mumbai 
+  
+  const defaultCenter: LatLngExpression = validProps.length > 0
+    ? [validProps[0].latitude!, validProps[0].longitude!]
+    : [19.0760, 72.8777]; // Default to Mumbai
 
   return (
-    <MapContainer center={defaultCenter} zoom={12} style={{ height: "100%", width: "100%" }}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+    <MapContainer 
+      center={defaultCenter} 
+      zoom={12} 
+      className="h-full w-full rounded-xl"
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
 
       {validProps.map((prop) => (
         <Marker
@@ -37,9 +49,24 @@ export default function MapView({ properties }: { properties: Property[] }) {
           position={[prop.latitude!, prop.longitude!]}
           icon={icon}
         >
-          <Popup>
-            <strong>{prop.title}</strong><br />
-            ₹{prop.price.toLocaleString()}
+          <Popup className="leaflet-popup">
+            <div className="space-y-1 min-w-[200px]">
+              <h4 className="font-semibold">{prop.title}</h4>
+              <div className="flex items-center gap-1 text-sm">
+                <span>₹{prop.price.toLocaleString()}</span>
+                {prop.bhk && (
+                  <>
+                    <span>•</span>
+                    <span>{prop.bhk} BHK</span>
+                  </>
+                )}
+              </div>
+              {prop.city && prop.state && (
+                <p className="text-xs text-gray-600">
+                  {prop.city}, {prop.state}
+                </p>
+              )}
+            </div>
           </Popup>
         </Marker>
       ))}
