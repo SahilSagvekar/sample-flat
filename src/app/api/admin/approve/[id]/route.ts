@@ -27,8 +27,11 @@ type RouteContext = {
   };
 };
 
-export async function POST(req: NextRequest, { params }: RouteContext) {
-  const propertyId = params.id;
+export async function POST(
+  req: NextRequest,
+  context: { params: Record<string, string> }
+) {
+  const propertyId = context.params.id;
 
   await prisma.property.update({
     where: { id: propertyId },
