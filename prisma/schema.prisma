@@ -22,7 +22,8 @@ model User {
 }
 
 model Property {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  // id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   price           Float
   bhk             String

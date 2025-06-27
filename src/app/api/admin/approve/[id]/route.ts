@@ -1,43 +1,27 @@
-// import { prisma } from "@/lib/prisma";
-// import { NextResponse } from "next/server";
-
-// export async function POST(
-//   req: Request,
-//   { params }: { params: { id: string } }
-// ) {
-//   const propertyId = params.id;
-
-//   await prisma.property.update({
-//     where: { id: propertyId },
-//     data: { status: "approved" },
-//   });
-
-//   return NextResponse.redirect(new URL("/dashboard/admin", req.url));
-// }
-
-
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// This is the correct type for route params in App Router
-type RouteContext = {
-  params: {
-    id: string;
-  };
-};
-
 export async function POST(
-  req: NextRequest,
-  context: { params: Record<string, string> }
+  request: NextRequest,
+  context: { params: { id: string } }
 ) {
-  const propertyId = context.params.id;
+  try {
+    const { id } = context.params;
 
-  await prisma.property.update({
-    where: { id: propertyId },
-    data: { status: "approved" },
-  });
+    // Update the property status
+    await prisma.property.update({
+      where: { id },
+      data: { status: "approved" },
+    });
 
-  return NextResponse.redirect(new URL("/dashboard/admin", req.url));
+    // Redirect to admin dashboard
+    return NextResponse.redirect(new URL("/dashboard/admin", request.url));
+  } catch (error) {
+    console.error("Approval failed:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
-  
