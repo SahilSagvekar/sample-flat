@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import BookTourButton from "@/components/BookTourButton"; // ✅ import here
-import Image from "next/image"; // optional improvement
+import BookTourButton from "@/components/BookTourButton";
 import Link from "next/link";
 
 export default async function TopProperties() {
@@ -46,8 +45,7 @@ export default async function TopProperties() {
                 <div className="p-4">
                   <h3 className="text-lg font-semibold truncate">{property.title}</h3>
                   <p className="text-sm text-gray-500 truncate">
-                    {property.locality || "—"} ·{" "}
-                    {property.seller?.email || "Seller"}
+                    {property.locality || "—"} · {property.seller?.email || "Seller"}
                   </p>
                   <p className="text-sm mt-2">🛏 {property.bhk} BHK</p>
                   <p className="text-sm">📆 {property.possessionDate || "—"}</p>
@@ -56,9 +54,9 @@ export default async function TopProperties() {
                     <span className="text-xs text-gray-500"> (All Inc)</span>
                   </p>
 
-                <div className="mt-4">
-                  {/* ✅ Replaced button logic */}
-                  <BookTourButton propertyId={property.id} />
+                  <div className="mt-4">
+                    <BookTourButton propertyId={property.id} />
+                  </div>
                 </div>
               </div>
             ))}
