@@ -9,4 +9,6 @@ add description in property form
 
 fix forms issues
 
-sripe payments to 
+sripe payments to razorpay
+
+amenities
