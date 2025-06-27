@@ -25,7 +25,7 @@ export default async function ListingPage({
 }) {
   const currentPage = Math.max(1, parseInt(searchParams.page || "1"));
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
-  
+
   const filters: any = {};
 
   if (searchParams.city)
@@ -66,15 +66,12 @@ export default async function ListingPage({
         status: true,
         sellerId: true,
         featured: true,
-        imageUrls: true, // Using the correct field name
+        imageUrls: true,
       },
-      orderBy: [
-        { featured: "desc" },
-        { createdAt: "desc" },
-      ],
+      orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       take: ITEMS_PER_PAGE,
       skip,
-    })
+    }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(totalProperties / ITEMS_PER_PAGE));
@@ -83,97 +80,87 @@ export default async function ListingPage({
 
   const getPageUrl = (page: number) => {
     const params = new URLSearchParams();
-    
+
     Object.entries(searchParams).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && typeof value !== 'symbol') {
+      if (value !== undefined && value !== null && typeof value !== "symbol") {
         params.set(key, String(value));
       }
     });
-    
+
     params.set("page", Math.max(1, Math.min(page, totalPages)).toString());
     return `?${params.toString()}`;
   };
 
   const processedProperties = properties.map((property) => ({
     ...property,
-    latitude: property.latitude ?? 19.0760 + Math.random() * 0.05,
+    latitude: property.latitude ?? 19.076 + Math.random() * 0.05,
     longitude: property.longitude ?? 72.8777 + Math.random() * 0.05,
   }));
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="p-6 flex-1">
-        <h1 className="text-3xl font-bold mb-6">Available Properties</h1>
-    
-        <SearchForm defaultValues={searchParams} />
-    
+    <div className="flex flex-col min-h-screen bg-[#fafafa]">
+      <div className="p-6 flex-1 max-w-7xl mx-auto w-full">
+        <h1 className="text-3xl font-bold mb-4">🏘 Available Properties</h1>
+        <p className="text-gray-600 mb-6">Find your perfect home from verified listings</p>
+
+        <div className="mb-6">
+          <SearchForm defaultValues={searchParams} />
+        </div>
+
         {processedProperties.length > 0 ? (
-          <div className="mt-6 space-y-8">
-            <div className="space-y-4">
+          <div className="mt-4 space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {processedProperties.map((property) => (
-                <PropertyCard 
-                  key={property.id} 
-                  property={property} 
-                  className="w-full"
+                <PropertyCard
+                  key={property.id}
+                  property={property}
+                  className="w-full rounded-2xl border bg-white shadow hover:shadow-md transition"
                 />
               ))}
             </div>
-            
-            <div className="flex justify-between items-center mt-6">
-              <Button
-                asChild
-                variant="outline"
-                disabled={!hasPreviousPage}
-              >
-                <Link 
+
+            <div className="flex justify-between items-center mt-8">
+              <Button asChild variant="secondary" disabled={!hasPreviousPage}>
+                <Link
                   href={getPageUrl(currentPage - 1)}
-                  aria-disabled={!hasPreviousPage}
-                  tabIndex={!hasPreviousPage ? -1 : undefined}
                   className={!hasPreviousPage ? "pointer-events-none opacity-50" : ""}
                 >
-                  Previous
+                  ← Previous
                 </Link>
               </Button>
-              
-              <span className="text-sm text-gray-600">
+
+              <span className="text-sm text-gray-700">
                 Page {currentPage} of {totalPages} ({totalProperties} properties)
               </span>
-              
-              <Button
-                asChild
-                variant="outline"
-                disabled={!hasNextPage}
-              >
-                <Link 
+
+              <Button asChild variant="secondary" disabled={!hasNextPage}>
+                <Link
                   href={getPageUrl(currentPage + 1)}
-                  aria-disabled={!hasNextPage}
-                  tabIndex={!hasNextPage ? -1 : undefined}
                   className={!hasNextPage ? "pointer-events-none opacity-50" : ""}
                 >
-                  Next
+                  Next →
                 </Link>
               </Button>
             </div>
-            
-            <div className="mt-8 h-[400px] rounded-xl overflow-hidden">
+
+            <div className="mt-10 h-[400px] rounded-xl overflow-hidden">
               <MapClientWrapper properties={processedProperties} />
             </div>
           </div>
         ) : (
-          <div className="mt-8 text-center">
-            <p className="text-gray-500">No properties found matching your criteria</p>
-            {currentPage > 1 && (
-              <Link href={getPageUrl(1)} className="text-blue-500 hover:underline mt-2 inline-block">
-                Go back to first page
-              </Link>
-            )}
+          <div className="mt-16 text-center text-gray-500">
+            <p className="text-lg">No properties found matching your filters.</p>
+            <Link
+              href={getPageUrl(1)}
+              className="mt-4 inline-block text-blue-600 hover:underline"
+            >
+              Reset Filters
+            </Link>
           </div>
         )}
       </div>
-      
-      <div className="w-full mt-12">
-        <Footer />
-      </div>
+
+      <Footer />
     </div>
   );
 }
