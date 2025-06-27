@@ -16,13 +16,13 @@ export default async function AddPropertyPage() {
   if (!userId) redirect("/sign-in");
 
   // ✅ Check access
-  const access = await prisma.listingAccess.findUnique({
-    where: { userId },
-  });
+  // const access = await prisma.listingAccess.findUnique({
+  //   where: { userId },
+  // });
 
-  if (!access || !access.hasAccess) {
-    redirect("/dashboard/seller/pay-to-list"); // 🔁 Redirect to payment
-  }
+  // if (!access || !access.hasAccess) {
+  //   redirect("/dashboard/seller/pay-to-list"); // 🔁 Redirect to payment
+  // }
 
   return (
     <div className="flex flex-col min-h-screen">

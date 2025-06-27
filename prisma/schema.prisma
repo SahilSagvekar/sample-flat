@@ -28,6 +28,7 @@ model Property {
   bhk             String
   possessionDate  String
   amenities       String[]
+  description     String
   city            String
   state           String
   locality        String

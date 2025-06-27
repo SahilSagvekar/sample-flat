@@ -1,9 +1,11 @@
+import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { geocodeAddress } from "@/lib/geocode"; // ✅ Import geocoder
 
 export async function POST(req: Request) {
   try {
+    const { userId } = await auth();
     const data = await req.json();
 
     // ✅ Compose address and fetch lat/lng
@@ -37,6 +39,7 @@ export async function POST(req: Request) {
     title: data.title,
     bhk: data.bhk,
     possessionDate: data.possessionDate,
+    description: data.description,
     amenities: data.amenities?.split(",") ?? [],
     city: data.city,
     state: data.state,
@@ -44,7 +47,7 @@ export async function POST(req: Request) {
     sampleFlatVideo: data.sampleFlatVideo,
     localityVideo: data.localityVideo,
     status: "pending",
-    sellerId: "",
+    sellerId: userId ?? undefined,
     imageUrls: data.imageUrls ?? [], // updated field name
     latitude,
     longitude,
