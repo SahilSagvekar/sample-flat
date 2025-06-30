@@ -1,30 +1,14 @@
-1)  ADD PROPERTY FORM ISSUE::
-fix forms issues
+fix forms issues change it like other forms
 auto detecting lakhs or crores
-
-
-
-seller can edit property listings
-/delete user also from db
-
+seller && admin can edit property listings
 when user alread loged in  dont allow sign-in redirect(give alert user already looged in)
-
 add description in property form    
-
 sripe payments to razorpay
-
-amenities
-
 admin ka route lock krna hai
-
 add calendar in add property date
-
 properties not loading on seller dashboard
-
 add seller name or nuyer name
-
-create buyer and seller profiles
-
+create seller profiles
 change the property form according to other file
-
 while signup role is not getting stored in db
+remove verify flow
