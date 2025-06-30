@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     } = data;
 
     const email = email_addresses?.[0]?.email_address || '';
-    const role = public_metadata?.role || 'buyer';
+    const role = public_metadata?.role || '';
     // const name = `${first_name || ''} ${last_name || ''}`.trim();
 
     // Save user to your DB

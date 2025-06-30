@@ -26,3 +26,5 @@ add seller name or nuyer name
 create buyer and seller profiles
 
 change the property form according to other file
+
+while signup role is not getting stored in db
