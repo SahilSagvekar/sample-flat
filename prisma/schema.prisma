@@ -92,3 +92,12 @@ model Favorite {
 
   @@unique([userId, propertyId]) // Prevent duplicate saves
 }
+
+model CallRequest {
+  id        String   @id @default(cuid()) @map("_id")
+  buyerId   String
+  sellerId  String
+  roomUrl   String?
+  status    String   @default("pending") // pending | accepted | rejected
+  createdAt DateTime @default(now())
+}

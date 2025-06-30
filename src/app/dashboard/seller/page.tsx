@@ -7,6 +7,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/shared/property-card";
 import Link from "next/link";
+import { IncomingCallSection } from "@/components/call/IncomingCallSection";
+import { currentUser } from "@clerk/nextjs/server";
+
+const user = await currentUser();
 
 export default function SellerDashboardPage() {
   const [properties, setProperties] = useState<any[]>([]);
@@ -94,6 +98,13 @@ export default function SellerDashboardPage() {
           ))}
         </div>
       )}
+
+
+      {/* <div className="p-6"> */}
+    <h1 className="text-xl font-bold mb-4">Welcome, {user?.firstName}</h1>
+    <IncomingCallSection sellerId={user?.id || ''} />
+    {/* Other dashboard UI */}
+  {/* </div> */}
     </div>
   );
 }

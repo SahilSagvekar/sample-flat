@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script"; // ✅ Import Script
 import "leaflet/dist/leaflet.css";
+import { Toaster } from 'sonner';
 
 
 const geistSans = Geist({
@@ -40,6 +41,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
