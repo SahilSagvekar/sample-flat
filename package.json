@@ -16,6 +16,7 @@
     "@daily-co/daily-react": "^0.22.0",
     "@headlessui/react": "^2.2.4",
     "@hookform/resolvers": "^5.1.1",
+    "@huddle01/react": "^2.5.1",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-label": "^2.1.7",
