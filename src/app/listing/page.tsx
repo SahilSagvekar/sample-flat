@@ -100,64 +100,69 @@ export default async function ListingPage({
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa]">
       <div className="p-6 flex-1 max-w-7xl mx-auto w-full">
-        <h1 className="text-3xl font-bold mb-4">🏘 Available Properties</h1>
+        <h1 className="text-3xl font-bold mb-2">🏘 Available Properties</h1>
         <p className="text-gray-600 mb-6">Find your perfect home from verified listings</p>
 
-        <div className="mb-6">
-          <SearchForm defaultValues={searchParams} />
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <aside className="lg:col-span-1 bg-white rounded-xl p-4 border shadow-sm">
+            <SearchForm defaultValues={searchParams} />
+            <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white">View All Listings</Button>
+          </aside>
+
+          <main className="lg:col-span-3 space-y-6">
+            {processedProperties.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {processedProperties.map((property) => (
+                    <PropertyCard
+                      key={property.id}
+                      property={property}
+                      className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all"
+                    />
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-center gap-2 mt-6">
+                  {hasPreviousPage && (
+                    <Link href={getPageUrl(currentPage - 1)} className="px-4 py-2 rounded border hover:bg-gray-100">
+                      ←
+                    </Link>
+                  )}
+
+                  {[...Array(totalPages)].map((_, i) => (
+                    <Link
+                      key={i}
+                      href={getPageUrl(i + 1)}
+                      className={`px-4 py-2 rounded text-sm font-medium ${currentPage === i + 1 ? "bg-orange-500 text-white" : "border hover:bg-gray-100"}`}
+                    >
+                      {i + 1}
+                    </Link>
+                  ))}
+
+                  {hasNextPage && (
+                    <Link href={getPageUrl(currentPage + 1)} className="px-4 py-2 rounded border hover:bg-gray-100">
+                      →
+                    </Link>
+                  )}
+                </div>
+
+                <div className="mt-10 w-full h-[400px] rounded-xl overflow-hidden shadow">
+                  <MapClientWrapper properties={processedProperties} />
+                </div>
+              </>
+            ) : (
+              <div className="mt-16 text-center text-gray-500">
+                <p className="text-lg">No properties found matching your filters.</p>
+                <Link
+                  href={getPageUrl(1)}
+                  className="mt-4 inline-block text-blue-600 hover:underline"
+                >
+                  Reset Filters
+                </Link>
+              </div>
+            )}
+          </main>
         </div>
-
-        {processedProperties.length > 0 ? (
-          <div className="mt-4 space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-              {processedProperties.map((property) => (
-                <PropertyCard
-                  key={property.id}
-                  property={property}
-                  className="w-full rounded-2xl border bg-white shadow hover:shadow-md transition"
-                />
-              ))}
-            </div>
-
-            <div className="flex justify-between items-center mt-8">
-              <Button asChild variant="secondary" disabled={!hasPreviousPage}>
-                <Link
-                  href={getPageUrl(currentPage - 1)}
-                  className={!hasPreviousPage ? "pointer-events-none opacity-50" : ""}
-                >
-                  ← Previous
-                </Link>
-              </Button>
-
-              <span className="text-sm text-gray-700">
-                Page {currentPage} of {totalPages} ({totalProperties} properties)
-              </span>
-
-              <Button asChild variant="secondary" disabled={!hasNextPage}>
-                <Link
-                  href={getPageUrl(currentPage + 1)}
-                  className={!hasNextPage ? "pointer-events-none opacity-50" : ""}
-                >
-                  Next →
-                </Link>
-              </Button>
-            </div>
-
-            <div className="mt-10 h-[400px] rounded-xl overflow-hidden">
-              <MapClientWrapper properties={processedProperties} />
-            </div>
-          </div>
-        ) : (
-          <div className="mt-16 text-center text-gray-500">
-            <p className="text-lg">No properties found matching your filters.</p>
-            <Link
-              href={getPageUrl(1)}
-              className="mt-4 inline-block text-blue-600 hover:underline"
-            >
-              Reset Filters
-            </Link>
-          </div>
-        )}
       </div>
 
       <Footer />
