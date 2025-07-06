@@ -17,6 +17,8 @@ import {
 } from "lucide-react";
 import PropertyMediaGallery from "@/components/shared/property-media-gallery";
 import { CallSellerButton } from "@/components/call/CallSellerButton";
+import { CalendlyWidget } from "@/components/CalendlyWidget";
+import { CalendlyModal } from "@/components/CalendlyModal";
 
 interface PropertyPageProps {
   params: {
@@ -38,12 +40,12 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
   // Prepare media items for the gallery
   const mediaItems = [
-    ...(property.imageUrls?.map((url) => ({ type: "image", url })) || []),
+    ...(property.imageUrls?.map((url) => ({ type: "image" as const, url })) || []),
     ...(property.sampleFlatVideo
-      ? [{ type: "video", url: property.sampleFlatVideo, title: "Sample Flat" }]
+      ? [{ type: "video" as const, url: property.sampleFlatVideo, title: "Sample Flat" }]
       : []),
     ...(property.localityVideo
-      ? [{ type: "video", url: property.localityVideo, title: "Locality" }]
+      ? [{ type: "video" as const, url: property.localityVideo, title: "Locality" }]
       : []),
   ];
 
@@ -182,14 +184,30 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           </div>
 
           {/* CallSellerButton */}
-          {property.sellerId && (
-            <div>
-              <h3 className="font-semibold text-sm text-muted-foreground mb-1">
-                Talk to Seller
+          {/* // Assuming `property.seller` is included */}
+          {/* {property.seller?.calendlyLink && ( 
+            <a
+              href={property.seller.calendlyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block mt-6 bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              📅 Book Video Call
+            </a>
+          )} */}
+
+          {/* {property?.seller?.calendlyLink && (
+            <div className="rounded-xl shadow p-4 bg-white mt-8">
+              <h3 className="text-xl font-semibold mb-2">
+                📅 Book a Video Tour
               </h3>
-              <CallSellerButton sellerId={property.sellerId} />
+              <CalendlyWidget url={property.seller.calendlyLink} />
             </div>
-          )}
+          )} */}
+
+          {property?.seller?.calendlyLink && (
+  <CalendlyModal url={property.seller.calendlyLink} />
+)}
         </div>
       </main>
       <Footer className="mt-12" />

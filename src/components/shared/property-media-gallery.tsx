@@ -1,12 +1,11 @@
-// components/property-media-gallery.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
 
 interface MediaItem {
-  type: 'image' | 'video';
+  type: "image" | "video";
   url: string;
   title?: string;
 }
@@ -16,13 +15,23 @@ interface PropertyMediaGalleryProps {
 }
 
 export default function PropertyMediaGallery({ mediaItems }: PropertyMediaGalleryProps) {
-  const [mainMedia, setMainMedia] = useState(mediaItems[0]);
+  const [mainMedia, setMainMedia] = useState<MediaItem | null>(null);
+
+  useEffect(() => {
+    if (mediaItems?.length > 0) {
+      setMainMedia(mediaItems[0]);
+    }
+  }, [mediaItems]);
+
+  if (!mediaItems || mediaItems.length === 0 || !mainMedia) {
+    return <div>No media available.</div>;
+  }
 
   return (
     <>
       {/* Main Media Display */}
       <div className="h-[500px] rounded-xl overflow-hidden relative shadow-md mb-4">
-        {mainMedia.type === 'image' ? (
+        {mainMedia.type === "image" ? (
           <Image
             src={mainMedia.url}
             alt="Main property media"
@@ -44,12 +53,12 @@ export default function PropertyMediaGallery({ mediaItems }: PropertyMediaGaller
       {mediaItems.length > 1 && (
         <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
           {mediaItems.map((item, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="aspect-square rounded-lg overflow-hidden relative cursor-pointer hover:opacity-90 transition-opacity"
               onClick={() => setMainMedia(item)}
             >
-              {item.type === 'image' ? (
+              {item.type === "image" ? (
                 <Image
                   src={item.url}
                   alt={`Property media ${index + 1}`}
@@ -60,7 +69,7 @@ export default function PropertyMediaGallery({ mediaItems }: PropertyMediaGaller
                 <>
                   <Image
                     src="/video-thumbnail-placeholder.jpg"
-                    alt={`Video thumbnail ${item.title}`}
+                    alt={`Video thumbnail ${item.title || index + 1}`}
                     fill
                     className="object-cover"
                   />

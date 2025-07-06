@@ -2,31 +2,44 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { getAuthUserId } from "@/lib/auth";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/shared/property-card";
-import Link from "next/link";
 import { IncomingCallSection } from "@/components/call/IncomingCallSection";
-import { currentUser } from "@clerk/nextjs/server";
-
-const user = await currentUser();
 
 export default function SellerDashboardPage() {
+  const { user } = useUser();
+
   const [properties, setProperties] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [calendlyLink, setCalendlyLink] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const res = await fetch("/api/seller/properties"); // 👈 Create this API route
+      const res = await fetch("/api/seller/properties");
       const data = await res.json();
       setProperties(data || []);
       setLoading(false);
     };
+
+    const fetchCalendlyLink = async () => {
+      if (!user?.id) return;
+      const res = await fetch(`/api/user/${user.id}`);
+      const data = await res.json();
+      setCalendlyLink(data?.calendlyLink || "");
+    };
+
     fetchProperties();
-  }, []);
+    fetchCalendlyLink();
+  }, [user?.id]);
 
   const statusCount = {
     total: properties.length,
@@ -41,11 +54,29 @@ export default function SellerDashboardPage() {
     });
 
     const data = await res.json();
-
     if (data.url) {
       window.location.href = data.url;
     } else {
       alert("Checkout failed");
+    }
+  };
+
+  const handleSaveCalendlyLink = async () => {
+    setSaving(true);
+    setSaved(false);
+    try {
+      const res = await fetch("/api/seller/calendly", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ calendlyLink }),
+      });
+      if (res.ok) {
+        setSaved(true);
+      }
+    } catch (err) {
+      console.error("Error saving Calendly link", err);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -63,6 +94,22 @@ export default function SellerDashboardPage() {
       )}
 
       <Button onClick={handlePayment}>Pay ₹99 to List Your Property</Button>
+
+      {/* Calendly Link Section */}
+      <div className="bg-white rounded-xl shadow border p-4 mt-4">
+        <h2 className="text-lg font-semibold mb-2">Add Your Calendly Link</h2>
+        <input
+          type="url"
+          placeholder="https://calendly.com/your-link"
+          value={calendlyLink}
+          onChange={(e) => setCalendlyLink(e.target.value)}
+          className="w-full p-2 border rounded mb-2"
+        />
+        <Button onClick={handleSaveCalendlyLink} disabled={saving}>
+          {saving ? "Saving..." : "Save"}
+        </Button>
+        {saved && <p className="text-green-600 mt-2">✅ Calendly link saved!</p>}
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -99,12 +146,8 @@ export default function SellerDashboardPage() {
         </div>
       )}
 
-
-      {/* <div className="p-6"> */}
-    <h1 className="text-xl font-bold mb-4">Welcome, {user?.firstName}</h1>
-    <IncomingCallSection sellerId={user?.id || ''} />
-    {/* Other dashboard UI */}
-  {/* </div> */}
+      <h1 className="text-xl font-bold mt-8">Welcome, {user?.firstName}</h1>
+      <IncomingCallSection sellerId={user?.id || ""} />
     </div>
   );
 }

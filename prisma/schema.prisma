@@ -12,6 +12,7 @@ model User {
   clerkId String   @unique
   email   String?
   role    String   @default("buyer") // buyer | seller | admin
+  calendlyLink   String?  // ✅ Add this line
   name    String?
   image   String?
   paid    Boolean  @default(false)
