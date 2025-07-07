@@ -4,10 +4,12 @@ import type { NextRequest } from "next/server";
 
 export async function POST(
   request: NextRequest,
-  context: { params: { id: string } }
+  // context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
-  try {
-    const { id } = context.params;
+  try { 
+    // const { id } = context.params;
+    const { id } = params;
 
     // Update the property status
     await prisma.property.update({
