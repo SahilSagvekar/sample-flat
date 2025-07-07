@@ -3,11 +3,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function POST(
-  request: Request,
-  context: { params: { id: string } }
+  request: NextRequest,
+  context: { params: { id: string } } // ✅ this is crucial
 ) {
   try {
-  const { id } = context.params;
+    const { id } = context.params;
 
     await prisma.property.update({
       where: { id },
