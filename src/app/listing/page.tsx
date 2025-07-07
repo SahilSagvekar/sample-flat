@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import PropertyCard from "@/components/shared/property-card";
-import SearchForm from "@/components/forms/search-form";
+import PropertyCard from "@/components/shared/PropertyCard-2";
+import SearchForm from "@/components/forms/search-form-listing";
 import MapClientWrapper from "@/components/map/MapClientWrapper";
 import Footer from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,7 @@ type SearchParams = {
   page?: string;
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 6;
 
 export default async function ListingPage({
   searchParams,
@@ -93,8 +93,8 @@ export default async function ListingPage({
 
   const processedProperties = properties.map((property) => ({
     ...property,
-    latitude: property.latitude ?? 19.076 + Math.random() * 0.05,
-    longitude: property.longitude ?? 72.8777 + Math.random() * 0.05,
+    latitude: property.latitude ?? '',
+    longitude: property.longitude ?? '',
   }));
 
   return (
@@ -106,7 +106,7 @@ export default async function ListingPage({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside className="lg:col-span-1 bg-white rounded-xl p-4 border shadow-sm">
             <SearchForm defaultValues={searchParams} />
-            <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white">View All Listings</Button>
+            {/* <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white">View All Listings</Button> */}
           </aside>
 
           <main className="lg:col-span-3 space-y-6">
@@ -117,7 +117,7 @@ export default async function ListingPage({
                     <PropertyCard
                       key={property.id}
                       property={property}
-                      className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all"
+                      // className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all"
                     />
                   ))}
                 </div>
@@ -165,7 +165,7 @@ export default async function ListingPage({
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
