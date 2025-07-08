@@ -33,23 +33,23 @@ export default async function TopProperties() {
           </div>
           <Link
             href="/listing"
-            className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md font-medium transition"
+            className="bg-[#2BBBC1] hover:bg-orange-600 text-white px-5 py-2 rounded-md font-medium transition"
           >
             See All Listing →
           </Link>
         </div>
 
         {/* Category Tabs (Static UI) */}
-        <div className="flex space-x-6 mb-8 border-b">
+        {/* <div className="flex space-x-6 mb-8 border-b">
           {["Houses", "Apartments", "Condos", "Townhouses"].map((type) => (
             <button
               key={type}
-              className="text-gray-700 pb-2 border-b-2 border-transparent hover:border-orange-500 hover:text-orange-600 transition font-medium"
+              className="text-gray-700 pb-2 border-b-2 border-transparent hover:border-[#2BBBC1] hover:text-orange-600 transition font-medium"
             >
               {type}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Property Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
@@ -70,9 +70,9 @@ export default async function TopProperties() {
                     src={property.imageUrls?.[0] || "/fallback.jpg"}
                     alt={property.title}
                   />
-                  <div className="absolute top-3 right-3 bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                  {/* <div className="absolute top-3 right-3 bg-[#2BBBC1] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
                     For Rent
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Details */}
@@ -97,7 +97,7 @@ export default async function TopProperties() {
                   <div className="mt-5 flex justify-between items-center">
                     <Link
                       href={`/listing/${property.id}`}
-                      className="bg-black text-white text-sm px-4 py-2 rounded-md hover:bg-gray-900"
+                      className="bg-[#2BBBC1] text-white text-sm px-4 py-2 rounded-md hover:bg-gray-900"
                     >
                       View Details
                     </Link>
@@ -105,7 +105,7 @@ export default async function TopProperties() {
                       <p className="text-lg font-bold text-gray-900">
                         ₹{property.price?.toLocaleString("en-IN")}
                       </p>
-                      <p className="text-xs text-gray-500">/month</p>
+                      {/* <p className="text-xs text-gray-500">/month</p> */}
                     </div>
                   </div>
                 </div>

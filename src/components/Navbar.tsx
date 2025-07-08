@@ -10,9 +10,9 @@ import { SignInButton } from '@clerk/nextjs';
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
-  { name: 'Properties', href: '/pune-properties' },
-  { name: 'Agents', href: '/agents' },
-  { name: 'Blog', href: '/blogs' },
+  { name: 'Properties', href: '/listing' },
+  { name: 'Favourites', href: '/dashboard/favorites' },
+  { name: 'Profile', href: '/profile' },
   { name: 'Contact Us', href: '/contact' },
 ];
 
@@ -28,8 +28,8 @@ export default function Navbar() {
             <Link href="/" className="flex items-center space-x-2">
               {/* <img src="/logo.png" alt="SampleFlat Logo" className="h-8 w-auto" />  */}
               <span className="text-xl font-bold">
-                <span className="text-orange-500">Buyer</span>
-                <span className="text-gray-900">Flat</span>
+                <span className="text-[#2BBBC1]">Buyer</span>
+                <span className="text-gray-900">Builder</span>
               </span>
             </Link>
 
@@ -56,7 +56,7 @@ export default function Navbar() {
                 </SignInButton>
                 <Link
                   href="/sign-up"
-                  className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-semibold"
+                  className="bg-[#2BBBC1] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-semibold"
                 >
                   Sign Up
                 </Link>
@@ -111,7 +111,7 @@ export default function Navbar() {
               <Link
                 href="/sign-up"
                 onClick={() => setMenuOpen(false)}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-semibold text-center"
+                className="bg-[#2BBBC1] hover:bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-semibold text-center"
               >
                 Sign Up
               </Link>

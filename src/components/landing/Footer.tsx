@@ -19,7 +19,7 @@ export default function LandingFooter() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
             {/* Brand + Newsletter */}
             <div className="lg:col-span-2">
-              <h3 className="text-2xl font-bold mb-4 text-orange-500">
+              <h3 className="text-2xl font-bold mb-4 text-[#2BBBC1]">
                 BuyerBuilder
               </h3>
               <p className="text-gray-400 mb-6 text-sm leading-relaxed">
@@ -30,9 +30,9 @@ export default function LandingFooter() {
                 <input
                   type="email"
                   placeholder="Your email"
-                  className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2BBBC1]"
                 />
-                <button className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-sm font-medium rounded-r-lg transition">
+                <button className="px-5 py-2 bg-[#2BBBC1] hover:bg-orange-600 text-sm font-medium rounded-r-lg transition">
                   Send →
                 </button>
               </div>
@@ -149,7 +149,7 @@ export default function LandingFooter() {
               </div>
               <SignedOut>
                 <SignInButton mode="modal">
-                  <button className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm transition">
+                  <button className="px-4 py-2 bg-[#2BBBC1] hover:bg-orange-600 text-white rounded-lg text-sm transition">
                     Sign In
                   </button>
                 </SignInButton>
@@ -191,7 +191,7 @@ export default function LandingFooter() {
 //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10">
 //           {/* Brand + Newsletter */}
 //           <div className="lg:col-span-2">
-//             <h3 className="text-2xl font-bold mb-4 text-orange-500">
+//             <h3 className="text-2xl font-bold mb-4 text-[#2BBBC1]">
 //               BuyerBuilder
 //             </h3>
 //             <p className="text-gray-400 mb-6 text-sm leading-relaxed">
@@ -202,9 +202,9 @@ export default function LandingFooter() {
 //               <input
 //                 type="email"
 //                 placeholder="Your email"
-//                 className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500"
+//                 className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#2BBBC1]"
 //               />
-//               <button className="px-5 py-2 bg-orange-500 hover:bg-orange-600 text-sm font-medium rounded-r-lg transition">
+//               <button className="px-5 py-2 bg-[#2BBBC1] hover:bg-orange-600 text-sm font-medium rounded-r-lg transition">
 //                 Send →
 //               </button>
 //             </div>
@@ -321,7 +321,7 @@ export default function LandingFooter() {
 //             </div>
 //             <SignedOut>
 //               <SignInButton mode="modal">
-//                 <button className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm transition">
+//                 <button className="px-4 py-2 bg-[#2BBBC1] hover:bg-orange-600 text-white rounded-lg text-sm transition">
 //                   Sign In
 //                 </button>
 //               </SignInButton>

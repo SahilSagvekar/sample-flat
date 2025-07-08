@@ -14,7 +14,7 @@ export function SignupBox() {
   };
 
   return (
-    <section className="bg-black py-20 px-4">
+    <section className="bg-[#2BBBC1] py-20 px-4">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-10 md:p-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
           Stay in the Loop
@@ -33,11 +33,11 @@ export function SignupBox() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full sm:w-[350px] border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full sm:w-[350px] border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2BBBC1]"
           />
           <Button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl shadow transition"
+            className="bg-[#2BBBC1] hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl shadow transition"
           >
             Sign Up
           </Button>

@@ -30,20 +30,20 @@ export function Hero() {
               Unlock the Door to Your Dream Property
             </h1>
             <p className="text-lg md:text-xl text-gray-200">
-              Find the best homes, apartments, and villas across India.
+              Your next home is just a click away.
             </p>
 
             {/* Stats */}
-            <div className="mt-6 flex justify-center gap-6 text-sm md:text-base flex-wrap">
+            {/* <div className="mt-6 flex justify-center gap-6 text-sm md:text-base flex-wrap">
               <div>✅ 25K+ Properties</div>
               <div>🏙️ 60+ Cities Covered</div>
               <div>🙌 18K+ Happy Buyers</div>
               <div>👨‍💼 9K+ Trusted Agents</div>
-            </div>
+            </div> */}
           </div>
 
           {/* Rounded Search Section */}
-          <div className="bg-white/90 border border-white/20 backdrop-blur-sm rounded-2xl shadow-lg p-6 flex flex-col md:flex-row items-center justify-center gap-4 text-black max-w-5xl mx-auto">
+          {/* <div className="bg-white/90 border border-white/20 backdrop-blur-sm rounded-2xl shadow-lg p-6 flex flex-col md:flex-row items-center justify-center gap-4 text-black max-w-5xl mx-auto">
             <Tabs defaultValue="rent" className="w-full">
               <TabsList className="flex justify-center gap-2 w-full mb-4">
                 <TabsTrigger value="rent">Rent</TabsTrigger>
@@ -86,20 +86,24 @@ export function Hero() {
                 </Select>
 
                 <Link href="/listing">
-                  <Button className="bg-orange-500 text-white hover:bg-orange-600">
+                  <Button className="bg-[#2BBBC1] text-white hover:bg-orange-600">
                     Browse Properties
                   </Button>
                 </Link>
               </div>
             </Tabs>
-          </div>
+          </div> */}
 
           {/* Tags */}
           <div className="text-sm mt-6 text-center flex flex-wrap justify-center gap-3 text-white/90">
-            <span className="bg-white/20 px-3 py-1 rounded-full">🏡 Modern Villa</span>
-            <span className="bg-white/20 px-3 py-1 rounded-full">🏙️ Townhouse</span>
-            <span className="bg-white/20 px-3 py-1 rounded-full">🛋️ Studio</span>
-            <span className="bg-white/20 px-3 py-1 rounded-full">🏠 Residential</span>
+            <span className="bg-white/20 px-3 py-1 rounded-full">🏠 Home</span>
+            <span className="bg-white/20 px-3 py-1 rounded-full">
+              🏢 Apartment
+            </span>
+            <span className="bg-white/20 px-3 py-1 rounded-full">🏘️ Flat</span>
+            <span className="bg-white/20 px-3 py-1 rounded-full">
+              🌇 City Living
+            </span>
           </div>
         </motion.div>
       </section>

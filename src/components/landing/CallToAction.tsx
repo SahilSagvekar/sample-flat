@@ -10,11 +10,11 @@ export function CallToAction() {
           Ready to list your property?
         </h2>
         <p className="text-gray-600 mb-8">
-          Start earning by showcasing your property to thousands on <span className="font-semibold text-orange-500">BuyerBuilder</span>.
+          Start earning by showcasing your property to thousands on <span className="font-semibold text-[#2BBBC1]">BuyerBuilder</span>.
         </p>
         <Link
           href="/dashboard/seller/add"
-          className="inline-block bg-orange-500 text-white font-medium px-6 py-3 rounded-xl shadow hover:bg-orange-600 transition"
+          className="inline-block bg-[#2BBBC1] text-white font-medium px-6 py-3 rounded-xl shadow hover:bg-orange-600 transition"
         >
           Post a Property
         </Link>

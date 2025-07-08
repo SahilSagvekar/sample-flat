@@ -86,7 +86,7 @@ export function ContactSection() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-orange-400 to-orange-500"
+              className="w-full h-14 text-lg font-semibold bg-gradient-to-r from-orange-400 to-[#2BBBC1]"
             >
               Submit Inquiry
             </Button>

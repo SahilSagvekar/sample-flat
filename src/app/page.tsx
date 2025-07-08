@@ -28,7 +28,7 @@ export default function HomePage() {
          <Perks /> 
       <CallToAction />
       <SignupBox /> 
-      <ContactSection />
+      {/* <ContactSection /> */}
       {/* <LandingFooter /> */}
     </div>
   );

@@ -75,14 +75,10 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
             {/* Title + Location */}
             <div className="bg-white rounded-xl shadow p-6">
-              <h1 className="text-3xl font-bold text-gray-900">
-                {property.title}
-              </h1>
+              <h1 className="text-3xl font-bold text-gray-900">{property.title}</h1>
               <div className="flex items-center text-gray-600 mt-2">
                 <MapPin className="w-4 h-4 mr-1" />
-                <span>
-                  {property.locality}, {property.city}, {property.state}
-                </span>
+                <span>{property.locality}, {property.city}, {property.state}</span>
               </div>
               {property.featured && (
                 <Badge className="mt-2 bg-yellow-400 text-black inline-flex items-center">
@@ -107,9 +103,7 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             {property.description && (
               <div className="mt-6">
                 <h2 className="text-xl font-semibold mb-2">About this home</h2>
-                <p className="text-gray-700 whitespace-pre-line">
-                  {property.description}
-                </p>
+                <p className="text-gray-700 whitespace-pre-line">{property.description}</p>
               </div>
             )}
 
@@ -144,7 +138,6 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
           {/* RIGHT COLUMN */}
           <div className="lg:w-1/3">
             <div className="sticky top-24 space-y-6">
-              {/* Rent price + Apply */}
               <div className="bg-white rounded-xl shadow p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Rent price
@@ -193,7 +186,7 @@ function Feature({
 }) {
   return (
     <div className="flex items-start gap-2 p-3 bg-white rounded-lg shadow-sm border border-gray-200">
-      <div className="text-orange-500">{icon}</div>
+      <div className="text-[#2BBBC1]">{icon}</div>
       <div>
         <p className="text-xs text-gray-500">{label}</p>
         <p className="font-medium text-gray-900">{value}</p>

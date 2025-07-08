@@ -106,7 +106,7 @@ export default async function ListingPage({
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside className="lg:col-span-1 bg-white rounded-xl p-4 border shadow-sm">
             <SearchForm defaultValues={searchParams} />
-            {/* <Button className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white">View All Listings</Button> */}
+            {/* <Button className="w-full mt-4 bg-[#2BBBC1] hover:bg-orange-600 text-white">View All Listings</Button> */}
           </aside>
 
           <main className="lg:col-span-3 space-y-6">
@@ -133,7 +133,7 @@ export default async function ListingPage({
                     <Link
                       key={i}
                       href={getPageUrl(i + 1)}
-                      className={`px-4 py-2 rounded text-sm font-medium ${currentPage === i + 1 ? "bg-orange-500 text-white" : "border hover:bg-gray-100"}`}
+                      className={`px-4 py-2 rounded text-sm font-medium ${currentPage === i + 1 ? "bg-[#2BBBC1] text-white" : "border hover:bg-gray-100"}`}
                     >
                       {i + 1}
                     </Link>

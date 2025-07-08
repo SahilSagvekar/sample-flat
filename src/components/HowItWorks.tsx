@@ -23,31 +23,34 @@ export  function HowItWorks() {
             How It Works
           </h2>
           <p className="text-gray-600 mb-6 leading-relaxed">
-            Navigating real estate doesn’t have to be hard. With our streamlined process, you can
-            discover, schedule, and finalize your perfect property quickly and confidently.
+            Real estate made simple. Whether you're looking to buy or sell, our platform makes the process quick and easy.
           </p>
 
           <div className="space-y-5">
             {[
               {
-                title: "Search Properties",
-                desc: "Find verified listings that match your needs and budget.",
+                title: "Browse Properties",
+                desc: "Explore listings posted directly by property owners and sellers across India.",
               },
               {
-                title: "Connect with an Agent",
-                desc: "Get expert advice and property guidance instantly.",
+                title: "List Your Property",
+                desc: "Easily create a listing with photos, details, and pricing—all in a few steps.",
               },
               {
-                title: "Schedule a Tour",
-                desc: "Book viewings that work with your schedule—online or in person.",
+                title: "Connect Directly",
+                desc: "Buyers and sellers can message each other directly—no middlemen involved.",
               },
               {
-                title: "Close the Deal",
-                desc: "Finalize transactions smoothly with full support.",
+                title: "Schedule a Visit",
+                desc: "Buyers can book in-person or virtual tours at a time that works for them.",
+              },
+               {
+                title: "Finalize the Deal",
+                desc: "Close the deal on your terms, with complete transparency and control.",
               },
             ].map((item, index) => (
               <div key={index} className="flex items-start gap-4">
-                <div className="bg-orange-500 text-white rounded-full w-7 h-7 flex items-center justify-center font-bold">
+                <div className="bg-[#2BBBC1] text-white rounded-full w-7 h-7 flex items-center justify-center font-bold">
                   {index + 1}
                 </div>
                 <p className="text-gray-800">
@@ -57,12 +60,12 @@ export  function HowItWorks() {
             ))}
           </div>
 
-          <Link
+          {/* <Link
             href="/about"
-            className="mt-8 inline-block bg-orange-500 text-white font-medium px-6 py-3 rounded-md hover:bg-orange-600 transition"
+            className="mt-8 inline-block bg-[#2BBBC1] text-white font-medium px-6 py-3 rounded-md hover:bg-orange-600 transition"
           >
             Learn More →
-          </Link>
+          </Link> */}
         </div>
       </div>
     </section>

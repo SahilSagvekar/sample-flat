@@ -43,7 +43,7 @@ export default function PropertyCard({ property }: Props) {
                     />
 
         {/* For Rent Badge */}
-        {/* <span className="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-md font-medium shadow">
+        {/* <span className="absolute top-2 right-2 bg-[#2BBBC1] text-white text-xs px-2 py-1 rounded-md font-medium shadow">
           For Rent
         </span> */}
       </div>
@@ -75,13 +75,14 @@ export default function PropertyCard({ property }: Props) {
         {/* Footer */}
         <div className="flex items-center justify-between pt-3">
           <Link href={`/listing/${property.id}`}>
-            <Button className="text-sm font-semibold rounded-md px-4 py-2 bg-black text-white hover:bg-gray-800">
+            <Button className="text-sm font-semibold rounded-md px-4 py-2 bg-[#2BBBC1] text-white hover:bg-gray-800">
               View Details
             </Button>
           </Link>
+          
           <span className="text-lg font-bold text-gray-900">
             ₹{property.price.toLocaleString()}
-            <span className="text-sm font-normal text-gray-500">/month</span>
+            {/* <span className="text-sm font-normal text-gray-500">/month</span> */}
           </span>
         </div>
       </div>

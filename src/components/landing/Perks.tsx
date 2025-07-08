@@ -6,13 +6,13 @@ import Image from "next/image";
 const perks = [
   {
     icon: "/icons/verified.svg",
-    title: "Verified Listings",
-    desc: "Every property is manually vetted for authenticity.",
+    title: "Direct Listings",
+    desc: "All properties are listed by real owners or sellers—no brokers, no middlemen.",
   },
   {
     icon: "/icons/secure-pay.svg",
     title: "Secure Payments",
-    desc: "Stripe-backed, end-to-end encrypted transactions.",
+    desc: "razorpaybased-backed, end-to-end encrypted transactions.",
   },
   {
     icon: "/icons/quick-book.svg",
@@ -21,15 +21,15 @@ const perks = [
   },
   {
     icon: "/icons/expert-support.svg",
-    title: "Expert Support",
-    desc: "Dedicated relationship managers to guide you.",
+    title: "Save Listings",
+    desc: "Bookmark your favorite properties for quick access.",
   },
 ];
 
 export function Perks() {
   return (
     <motion.section
-      className="bg-black py-20"
+      className="bg-[#2BBBC1] py-20"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -52,7 +52,7 @@ export function Perks() {
               }}
             >
               <div className="flex items-center justify-center mb-4">
-                <div className="w-14 h-14 rounded-full bg-orange-100 flex items-center justify-center shadow-inner">
+                <div className="w-14 h-14 rounded-full bg-[#2BBBC1] flex items-center justify-center shadow-inner">
                   <Image
                     src={perk.icon}
                     alt={perk.title}

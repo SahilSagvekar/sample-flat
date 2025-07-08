@@ -5,7 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { useState } from "react";
 
 export default function SearchForm() {
@@ -95,9 +101,26 @@ export default function SearchForm() {
 
         <Button
           type="submit"
-          className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
+          className="w-full bg-gradient-to-r bg-[#2BBBC1]  text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
         >
           🔍 Search
+        </Button>
+
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full mt-2"
+          onClick={() => {
+            setQuery({
+              city: "",
+              bhk: "",
+              minPrice: "",
+              maxPrice: "",
+            });
+            router.push("/listing"); // Clears the filters from URL
+          }}
+        >
+          🧹 Clear Filters
         </Button>
       </form>
     </Card>

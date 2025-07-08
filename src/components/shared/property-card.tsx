@@ -125,7 +125,7 @@ export default function PropertyCard({
         {/* Status Badge */}
         {property.status === "approved" && (
           <div className="absolute top-2 left-2 z-10">
-            <Badge className="bg-orange-500 text-white text-xs px-2 py-1 rounded-md shadow-sm">
+            <Badge className="bg-[#2BBBC1] text-white text-xs px-2 py-1 rounded-md shadow-sm">
               For Rent
             </Badge>
           </div>
@@ -199,7 +199,7 @@ export default function PropertyCard({
             <Button
               onClick={handleFeatureListing}
               disabled={isFeaturing}
-              className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
+              className="w-full bg-gradient-to-r from-[#2BBBC1] to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
             >
               {isFeaturing ? "Processing..." : "Feature This Listing"}
             </Button>
@@ -340,7 +340,7 @@ export default function PropertyCard({
 //         {/* Favorite & Badge */}
 //         <div className="absolute top-2 right-2 z-10 flex gap-2">
 //           {property.featured && (
-//             <Badge className="bg-orange-500 text-white">
+//             <Badge className="bg-[#2BBBC1] text-white">
 //               <Star className="w-3 h-3 mr-1" />
 //               Featured
 //             </Badge>
@@ -399,7 +399,7 @@ export default function PropertyCard({
 
 //           <Button
 //             variant={property.featured ? "secondary" : "default"}
-//            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
+//            className="w-full bg-gradient-to-r from-[#2BBBC1] to-orange-600 text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
 //             onClick={handleFeatureListing}
 //             disabled={property.featured || isFeaturing}
 //           >
