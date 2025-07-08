@@ -38,7 +38,6 @@
     "tailwind-merge": "^3.3.1",
     "uploadthing": "^7.7.2",
     "zod": "^3.25.67"
-   
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -54,10 +53,5 @@
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4",
     "typescript": "^5"
-  },
-  "overrides": {
-    "@huddle01/react": {
-      "react": "$react"
-    }
   }
 }
