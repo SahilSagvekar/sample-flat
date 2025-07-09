@@ -1,12 +1,11 @@
 import { prisma } from "@/lib/prisma";
-import BookTourButton from "@/components/BookTourButton";
 import Link from "next/link";
+import PropertyImage from "@/components/PropertyImage";
 
 export default async function TopProperties() {
   const properties = await prisma.property.findMany({
-    where: { status: "approved" },
     orderBy: { createdAt: "desc" },
-    take: 10,
+    take: 3,
     include: { seller: true },
   });
 
@@ -19,48 +18,100 @@ export default async function TopProperties() {
   }
 
   return (
-    <section className="bg-[#f0f8f6] py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-xl md:text-2xl font-bold text-center mb-8">
-          🏗 Top New Launches
-        </h2>
+    <section className="py-16 px-4 bg-white">
+      <div className="max-w-7xl mx-auto">
+        {/* Heading & CTA */}
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <h2 className="text-3xl font-bold text-gray-900">
+              Featured Properties listings
+            </h2>
+            <p className="text-gray-500 mt-1">
+              View our carefully curated selection of the best homes on the
+              market today.
+            </p>
+          </div>
+          <Link
+            href="/listing"
+            className="bg-[#2BBBC1] hover:bg-orange-600 text-white px-5 py-2 rounded-md font-medium transition"
+          >
+            See All Listing →
+          </Link>
+        </div>
 
-        {/* Full-width scrollable section */}
-        <div className="overflow-x-auto">
-          <div className="flex gap-6 px-2 w-full">
-            {properties.map((property) => (
+        {/* Category Tabs (Static UI) */}
+        {/* <div className="flex space-x-6 mb-8 border-b">
+          {["Houses", "Apartments", "Condos", "Townhouses"].map((type) => (
+            <button
+              key={type}
+              className="text-gray-700 pb-2 border-b-2 border-transparent hover:border-[#2BBBC1] hover:text-orange-600 transition font-medium"
+            >
+              {type}
+            </button>
+          ))}
+        </div> */}
+
+        {/* Property Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {properties.map((property) => {
+            const areaDisplay =
+              property.area && typeof property.area === "number"
+                ? `${property.area} sq ft`
+                : property.locality || "—";
+
+            return (
               <div
                 key={property.id}
-                className="min-w-[240px] max-w-[240px] flex-shrink-0 border bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+                className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border flex flex-col"
               >
-                <img
-                  src={
-                    property.imageUrls?.[0] ||
-                    "https://via.placeholder.com/240x150"
-                  }
-                  alt={property.title}
-                  className="w-full h-40 object-cover"
-                />
+                {/* Image */}
+                <div className="relative w-full h-56 overflow-hidden">
+                  <PropertyImage
+                    src={property.imageUrls?.[0] || "/fallback.jpg"}
+                    alt={property.title}
+                  />
+                  {/* <div className="absolute top-3 right-3 bg-[#2BBBC1] text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                    For Rent
+                  </div> */}
+                </div>
 
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold truncate">{property.title}</h3>
-                  <p className="text-sm text-gray-500 truncate">
-                    {property.locality || "—"} · {property.seller?.email || "Seller"}
-                  </p>
-                  <p className="text-sm mt-2">🛏 {property.bhk} BHK</p>
-                  <p className="text-sm">📆 {property.possessionDate || "—"}</p>
-                  <p className="text-sm font-bold mt-1 text-green-700">
-                    ₹{property.price}
-                    <span className="text-xs text-gray-500"> (All Inc)</span>
-                  </p>
+                {/* Details */}
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 truncate">
+                      {property.title}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                      📍 {property.city?.toLowerCase() || "city"},{" "}
+                      {property.state?.toLowerCase() || "India"}
+                    </p>
 
-                  <div className="mt-4">
-                    <BookTourButton propertyId={property.id} />
+                    <div className="flex items-center text-gray-600 text-sm mt-3 gap-4 flex-wrap">
+                      <span>🛏 {property.bhk || 1} Beds</span>
+                      <span>🛁 {property.bathrooms || 1} Baths</span>
+                      <span>📐 {areaDisplay}</span>
+                    </div>
+                  </div>
+
+                  {/* CTA + Price */}
+                  <div className="mt-5 flex justify-between items-center">
+                    <Link
+                      href={`/listing/${property.id}`}
+                      className="bg-[#2BBBC1] text-white text-sm px-4 py-2 rounded-md hover:bg-gray-900"
+                    >
+                      View Details
+                    </Link>
+                    <div className="text-right">
+                      <p className="text-lg font-bold text-gray-900">
+                        ₹{property.price?.toLocaleString("en-IN")}
+                      </p>
+                      {/* <p className="text-xs text-gray-500">/month</p> */}
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

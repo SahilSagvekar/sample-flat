@@ -8,14 +8,28 @@ datasource db {
 }
 
 model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  id      String   @id @map("_id")
   clerkId String   @unique
   email   String?
   role    String   @default("buyer") // buyer | seller | admin
   calendlyLink   String?  // ✅ Add this line
   name    String?
   image   String?
+  city    String?
+  address String?
   paid    Boolean  @default(false)
+
+  // Shared fields
+  phone       String?
+  location    String?
+  bio         String?
+  landline    String?
+
+  // Seller-specific
+  company     String?
+  website     String?
+  about       String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   properties Property[]

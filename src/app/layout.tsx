@@ -5,6 +5,9 @@ import { ClerkProvider } from "@clerk/nextjs";
 import Script from "next/script"; // ✅ Import Script
 import "leaflet/dist/leaflet.css";
 import { Toaster } from 'sonner';
+import { ReactNode } from 'react';
+import Navbar from '@/components/Navbar'
+import LandingFooter from '@/components/landing/Footer'
 
 
 const geistSans = Geist({
@@ -40,7 +43,9 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          {children}
+          <Navbar />
+          <main>{children}</main>
+          <LandingFooter />
           <Toaster />
         </body>
       </html>

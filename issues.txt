@@ -12,3 +12,11 @@ create seller profiles
 change the property form according to other file
 while signup role is not getting stored in db
 remove verify flow
+
+
+
+// changees
+
+change the filter card on listing page
+add line below navbar
+change each listing according to the input property form

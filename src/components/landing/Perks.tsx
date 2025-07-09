@@ -6,13 +6,13 @@ import Image from "next/image";
 const perks = [
   {
     icon: "/icons/verified.svg",
-    title: "Verified Listings",
-    desc: "Every property is manually vetted for authenticity.",
+    title: "Direct Listings",
+    desc: "All properties are listed by real owners or sellers—no brokers, no middlemen.",
   },
   {
     icon: "/icons/secure-pay.svg",
     title: "Secure Payments",
-    desc: "Stripe-backed, end-to-end encrypted transactions.",
+    desc: "razorpaybased-backed, end-to-end encrypted transactions.",
   },
   {
     icon: "/icons/quick-book.svg",
@@ -21,15 +21,15 @@ const perks = [
   },
   {
     icon: "/icons/expert-support.svg",
-    title: "Expert Support",
-    desc: "Dedicated relationship managers to guide you.",
+    title: "Save Listings",
+    desc: "Bookmark your favorite properties for quick access.",
   },
 ];
 
 export function Perks() {
   return (
     <motion.section
-      className="bg-blue-800 py-16"
+      className="bg-[#2BBBC1] py-20"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true }}
@@ -39,24 +39,25 @@ export function Perks() {
       }}
     >
       <div className="max-w-6xl mx-auto px-4 text-center text-white">
-        <h2 className="text-3xl font-bold mb-8">Sign-Up Perks</h2>
+        <h2 className="text-3xl md:text-4xl font-bold mb-10">Sign-Up Perks</h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {perks.map((perk, i) => (
+          {perks.map((perk) => (
             <motion.div
               key={perk.title}
-              className="bg-white text-gray-800 rounded-2xl p-6 shadow-lg"
+              className="bg-white text-gray-900 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition duration-300"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { opacity: 1, y: 0 },
               }}
             >
               <div className="flex items-center justify-center mb-4">
-                <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center shadow-inner">
+                <div className="w-14 h-14 rounded-full bg-[#2BBBC1] flex items-center justify-center shadow-inner">
                   <Image
                     src={perk.icon}
                     alt={perk.title}
-                    width={32}
-                    height={32}
+                    width={28}
+                    height={28}
                   />
                 </div>
               </div>

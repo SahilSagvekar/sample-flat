@@ -14,24 +14,30 @@ export function SignupBox() {
   };
 
   return (
-    <section className="py-16 px-4 bg-indigo-50">
-      <div className="max-w-2xl mx-auto bg-white border border-indigo-100 shadow-2xl rounded-2xl p-8 md:p-10">
-        <h2 className="text-2xl font-bold text-indigo-900 mb-2">Sign Up For Free</h2>
-        <p className="text-sm text-gray-600 mb-6">
-          Get early access to listings, updates, and exclusive offers.
+    <section className="bg-[#2BBBC1] py-20 px-4">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-10 md:p-12 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          Stay in the Loop
+        </h2>
+        <p className="text-gray-600 mb-8">
+          Sign up for exclusive property alerts, market insights, and special offers.
         </p>
-        <form onSubmit={handleSignup} className="flex flex-col sm:flex-row gap-4">
+
+        <form
+          onSubmit={handleSignup}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4"
+        >
           <input
             type="email"
             required
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full sm:w-[350px] border border-gray-300 rounded-xl px-4 py-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2BBBC1]"
           />
           <Button
             type="submit"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-xl shadow"
+            className="bg-[#2BBBC1] hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-xl shadow transition"
           >
             Sign Up
           </Button>

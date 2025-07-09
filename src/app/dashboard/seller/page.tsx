@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import PropertyCard from "@/components/shared/property-card";
-import { IncomingCallSection } from "@/components/call/IncomingCallSection";
+// import { IncomingCallSection } from "@/components/call/IncomingCallSection";
 
 export default function SellerDashboardPage() {
   const { user } = useUser();
@@ -147,7 +147,7 @@ export default function SellerDashboardPage() {
       )}
 
       <h1 className="text-xl font-bold mt-8">Welcome, {user?.firstName}</h1>
-      <IncomingCallSection sellerId={user?.id || ""} />
+      {/* <IncomingCallSection sellerId={user?.id || ""} /> */}
     </div>
   );
 }
