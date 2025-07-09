@@ -104,7 +104,7 @@ export default async function ListingPage({
         <p className="text-gray-600 mb-6">Find your perfect home from verified listings</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          <aside className="lg:col-span-1 bg-white rounded-xl p-4 border shadow-sm">
+          <aside>
             <SearchForm defaultValues={searchParams} />
             {/* <Button className="w-full mt-4 bg-[#2BBBC1] hover:bg-orange-600 text-white">View All Listings</Button> */}
           </aside>

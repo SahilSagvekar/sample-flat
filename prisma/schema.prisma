@@ -15,12 +15,15 @@ model User {
   calendlyLink   String?  // ✅ Add this line
   name    String?
   image   String?
+  city    String?
+  address String?
   paid    Boolean  @default(false)
 
   // Shared fields
   phone       String?
   location    String?
   bio         String?
+  landline    String?
 
   // Seller-specific
   company     String?
