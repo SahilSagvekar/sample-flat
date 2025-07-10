@@ -93,10 +93,11 @@ export default async function ListingPage(
   };
 
   const processedProperties = properties.map((property) => ({
-    ...property,
-    latitude: property.latitude ?? '',
-    longitude: property.longitude ?? '',
-  }));
+  ...property,
+  price: property.price ?? 0, // ✅ fix for type
+  location: `${property.city || ''}, ${property.state || ''}`, // ✅ also needed from before
+}));
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa]">
