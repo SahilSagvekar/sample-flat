@@ -182,7 +182,7 @@ export default function PropertyCard({
           </div>
 
           <div className="font-bold text-lg text-gray-900 whitespace-nowrap">
-            ₹{property.price.toLocaleString()}
+₹{(property.price ?? 0).toLocaleString()}
             <span className="text-sm font-medium text-gray-500">/month</span>
           </div>
         </div>
