@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request, props) {
-  const params = await props.params;
-  const userId = params.id;
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const segments = url.pathname.split("/");
+  const userId = segments[segments.length - 1];
 
   if (!userId) {
     return new NextResponse("Missing user ID", { status: 400 });
