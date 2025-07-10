@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Props = {
   user: {
-    name: string;
+    name: string | null;
     role: string;
     phone?: string;
     location?: string;
