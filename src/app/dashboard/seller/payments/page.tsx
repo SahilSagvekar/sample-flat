@@ -2,9 +2,15 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
+import { notFound } from "next/navigation";
 
 export default async function SellerPaymentsPage() {
   const { userId } = await auth();
+
+  if (!userId) {
+    return notFound(); // or redirect("/login") if you want to push to login
+  }
+
   const payments = await prisma.payment.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
@@ -43,7 +49,9 @@ export default async function SellerPaymentsPage() {
                       {payment.status}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 border">{format(new Date(payment.createdAt), "dd MMM yyyy")}</td>
+                  <td className="px-4 py-3 border">
+                    {format(new Date(payment.createdAt), "dd MMM yyyy")}
+                  </td>
                 </tr>
               ))}
             </tbody>
