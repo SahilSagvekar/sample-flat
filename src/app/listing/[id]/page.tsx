@@ -245,3 +245,13 @@ function Feature({
     </div>
   );
 }
+
+export async function generateStaticParams() {
+  const properties = await prisma.property.findMany({
+    select: { id: true },
+  });
+
+  return properties.map((property) => ({
+    id: property.id.toString(),
+  }));
+}
