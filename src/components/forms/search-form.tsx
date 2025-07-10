@@ -1,26 +1,36 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function SearchForm() {
+type SearchParams = {
+  city?: string;
+  bhk?: string;
+  minPrice?: string;
+  maxPrice?: string;
+};
+
+type Props = {
+  defaultValues?: SearchParams;
+};
+
+export default function SearchForm({ defaultValues = {} }: Props) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const [query, setQuery] = useState({
-    city: searchParams.get("city") || "",
-    bhk: searchParams.get("bhk") || "",
-    minPrice: searchParams.get("minPrice") || "",
-    maxPrice: searchParams.get("maxPrice") || "",
+  const [query, setQuery] = useState<SearchParams>({
+    city: defaultValues.city || "",
+    bhk: defaultValues.bhk || "",
+    minPrice: defaultValues.minPrice || "",
+    maxPrice: defaultValues.maxPrice || "",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery({ ...query, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
 

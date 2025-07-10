@@ -106,7 +106,9 @@ export default async function ListingPage(
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside>
-            <SearchForm defaultValues={searchParams} />
+           <SearchForm defaultValues={searchParams} />
+
+
             {/* <Button className="w-full mt-4 bg-[#2BBBC1] hover:bg-orange-600 text-white">View All Listings</Button> */}
           </aside>
 
