@@ -14,9 +14,9 @@ export default async function AddPropertyPage() {
     select: { role: true },
   });
 
-  if (!user || (user.role !== "seller" && user.role !== "admin")) {
-  redirect("/dashboard/seller?error=unauthorized-role");
-}
+//   if (!user || (user.role !== "seller" && user.role !== "admin")) {
+//   redirect("/dashboard/seller?error=unauthorized-role");
+// }
 
 
   // ✅ Check if seller has paid access
