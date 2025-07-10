@@ -21,7 +21,7 @@ type Props = {
   longitude: number;
   carpetArea: string;
   location: string;
-  baths?: number | null; // ✅ Add this line
+  bathroom?: number | null; // ✅ Add this line
   };
   currentUserId?: string;
   className?: string;
@@ -69,7 +69,7 @@ export default function PropertyCard({ property }: Props) {
           </div>
           <div className="flex items-center gap-1">
             <Bath className="w-4 h-4" />
-            {property.baths} Bathrooms
+            {property.bathroom} Bathrooms
           </div>
           <div className="flex items-center gap-1">
             <Ruler className="w-4 h-4" />

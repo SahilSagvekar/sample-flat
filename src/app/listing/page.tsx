@@ -68,7 +68,7 @@ export default async function ListingPage(
         sellerId: true,
         featured: true,
         imageUrls: true,
-        baths: true,           // ✅ add this
+        bathroom: true,           // ✅ add this
         carpetArea: true       // ✅ add this
       },
       orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
@@ -95,21 +95,22 @@ export default async function ListingPage(
   };
 
   const processedProperties = properties.map((property) => ({
-    id: property.id,
-    title: property.title,
-    bhk: property.bhk,
-    price: property.price ?? 0,
-    city: property.city,
-    state: property.state,
-    status: property.status,
-    sellerId: property.sellerId,
-    featured: property.featured,
-    imageUrls: property.imageUrls,
-    latitude: property.latitude ?? 0,
-    longitude: property.longitude ?? 0,
-    baths: property.baths ?? 0,
-    carpetArea: property.carpetArea ?? 0,
-  }));
+  id: property.id,
+  title: property.title,
+  bhk: property.bhk,
+  price: property.price!,
+  city: property.city,
+  state: property.state,
+  status: property.status,
+  sellerId: property.sellerId,
+  featured: property.featured,
+  imageUrls: property.imageUrls,
+  latitude: property.latitude!,
+  longitude: property.longitude!,
+  bathroom: property.bathroom ?? 0,    // ✅ updated key
+  carpetArea: property.carpetArea ?? 0,
+}));
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa]">
