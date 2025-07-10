@@ -24,7 +24,9 @@ export default function SignInPage() {
         <h1 className="text-3xl font-bold">Welcome Back 👋</h1>
         <p className="text-gray-500">Sign in to access your dashboard and manage your listings.</p>
 
-        <SignInButton mode="modal" redirectUrl="/dashboard/buyer">
+        <SignInButton mode="modal"
+        //  redirectUrl="/dashboard/buyer"
+         >
           <Button className="w-full">Sign In with Clerk</Button>
         </SignInButton>
 
