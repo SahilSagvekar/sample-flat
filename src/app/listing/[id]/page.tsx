@@ -118,7 +118,7 @@ export default async function PropertyPage(
                 label="Bathrooms"
                 value={property.bathrooms ?? "N/A"}
               />
-              <Feature
+              {/* <Feature
                 icon={<Ruler />}
                 label="Area"
                 value={`${property.area ?? "N/A"} sqft`}
@@ -132,7 +132,7 @@ export default async function PropertyPage(
                 icon={<IndianRupee />}
                 label="Price"
                 value={`₹${property.price.toLocaleString()}`}
-              />
+              /> */}
               <Feature
                 icon={<BadgeCheck />}
                 label="Status"
