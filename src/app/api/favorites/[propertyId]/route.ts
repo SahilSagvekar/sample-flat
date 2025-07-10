@@ -1,13 +1,16 @@
 // src/app/api/favorites/[propertyId]/route.ts
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-type Params = { params: { propertyId: string } };
-
-export async function DELETE(req: Request, { params }: Params) {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { propertyId: string } }
+) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
 
   await prisma.favorite.deleteMany({
     where: {
