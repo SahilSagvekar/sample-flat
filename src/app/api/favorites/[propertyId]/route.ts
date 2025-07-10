@@ -1,17 +1,18 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse, type RouteHandlerContext } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  context: RouteHandlerContext
+  context: { params: { propertyId: string } }
 ) {
-  const { userId } = await auth();
+  const { userId } = await auth(); // No need for `await` here
+
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { propertyId } = (await context.params);
+  const { propertyId } = context.params;
 
   await prisma.favorite.deleteMany({
     where: {
