@@ -92,11 +92,22 @@ export default async function ListingPage(
     return `?${params.toString()}`;
   };
 
-  const processedProperties = properties.map((property) => ({
-  ...property,
-  price: property.price ?? 0, // ✅ fix for type
-  location: `${property.city || ''}, ${property.state || ''}`, // ✅ also needed from before
+  const processedProperties: Property[] = properties.map((property) => ({
+  id: property.id,
+  title: property.title,
+  city: property.city ?? '',
+  state: property.state ?? '',
+  price: property.price ?? 0,
+  bhk: property.bhk ?? '',
+  sellerId: property.sellerId ?? '',
+  status: property.status,
+  featured: property.featured,
+  imageUrls: property.imageUrls ?? [],
+  latitude: property.latitude ?? 0,
+  longitude: property.longitude ?? 0,
+  location: `${property.city || ''}, ${property.state || ''}`,
 }));
+
 
 
   return (
