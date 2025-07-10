@@ -89,7 +89,7 @@ export default async function TopProperties() {
 
                     <div className="flex items-center text-gray-600 text-sm mt-3 gap-4 flex-wrap">
                       <span>🛏 {property.bhk || 1} Beds</span>
-                      <span>🛁 {property.bathrooms || 1} Baths</span>
+                      <span>🛁 {property.bathroom || 1} Baths</span>
                       <span>📐 {areaDisplay}</span>
                     </div>
                   </div>

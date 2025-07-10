@@ -30,7 +30,7 @@ export async function POST(req: Request) {
         description: data.description,
         amenities: data.amenities?.split(",") ?? [],
         bedrooms: data.bedrooms || "0",
-        bathrooms: data.bathrooms || "0",
+        bathroom: data.bathroom || "0",
         balconies: data.balconies || "0",
         carpetArea: data.carpetArea,
         builtupArea: data.builtupArea,

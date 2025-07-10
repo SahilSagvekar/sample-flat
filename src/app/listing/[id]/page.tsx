@@ -116,7 +116,7 @@ export default async function PropertyPage(
               <Feature
                 icon={<Bath />}
                 label="Bathrooms"
-                value={property.bathrooms ?? "N/A"}
+                value={property.bathroom ?? "N/A"}
               />
               {/* <Feature
                 icon={<Ruler />}
