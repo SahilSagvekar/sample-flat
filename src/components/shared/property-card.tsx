@@ -20,7 +20,7 @@ type Props = {
   property: {
     id: string;
     title: string;
-    bhk: string;
+    bhk: string | null;
     price: number;
     city: string;
     state: string;
