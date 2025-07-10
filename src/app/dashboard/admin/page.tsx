@@ -112,6 +112,7 @@ export default async function AdminPage() {
                 state: property.state ?? "",
                 title: property.title ?? "",
                 status: property.status ?? "",
+                sellerId: property.sellerId ?? undefined, // 👈 THIS FIXES THE ERROR
               }}
             />
 
