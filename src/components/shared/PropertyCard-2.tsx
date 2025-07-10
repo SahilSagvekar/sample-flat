@@ -9,12 +9,12 @@ type Props = {
   property: {
     id: string;
     title: string;
-    bhk: string;
-    price: number;
-    city: string;
-    state: string;
+    bhk: string | null;
+    price: number | null;
+    city: string | null;
+    state: string | null;
     status: string;
-    sellerId?: string;
+    sellerId?: string | null;
     featured?: boolean;
     imageUrls?: string[];
   };
