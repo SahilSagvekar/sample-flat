@@ -5,17 +5,17 @@ import { useState } from "react";
 type Props = {
   user: {
     name: string | null;
-    role: string;
-    phone?: string;
-    location?: string;
-    bio?: string;
-    company?: string;
-    website?: string;
-    about?: string;
+    role: string | null;
+    phone?: string | null;
+    location?: string | null;
+    bio?: string | null;
+    company?: string | null;
+    website?: string | null;
+    about?: string | null;
   };
 };
 
-export function UserProfileForm({ user }: Props) {
+export function   UserProfileForm({ user }: Props) {
   const [formData, setFormData] = useState({
     name: user.name || "",
     phone: user.phone || "",
