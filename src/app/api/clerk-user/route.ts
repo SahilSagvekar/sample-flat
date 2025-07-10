@@ -37,15 +37,25 @@ export async function POST(req: Request) {
     // const name = `${first_name || ''} ${last_name || ''}`.trim();
 
     // Save user to your DB
+    // await prisma.user.create({
+    //   data: {
+    //     clerkId,
+    //     email,
+    //     role,
+    //     // name,
+    //     // image: image_url,
+    //   },
+    // });
+
     await prisma.user.create({
       data: {
         clerkId,
         email,
         role,
-        // name,
-        // image: image_url,
       },
     });
+
+
     console.log("saved to db");
     return NextResponse.json({ success: true });
   } catch (error) {
