@@ -55,9 +55,10 @@ export default async function TopProperties() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {properties.map((property) => {
             const areaDisplay =
-              property.area && typeof property.area === "number"
-                ? `${property.area} sq ft`
-                : property.locality || "—";
+              // property.area && typeof property.area === "number"
+                // ? `${property.area} sq ft`
+                // : 
+                property.locality || "—";
 
             return (
               <div
