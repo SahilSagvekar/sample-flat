@@ -19,14 +19,14 @@ import Link from "next/link";
 type Props = {
   property: {
     id: string;
-    title: string;
+    title: string | null;
     bhk: string | null;
-    price: number;
-    city: string;
-    state: string;
-    status: string;
-    sellerId?: string;
-    featured?: boolean;
+    price: number | null;
+    city: string | null;
+    state: string | null;
+    status: string | null;
+    sellerId?: string | null;
+    featured?: boolean | null;
     imageUrls?: string[];
   };
   currentUserId?: string;
