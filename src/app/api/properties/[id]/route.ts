@@ -9,7 +9,7 @@ interface Params {
   };
 }
 
-export async function GET(req: Request, { params }: Params) {
+export async function GET(req: Request, { params }) {
   try {
     const property = await prisma.property.findUnique({
       where: {
@@ -28,59 +28,7 @@ export async function GET(req: Request, { params }: Params) {
   }
 }
 
-// export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-//   const { userId } = await auth();
-//   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-//   try {
-//     // Check ownership first
-//     const property = await prisma.property.findUnique({
-//       where: { id: params.id },
-//     });
-
-//     if (!property || property.userId !== userId) {
-//       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//     }
-
-//     await prisma.property.delete({
-//       where: { id: params.id },
-//     });
-//     return NextResponse.json({ success: true });
-//   } catch (err) {
-//     return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
-//   }
-// }
-
-// export async function DELETE(
-//   req: Request,
-//   context: { params: { id: string } }
-// ) {
-//   // ✅ Must await this
-//   const { userId } = await auth();
-
-//   if (!userId) {
-//     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   }
-
-//   const { id } = context.params;
-
-//   // Optional: check if property belongs to user before deleting
-//   const property = await prisma.property.findUnique({
-//     where: { id },
-//   });
-
-//   // if (!property || property.userId !== userId) {
-//   //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-//   // }
-
-//   await prisma.property.delete({
-//     where: { id },
-//   });
-
-//   return NextResponse.json({ success: true });
-// }
-
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }) {
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -97,7 +45,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   return NextResponse.json({ success: true });
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }) {
   const { userId } = await auth();
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -119,5 +67,3 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
   return NextResponse.json(updated);
 }
-
-
