@@ -16,18 +16,19 @@ export default async function AdminPropertyPage({ params }: AdminPropertyPagePro
   // Optional: Lock this page to admin only
   // if (userId !== "your_admin_clerk_id") redirect("/");
 
-   const property = await prisma.property.findUnique({
-    where: { id: params.id },
-    include: {
-      seller: true,
-    },
-  });
+  //  const property = await prisma.property.findUnique({
+  //   where: { id: params.id },
+  //   include: {
+  //     seller: true,
+  //   },
+  // });
 
-  if (!property) return notFound();
+  // if (!property) return notFound();
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold">{property.title}</h1>
+      <h1>admin property page</h1>
+      {/* <h1 className="text-3xl font-bold">{property.title}</h1>
       <p className="text-gray-600">{property.locality}</p>
 
       <div className="rounded-xl overflow-hidden">
@@ -67,7 +68,7 @@ export default async function AdminPropertyPage({ params }: AdminPropertyPagePro
         )}
 
         <DeleteButton propertyId={property.id} />
-      </div>
+      </div> */}
     </div>
   );
 }
