@@ -18,11 +18,9 @@ type SearchParams = {
 
 const ITEMS_PER_PAGE = 6;
 
-export default async function ListingPage(
-  props: {
-    searchParams: Promise<SearchParams>;
-  }
-) {
+export default async function ListingPage(props: {
+  searchParams: Promise<SearchParams>;
+}) {
   const searchParams = await props.searchParams;
   const currentPage = Math.max(1, parseInt(searchParams.page || "1"));
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -53,7 +51,7 @@ export default async function ListingPage(
 
   const [totalProperties, properties] = await Promise.all([
     prisma.property.count({ where: filters }),
-    prisma.property.findMany({  
+    prisma.property.findMany({
       where: filters,
       select: {
         id: true,
@@ -68,8 +66,8 @@ export default async function ListingPage(
         sellerId: true,
         featured: true,
         imageUrls: true,
-        bathroom: true,           // ✅ add this
-        carpetArea: true       // ✅ add this
+        bathroom: true, // ✅ add this
+        carpetArea: true, // ✅ add this
       },
       orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       take: ITEMS_PER_PAGE,
@@ -79,7 +77,8 @@ export default async function ListingPage(
 
   const totalPages = Math.max(1, Math.ceil(totalProperties / ITEMS_PER_PAGE));
   const hasPreviousPage = currentPage > 1;
-  const hasNextPage = currentPage < totalPages && properties.length === ITEMS_PER_PAGE;
+  const hasNextPage =
+    currentPage < totalPages && properties.length === ITEMS_PER_PAGE;
 
   const getPageUrl = (page: number) => {
     const params = new URLSearchParams();
@@ -95,28 +94,29 @@ export default async function ListingPage(
   };
 
   const processedProperties = properties.map((property) => ({
-  id: property.id,
-  title: property.title,
-  bhk: property.bhk,
-  price: property.price!,
-  city: property.city,
-  state: property.state,
-  status: property.status,
-  sellerId: property.sellerId,
-  featured: property.featured,
-  imageUrls: property.imageUrls,
-  latitude: property.latitude!,
-  longitude: property.longitude!,
-  bathroom: property.bathroom ?? 0,    // ✅ updated key
-  carpetArea: property.carpetArea ?? 0,
-}));
-
+    id: property.id,
+    title: property.title,
+    bhk: property.bhk,
+    price: property.price!,
+    city: property.city,
+    state: property.state,
+    status: property.status,
+    sellerId: property.sellerId,
+    featured: property.featured,
+    imageUrls: property.imageUrls,
+    latitude: property.latitude!,
+    longitude: property.longitude!,
+    bathroom: property.bathroom ?? 0, // ✅ updated key
+    carpetArea: property.carpetArea ?? 0,
+  }));
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa]">
       <div className="p-6 flex-1 max-w-7xl mx-auto w-full">
         <h1 className="text-3xl font-bold mb-2">🏘 Available Properties</h1>
-        <p className="text-gray-600 mb-6">Find your perfect home from verified listings</p>
+        <p className="text-gray-600 mb-6">
+          Find your perfect home from verified listings
+        </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside>
@@ -130,14 +130,21 @@ export default async function ListingPage(
                   {processedProperties.map((property) => (
                     <PropertyCard
                       key={property.id}
-                      property={property}
+                      property={{
+                        ...property,
+                        carpetArea: property.carpetArea.toString(), // ✅ Convert number to string
+                        location: `${property.city ?? ""}, ${property.state ?? ""}`, // ✅ Also keep this fix
+                      }}
                     />
                   ))}
                 </div>
 
                 <div className="flex items-center justify-center gap-2 mt-6">
                   {hasPreviousPage && (
-                    <Link href={getPageUrl(currentPage - 1)} className="px-4 py-2 rounded border hover:bg-gray-100">
+                    <Link
+                      href={getPageUrl(currentPage - 1)}
+                      className="px-4 py-2 rounded border hover:bg-gray-100"
+                    >
                       ←
                     </Link>
                   )}
@@ -153,7 +160,10 @@ export default async function ListingPage(
                   ))}
 
                   {hasNextPage && (
-                    <Link href={getPageUrl(currentPage + 1)} className="px-4 py-2 rounded border hover:bg-gray-100">
+                    <Link
+                      href={getPageUrl(currentPage + 1)}
+                      className="px-4 py-2 rounded border hover:bg-gray-100"
+                    >
                       →
                     </Link>
                   )}
@@ -165,7 +175,9 @@ export default async function ListingPage(
               </>
             ) : (
               <div className="mt-16 text-center text-gray-500">
-                <p className="text-lg">No properties found matching your filters.</p>
+                <p className="text-lg">
+                  No properties found matching your filters.
+                </p>
                 <Link
                   href={getPageUrl(1)}
                   className="mt-4 inline-block text-blue-600 hover:underline"
