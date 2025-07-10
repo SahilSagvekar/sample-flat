@@ -24,7 +24,8 @@ export async function POST(req: Request) {
     const { data } = body;
 
     const {
-      id: clerkId,
+      id,
+      clerkId,
       email_addresses,
       public_metadata,
     //   image_url,
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
 
     await prisma.user.create({
       data: {
+        id,
         clerkId,
         email,
         role,
