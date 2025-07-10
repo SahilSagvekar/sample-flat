@@ -92,12 +92,30 @@ export default async function ListingPage(
     return `?${params.toString()}`;
   };
 
-  const processedProperties = properties.map((property) => ({
-  ...property,
-  price: property.price ?? 0,
-  latitude: property.latitude ?? 0,
-  longitude: property.longitude ?? 0,
-  location: `${property.city || ''}, ${property.state || ''}`,
+//   const processedProperties = properties.map((property) => ({
+//   ...property,
+//   price: property.price ?? 0,
+//   latitude: property.latitude ?? 0,
+//   longitude: property.longitude ?? 0,
+//   location: `${property.city || ''}, ${property.state || ''}`,
+// }));
+
+const processedProperties = properties.map((property) => ({
+  id: property.id,
+  title: property.title,
+  bhk: property.bhk,
+  price: property.price!,
+  city: property.city,
+  state: property.state,
+  status: property.status,
+  sellerId: property.sellerId,
+  featured: property.featured,
+  imageUrls: property.imageUrls,
+  latitude: property.latitude!,
+  longitude: property.longitude!,
+  // location: property.location,
+  baths: property.baths ?? 0,
+  carpetArea: property.carpetArea ?? 0, // ✅ Add this
 }));
 
 
