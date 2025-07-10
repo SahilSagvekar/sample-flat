@@ -4,13 +4,19 @@ import { notFound, redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import DeleteButton from "@/components/DeleteButton";
 
-export default async function AdminPropertyPage(props) {
-  const params = await props.params;
+type AdminPropertyPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+
+export default async function AdminPropertyPage({ params }: AdminPropertyPageProps) {
   const { userId } = await auth();
   // Optional: Lock this page to admin only
   // if (userId !== "your_admin_clerk_id") redirect("/");
 
-  const property = await prisma.property.findUnique({
+   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: {
       seller: true,
