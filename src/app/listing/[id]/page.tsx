@@ -195,9 +195,9 @@ export default async function PropertyPage(
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   Rent price
                 </h3>
-                <p className="text-2xl font-bold text-orange-600">
+                {/* <p className="text-2xl font-bold text-orange-600">
                   ₹{property.price.toLocaleString()}/month
-                </p>
+                </p> */}
                 <button className="mt-4 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 rounded-md font-medium">
                   Apply now
                 </button>
