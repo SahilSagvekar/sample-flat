@@ -108,7 +108,7 @@ export default async function ListingPage(
   latitude: property.latitude!,
   longitude: property.longitude!,
   bathroom: property.bathroom ?? 0,
-  carpetArea: property.carpetArea ?? 0,
+  carpetArea: String(property.carpetArea ?? ""), // ✅ Convert to string
   location: `${property.city || ""}, ${property.state || ""}`, // ✅ ADD THIS LINE
 }));
 
