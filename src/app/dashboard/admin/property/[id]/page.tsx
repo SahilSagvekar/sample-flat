@@ -4,7 +4,8 @@ import { notFound, redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import DeleteButton from "@/components/DeleteButton";
 
-export default async function AdminPropertyPage({ params }) {
+export default async function AdminPropertyPage(props) {
+  const params = await props.params;
   const { userId } = await auth();
   // Optional: Lock this page to admin only
   // if (userId !== "your_admin_clerk_id") redirect("/");

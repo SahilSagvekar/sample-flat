@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { geocodeAddress } from "@/lib/geocode";
 
-export async function GET(req: Request, { params }) {
+export async function GET(req: Request, props) {
+  const params = await props.params;
   try {
     const property = await prisma.property.findUnique({
       where: {
@@ -22,7 +23,8 @@ export async function GET(req: Request, { params }) {
   }
 }
 
-export async function DELETE(req: NextRequest, { params }) {
+export async function DELETE(req: NextRequest, props) {
+  const params = await props.params;
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -39,7 +41,8 @@ export async function DELETE(req: NextRequest, { params }) {
   return NextResponse.json({ success: true });
 }
 
-export async function PUT(req: NextRequest, { params }) {
+export async function PUT(req: NextRequest, props) {
+  const params = await props.params;
   const { userId } = await auth();
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 

@@ -21,12 +21,13 @@ import { CalendlyModal } from "@/components/CalendlyModal";
 import { Share2, Heart } from "lucide-react";
 
 interface PropertyPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
+export default async function PropertyPage(props: PropertyPageProps) {
+  const params = await props.params;
   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: { seller: true },

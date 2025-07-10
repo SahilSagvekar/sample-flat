@@ -18,11 +18,12 @@ type SearchParams = {
 
 const ITEMS_PER_PAGE = 6;
 
-export default async function ListingPage({
-  searchParams,
-}: {
-  searchParams: SearchParams;
-}) {
+export default async function ListingPage(
+  props: {
+    searchParams: Promise<SearchParams>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const currentPage = Math.max(1, parseInt(searchParams.page || "1"));
   const skip = (currentPage - 1) * ITEMS_PER_PAGE;
 

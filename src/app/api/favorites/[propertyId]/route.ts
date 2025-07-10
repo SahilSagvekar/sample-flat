@@ -11,7 +11,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { propertyId } = context.params;
+  const { propertyId } = (await context.params);
 
   await prisma.favorite.deleteMany({
     where: {
