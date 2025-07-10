@@ -107,7 +107,11 @@ export default async function AdminPage() {
               property={{
                 ...property,
                 bhk: property.bhk ?? "",
-                price: property.price ?? 0, // Provide a default fallback
+                price: property.price ?? 0,
+                city: property.city ?? "",
+                state: property.state ?? "",
+                title: property.title ?? "",
+                status: property.status ?? "",
               }}
             />
 
