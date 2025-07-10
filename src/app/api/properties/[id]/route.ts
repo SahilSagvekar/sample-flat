@@ -1,13 +1,7 @@
-// app/api/properties/[id]/route.ts
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { geocodeAddress } from "@/lib/geocode"; // ✅ Import geocoder
-interface Params {
-  params: {
-    id: string;
-  };
-}
+import { geocodeAddress } from "@/lib/geocode";
 
 export async function GET(req: Request, { params }) {
   try {
