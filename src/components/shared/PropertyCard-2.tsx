@@ -19,6 +19,7 @@ type Props = {
   imageUrls?: string[];
   latitude: number;
   longitude: number;
+  carpetArea: string;
   location: string;
   baths?: number | null; // ✅ Add this line
   };
@@ -72,7 +73,7 @@ export default function PropertyCard({ property }: Props) {
           </div>
           <div className="flex items-center gap-1">
             <Ruler className="w-4 h-4" />
-            {property.size} sq ft
+            {property.carpetArea} sq ft
           </div>
         </div>
 
