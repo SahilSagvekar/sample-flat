@@ -40,20 +40,29 @@ model Property {
   // id              String   @id @default(auto()) @map("_id") @db.ObjectId
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   title           String
-  price           Float
-  bhk             String
-  possessionDate  String
+  houseNo         String?
+  bedrooms        String?
+  bathrooms       String?
+  balconies       String?
+  carpetArea      String?
+  builtupArea     String?
+  superBuiltupArea   String?
+  ownershipStatus    String?
+  availabilityStatus String?
+  price           Float?
+  bhk             String?
+  possessionDate  String?
   amenities       String[]
-  description     String
-  city            String
-  state           String
-  locality        String
+  description     String?
+  city            String?
+  state           String?
+  locality        String?
   latitude        Float?   // ✅ NEW
   longitude       Float?   // ✅ NEW
-  sampleFlatVideo String
-  localityVideo   String
+  sampleFlatVideo String?
+  localityVideo   String?
   status          String   @default("pending")  // values: "pending", "approved", "rejected"
-  sellerId        String
+  sellerId        String?
   userId          String?
   imageUrls       String[] @default([]) // NEW: array of image URLs
   seller          User?    @relation(fields: [sellerId], references: [clerkId])

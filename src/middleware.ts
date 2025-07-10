@@ -39,14 +39,16 @@
 
 // middleware.ts
 import { clerkMiddleware } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-export default clerkMiddleware();
+export default clerkMiddleware((auth, req) => {
+  return NextResponse.next();
+});
 
+// 👇 VERY IMPORTANT: Match all protected routes
 export const config = {
   matcher: [
-    // Match everything except static files and Next.js internals
-    '/((?!_next|.*\\..*).*)',
-    // Include API routes explicitly
-    '/(api|trpc)(.*)',
+    '/((?!_next/image|_next/static|favicon.ico).*)',
   ],
 };
+

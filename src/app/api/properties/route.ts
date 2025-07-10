@@ -1,63 +1,54 @@
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { geocodeAddress } from "@/lib/geocode"; // ✅ Import geocoder
+import { geocodeAddress } from "@/lib/geocode";
 
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();
     const data = await req.json();
 
-    // ✅ Compose address and fetch lat/lng
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // 📍 Get latitude and longitude for mapping
     const fullAddress = `${data.locality}, ${data.city}, ${data.state}`;
     const { latitude, longitude } = await geocodeAddress(fullAddress);
 
-    // const property = await prisma.property.create({
-    //   data: {
-    //     title: data.title,
-    //     price: parseFloat(data.price),  
-    //     bhk: data.bhk,
-    //     possessionDate: data.possessionDate,
-    //     amenities: data.amenities
-    //       ? data.amenities.split(",").map((a: string) => a.trim())
-    //       : [],
-    //     city: data.city,
-    //     state: data.state,
-    //     locality: data.locality,
-    //     sampleFlatVideo: data.sampleFlatVideo,
-    //     localityVideo: data.localityVideo,
-    //     status: "pending",
-    //     sellerId: data.sellerId,
-    //     images: data.images || [],
-    //     latitude,
-    //     longitude, // ✅ Save coordinates
-    //   },
-    // });
-
     const property = await prisma.property.create({
-  data: {
-    title: data.title,
-    bhk: data.bhk,
-    possessionDate: data.possessionDate,
-    description: data.description,
-    amenities: data.amenities?.split(",") ?? [],
-    city: data.city,
-    state: data.state,
-    locality: data.locality,
-    sampleFlatVideo: data.sampleFlatVideo,
-    localityVideo: data.localityVideo,
-    status: "pending",
-    sellerId: userId ?? undefined,
-    imageUrls: data.imageUrls ?? [], // updated field name
-    latitude,
-    longitude,
-    price: Number(data.price), // ✅ convert string to number here
-  },
-});
+      data: {
+        sellerId: userId,
+        title: data.title,
+        houseNo: data.houseNo,
+        city: data.city,
+        state: data.state,
+        locality: data.locality,
+        bhk: data.bhk,
+        price: Number(data.price),
+        possessionDate: data.possessionDate,
+        description: data.description,
+        amenities: data.amenities?.split(",") ?? [],
+        bedrooms: data.bedrooms || "0",
+        bathrooms: data.bathrooms || "0",
+        balconies: data.balconies || "0",
+        carpetArea: data.carpetArea,
+        builtupArea: data.builtupArea,
+        superBuiltupArea: data.superBuiltupArea,
+        ownershipStatus: data.ownershipStatus,
+        availabilityStatus: data.availabilityStatus,
+        sampleFlatVideo: data.sampleFlatVideo,
+        localityVideo: data.localityVideo,
+        imageUrls: data.imageUrls ?? [],
+        status: "pending",
+        latitude,
+        longitude,
+      },
+    });
 
     return NextResponse.json({ success: true, property });
   } catch (err: any) {
-    console.log("❌ Error:", err.message);
+    console.error("❌ Property Creation Error:", err.message);
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
@@ -103,7 +94,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(properties);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Fetch Error:", err);
     return NextResponse.json({ error: "Error fetching properties" }, { status: 500 });
   }
 }
