@@ -58,74 +58,173 @@ export function AddPropertyForm({ userId }: { userId: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto p-6 bg-white rounded-lg shadow">
-      <Input name="title" placeholder="Apartment / Society Name" onChange={handleChange} required />
-      <Input name="houseNo" placeholder="House No" onChange={handleChange} required />
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 max-w-3xl mx-auto p-6 bg-white rounded-lg shadow"
+    >
+      <Input
+        name="title"
+        placeholder="Apartment / Society Name"
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="houseNo"
+        placeholder="House No"
+        onChange={handleChange}
+        required
+      />
       <Input name="city" placeholder="City" onChange={handleChange} required />
-      <Input name="state" placeholder="State" onChange={handleChange} required />
-      <Input name="locality" placeholder="Locality" onChange={handleChange} required />
+      <Input
+        name="state"
+        placeholder="State"
+        onChange={handleChange}
+        required
+      />
+      <Input
+        name="locality"
+        placeholder="Locality"
+        onChange={handleChange}
+        required
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">No of Bedrooms</label>
-          <select name="bedrooms" onChange={handleChange} className="w-full border p-2 rounded">
+          <label className="block text-sm font-medium text-gray-700">
+            No of Bedrooms
+          </label>
+          <select
+            name="bedrooms"
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          >
             <option value="">Select</option>
             {[1, 2, 3, 4].map((num) => (
-              <option key={num} value={num}>{num}</option>
+              <option key={num} value={num}>
+                {num}
+              </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">No of Bathrooms</label>
-          <select name="bathrooms" onChange={handleChange} className="w-full border p-2 rounded">
+          <label className="block text-sm font-medium text-gray-700">
+            No of Bathrooms
+          </label>
+          <select
+            name="bathrooms"
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          >
             <option value="">Select</option>
             {[1, 2, 3, 4].map((num) => (
-              <option key={num} value={num}>{num}</option>
+              <option key={num} value={num}>
+                {num}
+              </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">No of Balconies</label>
-          <select name="balconies" onChange={handleChange} className="w-full border p-2 rounded">
+          <label className="block text-sm font-medium text-gray-700">
+            No of Balconies
+          </label>
+          <select
+            name="balconies"
+            onChange={handleChange}
+            className="w-full border p-2 rounded"
+          >
             <option value="">Select</option>
             {[1, 2, 3, 4].map((num) => (
-              <option key={num} value={num}>{num}</option>
+              <option key={num} value={num}>
+                {num}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
-      <Input name="carpetArea" placeholder="Carpet Area (sq.ft)" onChange={handleChange} />
-      <Input name="builtupArea" placeholder="Built-up Area (sq.ft)" onChange={handleChange} />
-      <Input name="superBuiltupArea" placeholder="Super Built-up Area (sq.ft)" onChange={handleChange} />
+      <Input
+        name="carpetArea"
+        placeholder="Carpet Area (sq.ft)"
+        onChange={handleChange}
+      />
+      <Input
+        name="builtupArea"
+        placeholder="Built-up Area (sq.ft)"
+        onChange={handleChange}
+      />
+      <Input
+        name="superBuiltupArea"
+        placeholder="Super Built-up Area (sq.ft)"
+        onChange={handleChange}
+      />
 
-      <label className="block text-sm font-medium text-gray-700">Ownership Status</label>
-      <select name="ownershipStatus" onChange={handleChange} className="w-full border p-2 rounded">
+      <label className="block text-sm font-medium text-gray-700">
+        Ownership Status
+      </label>
+      <select
+        name="ownershipStatus"
+        onChange={handleChange}
+        className="w-full border p-2 rounded"
+      >
         <option value="">Select</option>
-        {["Freehold", "Leasehold", "Co-operative society", "Power of Attorney"].map((type) => (
-          <option key={type} value={type}>{type}</option>
+        {[
+          "Freehold",
+          "Leasehold",
+          "Co-operative society",
+          "Power of Attorney",
+        ].map((type) => (
+          <option key={type} value={type}>
+            {type}
+          </option>
         ))}
       </select>
 
-      <label className="block text-sm font-medium text-gray-700">Availability Status</label>
-      <select name="availabilityStatus" onChange={handleChange} className="w-full border p-2 rounded">
+      <label className="block text-sm font-medium text-gray-700">
+        Availability Status
+      </label>
+      <select
+        name="availabilityStatus"
+        onChange={handleChange}
+        className="w-full border p-2 rounded"
+      >
         <option value="">Select</option>
         {["Ready To Move", "Under Construction"].map((status) => (
-          <option key={status} value={status}>{status}</option>
+          <option key={status} value={status}>
+            {status}
+          </option>
         ))}
       </select>
 
-      <Input name="price" placeholder="Price" onChange={handleChange} required />
+      <Input
+        name="price"
+        placeholder="Price"
+        onChange={handleChange}
+        required
+      />
       <Input name="bhk" placeholder="BHK" onChange={handleChange} required />
-      <Input name="possessionDate" placeholder="Possession Date (e.g. 2025-12)" onChange={handleChange} />
-      <Input name="description" placeholder="Description" onChange={handleChange} />
-      <Input name="amenities" placeholder="Amenities (comma-separated)" onChange={handleChange} />
+      <Input
+        name="possessionDate"
+        placeholder="Possession Date (e.g. 2025-12)"
+        onChange={handleChange}
+      />
+      <Input
+        name="description"
+        placeholder="Description"
+        onChange={handleChange}
+      />
+      <Input
+        name="amenities"
+        placeholder="Amenities (comma-separated)"
+        onChange={handleChange}
+      />
 
       <div className="space-y-6">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-800">Property Images</h3>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Property Images
+          </h3>
           <div className="border-dashed border-2 border-gray-300 hover:bg-gray-50 transition p-4 rounded-md">
             <CloudinaryUpload
               onUpload={(url) => setImageUrls((prev) => [...prev, url])}
@@ -148,7 +247,9 @@ export function AddPropertyForm({ userId }: { userId: string }) {
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-800">Sample Flat Video</h3>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Sample Flat Video
+          </h3>
           <div className="border-dashed border-2 border-gray-300 hover:bg-gray-50 transition p-4 rounded-md">
             <CloudinaryUpload
               onUpload={(url) => setForm({ ...form, sampleFlatVideo: url })}
@@ -165,7 +266,9 @@ export function AddPropertyForm({ userId }: { userId: string }) {
         </div>
 
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold text-gray-800">Locality Video</h3>
+          <h3 className="text-lg font-semibold text-gray-800">
+            Locality Video
+          </h3>
           <div className="border-dashed border-2 border-gray-300 hover:bg-gray-50 transition p-4 rounded-md">
             <CloudinaryUpload
               onUpload={(url) => setForm({ ...form, localityVideo: url })}
