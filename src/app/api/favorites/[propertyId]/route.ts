@@ -1,11 +1,10 @@
-// src/app/api/favorites/[propertyId]/route.ts
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse, type RouteHandlerContext } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  context: { params: { propertyId: string } }
+  context: RouteHandlerContext
 ) {
   const { userId } = await auth();
   if (!userId) {
@@ -23,4 +22,3 @@ export async function DELETE(
 
   return NextResponse.json({ message: "Unfavorited" });
 }
-
