@@ -14,7 +14,7 @@ import {
   Bed,
   Bath,
   Ruler,
-  Wrench
+  Wrench,
 } from "lucide-react";
 import PropertyMediaGallery from "@/components/shared/property-media-gallery";
 import { CalendlyModal } from "@/components/CalendlyModal";
@@ -25,7 +25,11 @@ interface PropertyPageProps {
   };
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
+export default async function PropertyPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: { seller: true },
@@ -34,12 +38,25 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
   if (!property) return notFound();
 
   const mediaItems = [
-    ...(property.imageUrls?.map((url) => ({ type: "image" as const, url })) || []),
+    ...(property.imageUrls?.map((url) => ({ type: "image" as const, url })) ||
+      []),
     ...(property.sampleFlatVideo
-      ? [{ type: "video" as const, url: property.sampleFlatVideo, title: "Sample Flat" }]
+      ? [
+          {
+            type: "video" as const,
+            url: property.sampleFlatVideo,
+            title: "Sample Flat",
+          },
+        ]
       : []),
     ...(property.localityVideo
-      ? [{ type: "video" as const, url: property.localityVideo, title: "Locality" }]
+      ? [
+          {
+            type: "video" as const,
+            url: property.localityVideo,
+            title: "Locality",
+          },
+        ]
       : []),
   ];
 
@@ -75,10 +92,14 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
 
             {/* Title + Location */}
             <div className="bg-white rounded-xl shadow p-6">
-              <h1 className="text-3xl font-bold text-gray-900">{property.title}</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {property.title}
+              </h1>
               <div className="flex items-center text-gray-600 mt-2">
                 <MapPin className="w-4 h-4 mr-1" />
-                <span>{property.locality}, {property.city}, {property.state}</span>
+                <span>
+                  {property.locality}, {property.city}, {property.state}
+                </span>
               </div>
               {property.featured && (
                 <Badge className="mt-2 bg-yellow-400 text-black inline-flex items-center">
@@ -90,20 +111,50 @@ export default async function PropertyPage({ params }: PropertyPageProps) {
             {/* Feature Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <Feature icon={<Bed />} label="Bedrooms" value={property.bhk} />
-              <Feature icon={<Bath />} label="Bathrooms" value={property.bathrooms} />
-              <Feature icon={<Ruler />} label="Area" value={`${property.area || "N/A"} sqft`} />
-              <Feature icon={<Wrench />} label="Repair Quality" value={property.quality || "Standard"} />
-              <Feature icon={<IndianRupee />} label="Price" value={`₹${property.price.toLocaleString()}`} />
-              <Feature icon={<BadgeCheck />} label="Status" value={property.status} />
-              <Feature icon={<Calendar />} label="Posted" value={new Date(property.createdAt).toLocaleDateString()} />
-              <Feature icon={<User />} label="Seller" value={property.seller?.name || "Not available"} />
+              <Feature
+                icon={<Bath />}
+                label="Bathrooms"
+                value={property.bathrooms}
+              />
+              <Feature
+                icon={<Ruler />}
+                label="Area"
+                value={`${property.area || "N/A"} sqft`}
+              />
+              <Feature
+                icon={<Wrench />}
+                label="Repair Quality"
+                value={property.quality || "Standard"}
+              />
+              <Feature
+                icon={<IndianRupee />}
+                label="Price"
+                value={`₹${property.price.toLocaleString()}`}
+              />
+              <Feature
+                icon={<BadgeCheck />}
+                label="Status"
+                value={property.status}
+              />
+              <Feature
+                icon={<Calendar />}
+                label="Posted"
+                value={new Date(property.createdAt).toLocaleDateString()}
+              />
+              <Feature
+                icon={<User />}
+                label="Seller"
+                value={property.seller?.name || "Not available"}
+              />
             </div>
 
             {/* About Section */}
             {property.description && (
               <div className="mt-6">
                 <h2 className="text-xl font-semibold mb-2">About this home</h2>
-                <p className="text-gray-700 whitespace-pre-line">{property.description}</p>
+                <p className="text-gray-700 whitespace-pre-line">
+                  {property.description}
+                </p>
               </div>
             )}
 
