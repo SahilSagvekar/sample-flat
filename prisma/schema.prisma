@@ -42,7 +42,7 @@ model Property {
   title           String
   houseNo         String?
   bedrooms        String?
-  bathrooms       Int?
+  bathroom       Int?
   balconies       String?
   carpetArea      Float?
   builtupArea     String?

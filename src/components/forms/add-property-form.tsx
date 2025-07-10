@@ -21,7 +21,7 @@ export function AddPropertyForm({ userId }: { userId: string }) {
     localityVideo: "",
     houseNo: "",
     bedrooms: "",
-    bathrooms: "",
+    bathroom: "",
     balconies: "",
     carpetArea: "",
     builtupArea: "",
