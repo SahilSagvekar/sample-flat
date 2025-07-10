@@ -53,7 +53,7 @@ export default async function ListingPage(
 
   const [totalProperties, properties] = await Promise.all([
     prisma.property.count({ where: filters }),
-    prisma.property.findMany({
+    prisma.property.findMany({  
       where: filters,
       select: {
         id: true,
@@ -107,11 +107,9 @@ export default async function ListingPage(
   imageUrls: property.imageUrls,
   latitude: property.latitude!,
   longitude: property.longitude!,
-  bathroom: property.bathroom ?? 0,
-  carpetArea: String(property.carpetArea ?? ""), // ✅ Convert to string
-  location: `${property.city || ""}, ${property.state || ""}`, // ✅ ADD THIS LINE
+  bathroom: property.bathroom ?? 0,    // ✅ updated key
+  carpetArea: property.carpetArea ?? 0,
 }));
-
 
 
   return (

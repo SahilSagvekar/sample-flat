@@ -109,7 +109,7 @@ export default function PropertyCard({
           {firstImageUrl ? (
             <Image
               src={getOptimizedImageUrl(firstImageUrl)}
-              alt={property.title}
+              alt={property.title ?? "Property image"}
               fill
               className="object-cover"
               sizes="100vw"
