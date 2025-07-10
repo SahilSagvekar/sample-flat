@@ -5,19 +5,22 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { propertyId: string } }
+  context: { params: { propertyId: string } }
 ) {
   const { userId } = await auth();
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { propertyId } = context.params;
+
   await prisma.favorite.deleteMany({
     where: {
       userId,
-      propertyId: params.propertyId,
+      propertyId,
     },
   });
 
   return NextResponse.json({ message: "Unfavorited" });
 }
+
