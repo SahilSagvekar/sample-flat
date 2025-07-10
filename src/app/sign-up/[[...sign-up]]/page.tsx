@@ -22,7 +22,10 @@ export default function SignUpPage() {
 
     try {
       await signUp.create({ emailAddress: email, password });
-      await signUp.update({ publicMetadata: { role } });
+
+      // ✅ Use unsafeMetadata instead of publicMetadata
+      await signUp.update({ unsafeMetadata: { role } });
+
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
       setLoading(true);
