@@ -68,6 +68,8 @@ export default async function ListingPage(
         sellerId: true,
         featured: true,
         imageUrls: true,
+        baths: true,           // ✅ add this
+        carpetArea: true       // ✅ add this
       },
       orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
       take: ITEMS_PER_PAGE,
@@ -92,34 +94,22 @@ export default async function ListingPage(
     return `?${params.toString()}`;
   };
 
-//   const processedProperties = properties.map((property) => ({
-//   ...property,
-//   price: property.price ?? 0,
-//   latitude: property.latitude ?? 0,
-//   longitude: property.longitude ?? 0,
-//   location: `${property.city || ''}, ${property.state || ''}`,
-// }));
-
-const processedProperties = properties.map((property) => ({
-  id: property.id,
-  title: property.title,
-  bhk: property.bhk,
-  price: property.price!,
-  city: property.city,
-  state: property.state,
-  status: property.status,
-  sellerId: property.sellerId,
-  featured: property.featured,
-  imageUrls: property.imageUrls,
-  latitude: property.latitude!,
-  longitude: property.longitude!,
-  // location: property.location,
-  baths: property.baths ?? 0,
-  carpetArea: property.carpetArea ?? 0, // ✅ Add this
-}));
-
-
-
+  const processedProperties = properties.map((property) => ({
+    id: property.id,
+    title: property.title,
+    bhk: property.bhk,
+    price: property.price ?? 0,
+    city: property.city,
+    state: property.state,
+    status: property.status,
+    sellerId: property.sellerId,
+    featured: property.featured,
+    imageUrls: property.imageUrls,
+    latitude: property.latitude ?? 0,
+    longitude: property.longitude ?? 0,
+    baths: property.baths ?? 0,
+    carpetArea: property.carpetArea ?? 0,
+  }));
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fafafa]">
@@ -129,8 +119,7 @@ const processedProperties = properties.map((property) => ({
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <aside>
-           <SearchForm /> 
-            {/* <Button className="w-full mt-4 bg-[#2BBBC1] hover:bg-orange-600 text-white">View All Listings</Button> */}
+            <SearchForm />
           </aside>
 
           <main className="lg:col-span-3 space-y-6">
@@ -141,7 +130,6 @@ const processedProperties = properties.map((property) => ({
                     <PropertyCard
                       key={property.id}
                       property={property}
-                      // className="rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all"
                     />
                   ))}
                 </div>
