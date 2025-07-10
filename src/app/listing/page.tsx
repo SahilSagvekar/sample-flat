@@ -107,9 +107,11 @@ export default async function ListingPage(
   imageUrls: property.imageUrls,
   latitude: property.latitude!,
   longitude: property.longitude!,
-  bathroom: property.bathroom ?? 0,    // ✅ updated key
+  bathroom: property.bathroom ?? 0,
   carpetArea: property.carpetArea ?? 0,
+  location: `${property.city || ""}, ${property.state || ""}`, // ✅ ADD THIS LINE
 }));
+
 
 
   return (
