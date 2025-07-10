@@ -3,14 +3,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { geocodeAddress } from "@/lib/geocode";
 
-export async function GET(req: Request, props) {
-  const params = await props.params;
+function getPropertyIdFromUrl(req: Request): string | null {
+  const url = new URL(req.url);
+  const segments = url.pathname.split("/");
+  return segments[segments.length - 1] || null;
+}
+
+export async function GET(req: Request) {
+  const id = getPropertyIdFromUrl(req);
+  if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+
   try {
-    const property = await prisma.property.findUnique({
-      where: {
-        id: params.id,
-      },
-    });
+    const property = await prisma.property.findUnique({ where: { id } });
 
     if (!property) {
       return NextResponse.json({ error: "Property not found" }, { status: 404 });
@@ -23,12 +27,14 @@ export async function GET(req: Request, props) {
   }
 }
 
-export async function DELETE(req: NextRequest, props) {
-  const params = await props.params;
+export async function DELETE(req: NextRequest) {
+  const id = getPropertyIdFromUrl(req);
+  if (!id) return NextResponse.json({ error: "Missing ID" }, { status: 400 });
+
   const { userId } = await auth();
   if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const property = await prisma.property.findUnique({ where: { id: params.id } });
+  const property = await prisma.property.findUnique({ where: { id } });
   if (!property) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   // 🔐 Optional: Only allow admin or listing owner
@@ -36,13 +42,14 @@ export async function DELETE(req: NextRequest, props) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  await prisma.property.delete({ where: { id: params.id } });
-
+  await prisma.property.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }
 
-export async function PUT(req: NextRequest, props) {
-  const params = await props.params;
+export async function PUT(req: NextRequest) {
+  const id = getPropertyIdFromUrl(req);
+  if (!id) return new NextResponse("Missing ID", { status: 400 });
+
   const { userId } = await auth();
   if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
@@ -52,7 +59,7 @@ export async function PUT(req: NextRequest, props) {
   const { latitude, longitude } = await geocodeAddress(fullAddress);
 
   const updated = await prisma.property.update({
-    where: { id: params.id },
+    where: { id },
     data: {
       ...data,
       price: Number(data.price),
