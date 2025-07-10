@@ -20,7 +20,7 @@ type Props = {
   latitude: number;
   longitude: number;
   carpetArea: string;
-  location: string;
+  location?: string;
   bathroom?: number | null; // ✅ Add this line
   };
   currentUserId?: string;
