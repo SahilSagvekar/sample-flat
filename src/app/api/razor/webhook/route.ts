@@ -1,7 +1,6 @@
 // app/api/stripe/webhook/route.ts
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { buffer } from "micro";
 import { prisma } from "@/lib/prisma";
 
 export const config = {
