@@ -1,11 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-type Context = { params: { id: string } };
-
-export async function POST(req: Request, context: Context) {
+export async function POST(req: Request, { params }: { params: { id: string } }) {
   await prisma.property.update({
-    where: { id: context.params.id },
+    where: { id: params.id },
     data: { status: "approved" },
   });
 
