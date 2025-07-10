@@ -8,15 +8,19 @@ import Link from "next/link";
 type Props = {
   property: {
     id: string;
-    title: string;
-    bhk: string | null;
-    price: number | null;
-    city: string | null;
-    state: string | null;
-    status: string;
-    sellerId?: string | null;
-    featured?: boolean;
-    imageUrls?: string[];
+  title: string;
+  bhk: string | null;
+  price: number;
+  city: string | null;
+  state: string | null;
+  status: string;
+  sellerId?: string | null;
+  featured?: boolean;
+  imageUrls?: string[];
+  latitude: number;
+  longitude: number;
+  location: string;
+  baths?: number | null; // ✅ Add this line
   };
   currentUserId?: string;
   className?: string;
