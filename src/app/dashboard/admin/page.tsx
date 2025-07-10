@@ -103,7 +103,14 @@ export default async function AdminPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {properties.map((property) => (
           <div key={property.id} className="border p-4 rounded-xl relative">
-          <PropertyCard property={{ ...property, bhk: property.bhk ?? "" }} />
+            <PropertyCard
+              property={{
+                ...property,
+                bhk: property.bhk ?? "",
+                price: property.price ?? 0, // Provide a default fallback
+              }}
+            />
+
             {property.featured && (
               <div className="absolute top-2 right-2 bg-yellow-300 text-black text-xs px-2 py-1 rounded-full font-semibold shadow">
                 ⭐ Featured
