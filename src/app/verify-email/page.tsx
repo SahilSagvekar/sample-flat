@@ -20,7 +20,7 @@ export default function VerifyEmailPage() {
       if (result.status === 'complete') {
         await setActive({ session: result.createdSessionId });
 
-        const role = result?.user?.publicMetadata?.role;
+        const role = result?.unsafeMetadata?.role;
 
         if (role === 'seller') {
           router.push('/dashboard/seller');
