@@ -111,16 +111,17 @@ export default async function PropertyPage(
 
             {/* Feature Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <Feature icon={<Bed />} label="Bedrooms" value={property.bhk} />
+              <Feature icon={<Bed />} label="Bedrooms" value={property.bhk ?? "N/A"} />
+
               <Feature
                 icon={<Bath />}
                 label="Bathrooms"
-                value={property.bathrooms}
+                value={property.bathrooms ?? "N/A"}
               />
               <Feature
                 icon={<Ruler />}
                 label="Area"
-                value={`${property.area || "N/A"} sqft`}
+                value={`${property.area ?? "N/A"} sqft`}
               />
               <Feature
                 icon={<Wrench />}
@@ -135,7 +136,7 @@ export default async function PropertyPage(
               <Feature
                 icon={<BadgeCheck />}
                 label="Status"
-                value={property.status}
+                value={property.status ?? "N/A"}
               />
               <Feature
                 icon={<Calendar />}
