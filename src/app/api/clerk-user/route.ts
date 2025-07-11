@@ -1,3 +1,4 @@
+// app/api/clerk-user/route.ts
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
@@ -21,14 +22,17 @@ export async function POST(req: Request) {
     wh.verify(payload, svixHeaders);
 
     const {
-      id, // Clerk ID
+      id, // this is the Clerk user ID
       email_addresses,
       public_metadata,
     } = body.data;
 
     const email = email_addresses?.[0]?.email_address || '';
-    const role = public_metadata?.role || '';
+    const role = public_metadata?.role || 'buyer'; // fallback role if missing
     const clerkId = id;
+
+    console.log('✅ Webhook received. Creating user with:');
+    console.log({ id, email, clerkId, role });
 
     await prisma.user.create({
       data: {
@@ -39,10 +43,10 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("✅ User saved to DB");
+    console.log('✅ User saved to DB');
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('❌ Webhook verification failed:', error);
-    return new NextResponse('Webhook signature invalid', { status: 400 });
+    console.error('❌ Webhook verification failed or DB error:', error);
+    return new NextResponse('Webhook signature invalid or DB error', { status: 400 });
   }
 }
