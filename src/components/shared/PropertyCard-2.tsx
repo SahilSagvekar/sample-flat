@@ -1,6 +1,6 @@
 "use client";
 
-import { BedDouble, Bath, Ruler, MapPin } from "lucide-react";
+import { BedDouble, Bath, Ruler, MapPin, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,27 +8,28 @@ import Link from "next/link";
 type Props = {
   property: {
     id: string;
-  title: string;
-  bhk: string | null;
-  price: number;
-  city: string | null;
-  state: string | null;
-  status: string;
-  sellerId?: string | null;
-  featured?: boolean;
-  imageUrls?: string[];
-  latitude: number;
-  longitude: number;
-  carpetArea: string;
-  location?: string;
-  bathroom?: number | null; // ✅ Add this line
+    title: string;
+    bhk: string | null;
+    price: number;
+    city: string | null;
+    state: string | null;
+    status: string;
+    sellerId?: string | null;
+    featured?: boolean;
+    imageUrls?: string[];
+    latitude: number;
+    longitude: number;
+    carpetArea: string;
+    location?: string;
+    bathroom?: number | null;
   };
   currentUserId?: string;
   className?: string;
 };
 
 export default function PropertyCard({ property }: Props) {
-     const firstImageUrl = property.imageUrls?.[0] || "";
+  const firstImageUrl = property.imageUrls?.[0] ?? null;
+
   const getOptimizedImageUrl = (url: string) =>
     url.includes("res.cloudinary.com")
       ? url.replace("/upload/", "/upload/w_600,h_400,c_fill/")
@@ -38,19 +39,20 @@ export default function PropertyCard({ property }: Props) {
     <div className="bg-white rounded-2xl shadow-md hover:shadow-lg transition max-w-sm">
       {/* Image */}
       <div className="relative w-full h-56 rounded-t-2xl overflow-hidden">
-           <Image
-                      src={getOptimizedImageUrl(firstImageUrl)}
-                      alt={property.title}
-                      fill
-                      className="object-cover"
-                      sizes="100vw"
-                      priority={false}
-                    />
-
-        {/* For Rent Badge */}
-        {/* <span className="absolute top-2 right-2 bg-[#2BBBC1] text-white text-xs px-2 py-1 rounded-md font-medium shadow">
-          For Rent
-        </span> */}
+        {firstImageUrl ? (
+          <Image
+            src={getOptimizedImageUrl(firstImageUrl)}
+            alt={property.title}
+            fill
+            className="object-cover"
+            sizes="100vw"
+            priority={false}
+          />
+        ) : (
+          <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+            <Home className="w-8 h-8 text-gray-400" />
+          </div>
+        )}
       </div>
 
       {/* Content */}
@@ -69,7 +71,7 @@ export default function PropertyCard({ property }: Props) {
           </div>
           <div className="flex items-center gap-1">
             <Bath className="w-4 h-4" />
-            {property.bathroom} Bathrooms
+            {property.bathroom ?? 2} Bathrooms
           </div>
           <div className="flex items-center gap-1">
             <Ruler className="w-4 h-4" />
@@ -84,10 +86,9 @@ export default function PropertyCard({ property }: Props) {
               View Details
             </Button>
           </Link>
-          
+
           <span className="text-lg font-bold text-gray-900">
             ₹{property.price.toLocaleString()}
-            {/* <span className="text-sm font-normal text-gray-500">/month</span> */}
           </span>
         </div>
       </div>

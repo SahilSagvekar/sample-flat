@@ -49,7 +49,7 @@ export default function PropertyCard({
 
   useEffect(() => {
     if (currentUserId) {
-      fetch("/api/favorites")
+      fetch("/api/buyer/favourite")
         .then((res) => res.json())
         .then((favorites) => {
           const exists = favorites.some(

@@ -18,6 +18,8 @@ import {
 } from "lucide-react";
 import PropertyMediaGallery from "@/components/shared/property-media-gallery";
 import { CalendlyModal } from "@/components/CalendlyModal";
+import ShareUrlButton from "@/components/landing/ShareUrlButton";
+import FavoriteButton from "@/components/landing/FavoriteButton";
 
 interface PropertyPageProps {
   params: {
@@ -101,6 +103,8 @@ export default async function PropertyPage(
                 <span>
                   {property.locality}, {property.city}, {property.state}
                 </span>
+                <span><ShareUrlButton/></span>
+                <span><FavoriteButton propertyId={property.id}/></span>
               </div>
               {property.featured && (
                 <Badge className="mt-2 bg-yellow-400 text-black inline-flex items-center">
@@ -218,6 +222,7 @@ export default async function PropertyPage(
                   <button className="w-full bg-orange-100 text-orange-700 py-2 rounded-md">
                     Request a tour
                   </button>
+                  
                 </div>
               </div>
             </div>
