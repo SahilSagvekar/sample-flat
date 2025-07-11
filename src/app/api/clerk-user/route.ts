@@ -1,4 +1,3 @@
-// app/api/clerk-user/route.ts
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
@@ -14,39 +13,22 @@ export async function POST(req: Request) {
     'svix-signature': headerPayload.get('svix-signature') || '',
   };
 
-  const payload = await req.text(); // get raw body as text
-  const body = JSON.parse(payload); // convert to JSON after verifying
+  const payload = await req.text();
+  const body = JSON.parse(payload);
 
   try {
     const wh = new Webhook(CLERK_WEBHOOK_SECRET);
-    wh.verify(payload, svixHeaders); // throws if invalid
-
-    const { data } = body;
+    wh.verify(payload, svixHeaders);
 
     const {
-      id,
-      clerkId,
+      id, // Clerk ID
       email_addresses,
       public_metadata,
-    //   image_url,
-    //   first_name,
-    //   last_name,
-    } = data;
+    } = body.data;
 
     const email = email_addresses?.[0]?.email_address || '';
     const role = public_metadata?.role || '';
-    // const name = `${first_name || ''} ${last_name || ''}`.trim();
-
-    // Save user to your DB
-    // await prisma.user.create({
-    //   data: {
-    //     clerkId,
-    //     email,
-    //     role,
-    //     // name,
-    //     // image: image_url,
-    //   },
-    // });
+    const clerkId = id;
 
     await prisma.user.create({
       data: {
@@ -57,8 +39,7 @@ export async function POST(req: Request) {
       },
     });
 
-
-    console.log("saved to db");
+    console.log("✅ User saved to DB");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('❌ Webhook verification failed:', error);
