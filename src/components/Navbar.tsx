@@ -29,7 +29,7 @@ export default function Navbar() {
               {/* <img src="/logo.png" alt="SampleFlat Logo" className="h-8 w-auto" />  */}
               <span className="text-xl font-bold">
                 <span className="text-[#2BBBC1]">Buyer</span>
-                <span className="text-gray-900">Builder</span>
+                <span className="text-gray-900">Builder-Prod</span>
               </span>
             </Link>
 
