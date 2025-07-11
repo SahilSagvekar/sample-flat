@@ -30,6 +30,7 @@ export default function Navbar() {
               <span className="text-xl font-bold">
                 <span className="text-[#2BBBC1]">Buyer</span>
                 <span className="text-gray-900">Builder</span>
+                <span className="text-gray-900">staging</span>
               </span>
             </Link>
 
