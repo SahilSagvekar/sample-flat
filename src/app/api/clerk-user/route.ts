@@ -1,4 +1,3 @@
-// app/api/clerk-user/route.ts
 import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
@@ -22,17 +21,17 @@ export async function POST(req: Request) {
     wh.verify(payload, svixHeaders);
 
     const {
-      id, // this is the Clerk user ID
+      id,
       email_addresses,
       public_metadata,
+      unsafe_metadata,
     } = body.data;
 
     const email = email_addresses?.[0]?.email_address || '';
-    const role = public_metadata?.role || 'buyer'; // fallback role if missing
+    const role = public_metadata?.role || unsafe_metadata?.role || 'buyer';
     const clerkId = id;
 
-    console.log('✅ Webhook received. Creating user with:');
-    console.log({ id, email, clerkId, role });
+    console.log('✅ Creating user with:', { id, email, clerkId, role });
 
     await prisma.user.create({
       data: {
