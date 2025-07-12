@@ -10,28 +10,21 @@ declare global {
 }
 
 export default function PayToListPage() {
-  const handlePay = async (response:any) => {
-    // 1. Call your Razorpay order API
+  const handlePay = async () => {
+    // 1. Call backend to create Razorpay order
     const res = await fetch("/api/razor/checkout", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        razorpay_payment_id: response.razorpay_payment_id,
-        razorpay_order_id: response.razorpay_order_id,
-        razorpay_signature: response.razorpay_signature,
-      }),
+      headers: { "Content-Type": "application/json" },
     });
 
     const data = await res.json();
 
     if (!data.orderId) {
-      alert("Something went wrong.");
+      alert("Something went wrong while creating order.");
       return;
     }
 
-    // 2. Open Razorpay Checkout
+    // 2. Razorpay payment options
     const options = {
       key: data.key,
       amount: data.amount,
@@ -39,10 +32,24 @@ export default function PayToListPage() {
       name: "Property Listing",
       description: "Access for Seller Property Listing",
       order_id: data.orderId,
-      handler: function (response: any) {
-        // ✅ This function is called after successful payment
-        alert("Payment successful!");
-        // Optionally: call your backend to verify or update DB
+      handler: async function (response: any) {
+        // ✅ Call secure backend API to verify & update DB
+        const verifyRes = await fetch("/api/razor/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          }),
+        });
+
+        if (verifyRes.ok) {
+          alert("Payment successful!");
+          window.location.href = "/dashboard/seller";
+        } else {
+          alert("Payment verification failed!");
+        }
       },
       prefill: {
         name: "Seller",
@@ -52,22 +59,14 @@ export default function PayToListPage() {
       notes: {
         type: "listing",
       },
-      theme: {
-        color: "#6366f1",
-      },
+      theme: { color: "#6366f1" },
     };
 
     const rzp = new window.Razorpay(options);
     rzp.open();
-    if (data.success) {
-      // Redirect user after success
-      window.location.href = "/dashboard/seller";
-    } else {
-      alert("Payment verification failed!");
-    }
   };
 
-  // Optional: load Razorpay script once
+  // Load Razorpay script
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://checkout.razorpay.com/v1/checkout.js";

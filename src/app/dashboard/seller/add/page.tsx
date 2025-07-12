@@ -11,22 +11,29 @@ export default async function AddPropertyPage() {
   // 🔒 Check user role
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { role: true },
+    select: { 
+      role: true,
+      paid: true,
+     },
   });
 
-  // if (!user || (user.role !== "seller" && user.role !== "admin")) {
-  // redirect("/dashboard/seller?error=unauthorized-role");
-// }
+  if (!user || (user.role !== "seller" && user.role !== "admin")) {
+  redirect("/dashboard/seller?error=unauthorized-role");
+}
 
 
   // ✅ Check if seller has paid access
-  const access = await prisma.listingAccess.findUnique({
-    where: { userId },
-  });
+  // const access = await prisma.listingAccess.findUnique({
+  //   where: { userId },
+  // });
 
   // if (!access || !access.hasAccess) {
   //   redirect("/dashboard/seller/pay-to-list");
   // }
+
+  if ( user && (user.paid !== true)) {
+    redirect("/dashboard/seller/pay-to-list");
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
