@@ -107,7 +107,7 @@ export default async function ListingPage(props: {
     latitude: property.latitude!,
     longitude: property.longitude!,
     bathroom: property.bathroom ?? 0, // ✅ updated key
-    carpetArea: property.carpetArea ?? 0,
+    carpetArea: property.carpetArea ?? "",
   }));
 
   return (

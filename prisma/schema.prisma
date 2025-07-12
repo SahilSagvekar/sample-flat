@@ -44,7 +44,7 @@ model Property {
   bedrooms        String?
   bathroom       Int?
   balconies       String?
-  carpetArea      Float?
+  carpetArea      String?
   builtupArea     String?
   superBuiltupArea   String?
   ownershipStatus    String?

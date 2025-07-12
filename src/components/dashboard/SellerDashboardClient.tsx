@@ -42,9 +42,9 @@ export default function SellerDashboardClient() {
 
   const statusCount = {
     total: properties.length,
-    approved: properties.filter((p) => p.status === "approved").length,
-    pending: properties.filter((p) => p.status === "pending").length,
-    rejected: properties.filter((p) => p.status === "rejected").length,
+  //   approved: properties.filter((p) => p.status === "approved").length,
+  //   pending: properties.filter((p) => p.status === "pending").length,
+  //   rejected: properties.filter((p) => p.status === "rejected").length,
   };
 
   const handlePayment = async () => {
@@ -113,9 +113,9 @@ export default function SellerDashboardClient() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <OverviewCard title="Total" count={statusCount.total} />
-        <OverviewCard title="Approved" count={statusCount.approved} />
+        {/* <OverviewCard title="Approved" count={statusCount.approved} />
         <OverviewCard title="Pending" count={statusCount.pending} />
-        <OverviewCard title="Rejected" count={statusCount.rejected} />
+        <OverviewCard title="Rejected" count={statusCount.rejected} /> */}
       </div>
 
       {/* Listings */}
@@ -128,7 +128,7 @@ export default function SellerDashboardClient() {
           {properties.map((property) => (
             <div key={property.id} className="relative">
               <PropertyCard property={property} />
-              <Badge
+              {/* <Badge
                 className="absolute top-2 left-2 capitalize text-xs"
                 variant={
                   property.status === "approved"
@@ -139,7 +139,7 @@ export default function SellerDashboardClient() {
                 }
               >
                 {property.status}
-              </Badge>
+              </Badge> */}
             </div>
           ))}
         </div>

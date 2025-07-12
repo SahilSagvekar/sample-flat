@@ -20,17 +20,18 @@ export function CloudinaryUpload({
 }: CloudinaryUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "unsigned_upload"); // Replace with your actual preset
-    formData.append("folder", folder);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", "unsigned_upload"); // must exist in Cloudinary
+  formData.append("folder", folder);
 
-    const endpoint = `https://api.cloudinary.com/v1_1/deyxbg1hf/${resourceType}/upload`; // Replace with your actual Cloud name
+  const endpoint = `https://api.cloudinary.com/v1_1/deyxbg1hf/${resourceType}/upload`;
 
+  try {
     const res = await fetch(endpoint, {
       method: "POST",
       body: formData,
@@ -38,17 +39,26 @@ export function CloudinaryUpload({
 
     const data = await res.json();
 
+    if (!res.ok) {
+      throw new Error(data?.error?.message || "Upload failed");
+    }
+
     if (data.secure_url) {
       onUpload(data.secure_url);
     } else {
       alert("Upload failed.");
       console.error(data);
     }
+  } catch (err) {
+    console.error("Upload error:", err);
+    alert("Cloudinary upload failed. See console for details.");
+  }
 
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-  };
+  if (inputRef.current) {
+    inputRef.current.value = "";
+  }
+};
+
 
   return (
     <div className="flex flex-col gap-2">
