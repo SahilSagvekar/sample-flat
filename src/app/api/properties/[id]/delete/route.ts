@@ -1,14 +1,15 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function POST(req: Request) {
+  const url = new URL(req.url);
+  const id = url.pathname.split("/")[3]; // ✅ Extract property ID from /properties/[id]/delete
+
+  if (!id) {
+    return NextResponse.json({ error: "Missing property ID" }, { status: 400 });
+  }
 
   try {
-    // Delete the property with the given ID
     await prisma.property.delete({
       where: { id },
     });
