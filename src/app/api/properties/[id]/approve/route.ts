@@ -1,27 +1,18 @@
-import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { userId } = await auth();
+export async function POST(req: Request) {
+  const url = new URL(req.url);
+  const id = url.pathname.split("/")[3]; // ✅ [3] is the property ID in the route: /properties/[id]/approve
 
-  // Optionally restrict to admin
-  // if (userId !== "user_admin123") {
-  //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  // }
-
-  try {
-    const updatedProperty = await prisma.property.update({
-      where: { id: params.id },
-      data: { status: "approved" },
-    });
-
-    return NextResponse.json(updatedProperty);
-  } catch (error) {
-    console.error("Error approving property:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  if (!id) {
+    return NextResponse.json({ error: "Missing property ID" }, { status: 400 });
   }
+
+  await prisma.property.update({
+    where: { id },
+    data: { status: "approved" },
+  });
+
+  return NextResponse.json({ message: "Property approved successfully" });
 }

@@ -5,13 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 import { useState } from "react";
 
 export default function SearchForm() {
@@ -23,13 +16,15 @@ export default function SearchForm() {
     bhk: searchParams.get("bhk") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
+    possessionFrom: searchParams.get("possessionFrom") || "",
+    possessionTo: searchParams.get("possessionTo") || "",
   });
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery({ ...query, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const params = new URLSearchParams();
 
@@ -37,6 +32,8 @@ export default function SearchForm() {
     if (query.bhk) params.set("bhk", query.bhk);
     if (query.minPrice) params.set("minPrice", query.minPrice);
     if (query.maxPrice) params.set("maxPrice", query.maxPrice);
+    if (query.possessionFrom) params.set("possessionFrom", query.possessionFrom);
+    if (query.possessionTo) params.set("possessionTo", query.possessionTo);
 
     router.push(`/listing?${params.toString()}`);
   };
@@ -57,22 +54,13 @@ export default function SearchForm() {
         </div>
 
         <div className="space-y-1">
-          <Label>BHK</Label>
-          <Select
+          <Label htmlFor="bhk">BHK</Label>
+          <Input
+            name="bhk"
+            placeholder="1, 2, 3..."
             value={query.bhk}
-            onValueChange={(val) => setQuery({ ...query, bhk: val })}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select BHK" />
-            </SelectTrigger>
-            <SelectContent>
-              {[1, 2, 3, 4, 5].map((val) => (
-                <SelectItem key={val} value={val.toString()}>
-                  {val} BHK
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            onChange={handleChange}
+          />
         </div>
 
         <div className="space-y-1">
@@ -95,13 +83,31 @@ export default function SearchForm() {
           />
         </div>
 
-        <div className="text-center text-sm text-gray-500 mt-2">
-          Advanced Filter
+        {/* ✅ Possession Date From */}
+        <div className="space-y-1">
+          <Label htmlFor="possessionFrom">Possession From</Label>
+          <Input
+            type="date"
+            name="possessionFrom"
+            value={query.possessionFrom}
+            onChange={handleChange}
+          />
+        </div>
+
+        {/* ✅ Possession Date To */}
+        <div className="space-y-1">
+          <Label htmlFor="possessionTo">Possession To</Label>
+          <Input
+            type="date"
+            name="possessionTo"
+            value={query.possessionTo}
+            onChange={handleChange}
+          />
         </div>
 
         <Button
           type="submit"
-          className="w-full bg-gradient-to-r bg-[#2BBBC1]  text-white font-semibold rounded-lg hover:from-orange-600 hover:to-orange-700 transition"
+          className="w-full bg-[#2BBBC1] hover:bg-orange-600 text-white font-semibold rounded-lg transition"
         >
           🔍 Search
         </Button>
@@ -116,8 +122,10 @@ export default function SearchForm() {
               bhk: "",
               minPrice: "",
               maxPrice: "",
+              possessionFrom: "",
+              possessionTo: "",
             });
-            router.push("/listing"); // Clears the filters from URL
+            router.push("/listing");
           }}
         >
           🧹 Clear Filters

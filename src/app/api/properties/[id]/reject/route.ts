@@ -1,13 +1,16 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendMail } from "@/lib/mail"; // Make sure this utility exists
+import { sendMail } from "@/lib/mail"; // ✅ Ensure this exists
 
-export async function POST(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function POST(req: Request) {
   try {
-    const propertyId = params.id;
+    const url = new URL(req.url);
+    const segments = url.pathname.split("/");
+    const propertyId = segments[3]; // /api/properties/[id]/reject
+
+    if (!propertyId) {
+      return NextResponse.json({ error: "Missing property ID" }, { status: 400 });
+    }
 
     const property = await prisma.property.findUnique({
       where: { id: propertyId },
@@ -20,18 +23,19 @@ export async function POST(
 
     await prisma.property.delete({ where: { id: propertyId } });
 
-    // Send rejection email
-    await sendMail({
-      to: property.seller?.email || "", // Fallback if no email
-      subject: "Your Property Listing Was Rejected",
-      text: `Hello,
+    if (property.seller?.email) {
+      await sendMail({
+        to: property.seller.email,
+        subject: "Your Property Listing Was Rejected",
+        text: `Hello,
 
 We regret to inform you that your property titled "${property.title}" has been rejected by the admin.
 
 You may review the details and try listing it again.
 
 - SampleFlat Team`,
-    });
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

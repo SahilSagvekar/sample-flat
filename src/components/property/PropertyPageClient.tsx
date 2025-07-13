@@ -2,19 +2,49 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Star, Bed, Bath, Calendar, User, Check, BadgeCheck } from "lucide-react";
+import {
+  MapPin,
+  Star,
+  Bed,
+  Bath,
+  Calendar,
+  User,
+  Check,
+  TreePalm,
+  Ruler,
+  LayoutGrid,
+  Layers,
+  BadgeCheck,
+} from "lucide-react";
 import ShareUrlButton from "@/components/landing/ShareUrlButton";
 import FavoriteButton from "@/components/landing/FavoriteButton";
 import { CalendlyModal } from "@/components/CalendlyModal";
 import MediaSliderModal from "@/components/MediaSliderModal";
+import { Phone } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function PropertyPageClient({ property }: { property: any }) {
+  const sellerPhone = property?.seller?.phone;
+
+  const handleCall = () => {
+    if (sellerPhone) {
+      window.open(`tel:${sellerPhone}`, "_self");
+    } else {
+      alert("Seller phone number not available.");
+    }
+  };
+
   const [showSlider, setShowSlider] = useState(false);
 
   const mediaItems = [
-    ...(property.imageUrls?.map((url: string) => ({ type: "image", url })) || []),
-    ...(property.sampleFlatVideo ? [{ type: "video", url: property.sampleFlatVideo }] : []),
-    ...(property.localityVideo ? [{ type: "video", url: property.localityVideo }] : []),
+    ...(property.imageUrls?.map((url: string) => ({ type: "image", url })) ||
+      []),
+    ...(property.sampleFlatVideo
+      ? [{ type: "video", url: property.sampleFlatVideo }]
+      : []),
+    ...(property.localityVideo
+      ? [{ type: "video", url: property.localityVideo }]
+      : []),
   ];
 
   return (
@@ -28,23 +58,25 @@ export default function PropertyPageClient({ property }: { property: any }) {
             className="md:col-span-2 w-full h-64 sm:h-80 object-cover rounded-xl shadow"
           />
           <div className="flex flex-col gap-2">
-            {mediaItems.slice(1, 3).map((item, i) =>
-              item.type === "image" ? (
-                <img
-                  key={i}
-                  src={item.url}
-                  alt={`Media ${i}`}
-                  className="h-32 w-full object-cover rounded-xl shadow"
-                />
-              ) : (
-                <video
-                  key={i}
-                  src={item.url}
-                  controls
-                  className="h-32 w-full object-cover rounded-xl shadow"
-                />
-              )
-            )}
+            {mediaItems
+              .slice(1, 3)
+              .map((item, i) =>
+                item.type === "image" ? (
+                  <img
+                    key={i}
+                    src={item.url}
+                    alt={`Media ${i}`}
+                    className="h-32 w-full object-cover rounded-xl shadow"
+                  />
+                ) : (
+                  <video
+                    key={i}
+                    src={item.url}
+                    controls
+                    className="h-32 w-full object-cover rounded-xl shadow"
+                  />
+                )
+              )}
             {mediaItems.length > 3 && (
               <button
                 className="bg-[#2BBBC1] text-white py-2 text-sm rounded-xl"
@@ -57,7 +89,7 @@ export default function PropertyPageClient({ property }: { property: any }) {
         </div>
 
         {/* Title & Actions */}
-        <div className="mb-6 flex flex-col gap-2">
+        {/* <div className="mb-6 flex flex-col gap-2">
           <h1 className="text-3xl font-bold">{property.title}</h1>
           <div className="flex flex-wrap items-center gap-3 text-gray-600 text-sm">
             <span className="flex items-center gap-1">
@@ -72,32 +104,116 @@ export default function PropertyPageClient({ property }: { property: any }) {
               <Star className="w-4 h-4 mr-1" /> Featured
             </Badge>
           )}
+        </div> */}
+
+        <div className="mb-6 flex flex-col gap-2">
+          <h1 className="text-3xl font-bold">{property.title}</h1>
+
+          {/* Location */}
+          <div className="text-gray-600 text-sm flex items-center gap-1">
+            <MapPin className="w-4 h-4" />
+            {property.locality}, {property.city}, {property.state}
+          </div>
+
+          {/* Buttons Row */}
+          <div className="flex flex-wrap gap-3 mt-1">
+            <ShareUrlButton />
+            <FavoriteButton propertyId={property.id} />
+          </div>
+
+          {/* Featured Badge */}
+          {property.featured && (
+            <Badge className="bg-yellow-400 text-black inline-flex items-center w-fit mt-2">
+              <Star className="w-4 h-4 mr-1" /> Featured
+            </Badge>
+          )}
         </div>
 
         {/* Feature Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
-          <Feature icon={<Bed />} label="Bedrooms" value={property.bhk ?? "N/A"} />
-          <Feature icon={<Bath />} label="Bathrooms" value={property.bathroom ?? "N/A"} />
-          <Feature icon={<BadgeCheck />} label="Status" value={property.status ?? "N/A"} />
-          <Feature icon={<Calendar />} label="Posted" value={new Date(property.createdAt).toLocaleDateString()} />
-          <Feature icon={<User />} label="Seller" value={property.seller?.name || "N/A"} />
+          <Feature
+            icon={<Bed />}
+            label="Bedrooms"
+            value={property.bedrooms ?? "N/A"}
+          />
+          <Feature
+            icon={<Bath />}
+            label="Bathrooms"
+            value={property.bathroom ?? "N/A"}
+          />
+          {/* //new start */}
+          <Feature
+            icon={<TreePalm />}
+            label="Balconies"
+            value={property.balconies ?? "N/A"}
+          />
+          <Feature
+            icon={<Ruler />}
+            label="Carpet Area"
+            value={property.carpetArea ?? "N/A"}
+          />
+          <Feature
+            icon={<LayoutGrid />}
+            label="Builtup Area"
+            value={property.builtupArea ?? "N/A"}
+          />
+          <Feature
+            icon={<Layers />}
+            label="Super Builtup Area"
+            value={property.superBuiltupArea ?? "N/A"}
+          />
+          <Feature
+            icon={<BadgeCheck />}
+            label="Ownership Status"
+            value={property.ownershipStatus ?? "N/A"}
+          />
+          {/* //new end */}
+          <Feature
+            icon={<BadgeCheck />}
+            label="Status"
+            value={property.status ?? "N/A"}
+          />
+          <Feature
+            icon={<Calendar />}
+            label="Posted"
+            value={new Date(property.createdAt).toLocaleDateString()}
+          />
+          <Feature
+            icon={<User />}
+            label="Seller"
+            value={property.seller?.name || "N/A"}
+          />
+          <Feature
+            icon={<Calendar />}
+            label="Possession Date"
+            value={property.possessionDate}
+          />
         </div>
 
         {/* Description */}
         {property.description && (
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">About this property</h2>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">{property.description}</p>
+            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">
+              About this property
+            </h2>
+            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+              {property.description}
+            </p>
           </section>
         )}
 
         {/* Amenities */}
         {property.amenities?.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">Amenities</h2>
+            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">
+              Amenities
+            </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {property.amenities.map((a: string, i: number) => (
-                <div key={i} className="flex items-center text-sm text-gray-700">
+                <div
+                  key={i}
+                  className="flex items-center text-sm text-gray-700"
+                >
                   <Check className="w-4 h-4 text-green-500 mr-2" /> {a.trim()}
                 </div>
               ))}
@@ -112,16 +228,41 @@ export default function PropertyPageClient({ property }: { property: any }) {
           </div>
         )}
 
+        <div className="mt-4 flex flex-col gap-3">
+          {/* Call Button */}
+          <Button
+            onClick={() => {
+              navigator.clipboard.writeText(sellerPhone);
+              alert("Phone number copied to clipboard.");
+            }}
+          >
+            📞 Copy Number
+          </Button>
+
+          {/* ...other sections like media, amenities, etc. */}
+        </div>
+
         {/* Media Modal */}
         {showSlider && (
-          <MediaSliderModal media={mediaItems} onClose={() => setShowSlider(false)} />
+          <MediaSliderModal
+            media={mediaItems}
+            onClose={() => setShowSlider(false)}
+          />
         )}
       </main>
     </div>
   );
 }
 
-function Feature({ icon, label, value }: { icon: React.ReactNode; label: string; value: string | number }) {
+function Feature({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+}) {
   return (
     <div className="flex items-center gap-2 p-3 border rounded-lg bg-white shadow-sm">
       <div className="text-[#2BBBC1]">{icon}</div>
