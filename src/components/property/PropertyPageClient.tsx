@@ -1,107 +1,61 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useCurrentUser } from "@/hooks/useUserRoleFromDB"; // assuming it returns current DB user
-import { SiteVisitForm } from "@/components/SiteVisitForm"; // import your form
+import { useCurrentUser } from "@/hooks/useUserRoleFromDB";
+import { SiteVisitForm } from "@/components/SiteVisitForm";
 import { Badge } from "@/components/ui/badge";
 import {
-  MapPin,
-  Star,
-  Bed,
-  Bath,
-  Calendar,
-  User,
-  Check,
-  TreePalm,
-  Ruler,
-  LayoutGrid,
-  Layers,
-  BadgeCheck,
+  MapPin, Star, Bed, Bath, Calendar, User, Check,
+  TreePalm, Ruler, LayoutGrid, Layers, BadgeCheck, Phone,
 } from "lucide-react";
 import ShareUrlButton from "@/components/landing/ShareUrlButton";
 import FavoriteButton from "@/components/landing/FavoriteButton";
 import { CalendlyModal } from "@/components/CalendlyModal";
 import MediaSliderModal from "@/components/MediaSliderModal";
-import { ZohoBookingModal } from "@/components/ZohoBookingModal";
-import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function PropertyPageClient({ property }: { property: any }) {
-  const sellerPhone = property?.seller?.phone;
-
-  const handleCall = () => {
-    if (sellerPhone) {
-      window.open(`tel:${sellerPhone}`, "_self");
-    } else {
-      alert("Seller phone number not available.");
-    }
-  };
-
-  const [showSlider, setShowSlider] = useState(false);
-  const currentUser = useCurrentUser(); // for logged-in user (buyer)
-  console.log("currentUser", currentUser);
+  const currentUser = useCurrentUser();
   const [sellerEmail, setSellerEmail] = useState("");
-
-  useEffect(() => {
-  const fetchSellerEmail = async () => {
-    if (!property?.sellerId) return;
-    try {
-      const res = await fetch(`/api/user/${property.sellerId}`);
-      const data = await res.json();
-      setSellerEmail(data.email || "");
-    } catch (err) {
-      console.error("Failed to fetch seller email:", err);
-    }
-  };
-
-  fetchSellerEmail();
-}, [property?.sellerId]);
-console.log("Seller email:", sellerEmail);
+  const [showSlider, setShowSlider] = useState(false);
 
   const mediaItems = [
-    ...(property.imageUrls?.map((url: string) => ({ type: "image", url })) ||
-      []),
-    ...(property.sampleFlatVideo
-      ? [{ type: "video", url: property.sampleFlatVideo }]
-      : []),
-    ...(property.localityVideo
-      ? [{ type: "video", url: property.localityVideo }]
-      : []),
+    ...(property.imageUrls?.map((url: string) => ({ type: "image", url })) || []),
+    ...(property.sampleFlatVideo ? [{ type: "video", url: property.sampleFlatVideo }] : []),
+    ...(property.localityVideo ? [{ type: "video", url: property.localityVideo }] : []),
   ];
 
+  useEffect(() => {
+    const fetchSellerEmail = async () => {
+      if (!property?.sellerId) return;
+      try {
+        const res = await fetch(`/api/user/${property.sellerId}`);
+        const data = await res.json();
+        setSellerEmail(data.email || "");
+      } catch (err) {
+        console.error("Error fetching seller email:", err);
+      }
+    };
+    fetchSellerEmail();
+  }, [property?.sellerId]);
+
   return (
-    <div className="min-h-screen bg-white text-gray-800">
-      <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* Media Section */}
+    <div className="bg-white text-gray-800">
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        {/* Media Header */}
         <div className="grid md:grid-cols-3 gap-4 mb-6">
-          <img
-            src={mediaItems[0]?.url}
-            alt="Property main"
-            className="md:col-span-2 w-full h-64 sm:h-80 object-cover rounded-xl shadow"
-          />
+          <img src={mediaItems[0]?.url} alt="Main" className="md:col-span-2 w-full h-64 sm:h-96 object-cover rounded-xl" />
           <div className="flex flex-col gap-2">
-            {mediaItems
-              .slice(1, 3)
-              .map((item, i) =>
-                item.type === "image" ? (
-                  <img
-                    key={i}
-                    src={item.url}
-                    alt={`Media ${i}`}
-                    className="h-32 w-full object-cover rounded-xl shadow"
-                  />
-                ) : (
-                  <video
-                    key={i}
-                    src={item.url}
-                    controls
-                    className="h-32 w-full object-cover rounded-xl shadow"
-                  />
-                )
-              )}
+            {mediaItems.slice(1, 3).map((item, i) =>
+              item.type === "image" ? (
+                <img key={i} src={item.url} className="h-28 sm:h-32 w-full object-cover rounded-md" />
+              ) : (
+                <video key={i} src={item.url} controls className="h-28 sm:h-32 w-full object-cover rounded-md" />
+              )
+            )}
             {mediaItems.length > 3 && (
               <button
-                className="bg-[#2BBBC1] text-white py-2 text-sm rounded-xl"
+                className="bg-[#2BBBC1] text-white py-2 text-sm rounded-md"
                 onClick={() => setShowSlider(true)}
               >
                 View all media
@@ -111,113 +65,42 @@ console.log("Seller email:", sellerEmail);
         </div>
 
         {/* Title & Actions */}
-        {/* <div className="mb-6 flex flex-col gap-2">
+        <div className="mb-6">
           <h1 className="text-3xl font-bold">{property.title}</h1>
-          <div className="flex flex-wrap items-center gap-3 text-gray-600 text-sm">
-            <span className="flex items-center gap-1">
-              <MapPin className="w-4 h-4" />
-              {property.locality}, {property.city}, {property.state}
-            </span>
-            <ShareUrlButton />
-            <FavoriteButton propertyId={property.id} />
-          </div>
-          {property.featured && (
-            <Badge className="bg-yellow-400 text-black inline-flex items-center w-fit">
-              <Star className="w-4 h-4 mr-1" /> Featured
-            </Badge>
-          )}
-        </div> */}
-
-        <div className="mb-6 flex flex-col gap-2">
-          <h1 className="text-3xl font-bold">{property.title}</h1>
-
-          {/* Location */}
-          <div className="text-gray-600 text-sm flex items-center gap-1">
+          <div className="flex items-center text-sm text-gray-600 gap-2 mt-1">
             <MapPin className="w-4 h-4" />
             {property.locality}, {property.city}, {property.state}
           </div>
-
-          {/* Buttons Row */}
-          <div className="flex flex-wrap gap-3 mt-1">
+          <div className="flex flex-wrap gap-2 mt-2">
             <ShareUrlButton />
             <FavoriteButton propertyId={property.id} />
+            {property.featured && (
+              <Badge className="bg-yellow-400 text-black flex items-center">
+                <Star className="w-4 h-4 mr-1" /> Featured
+              </Badge>
+            )}
           </div>
-
-          {/* Featured Badge */}
-          {property.featured && (
-            <Badge className="bg-yellow-400 text-black inline-flex items-center w-fit mt-2">
-              <Star className="w-4 h-4 mr-1" /> Featured
-            </Badge>
-          )}
         </div>
 
         {/* Feature Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
-          <Feature
-            icon={<Bed />}
-            label="Bedrooms"
-            value={property.bedrooms ?? "N/A"}
-          />
-          <Feature
-            icon={<Bath />}
-            label="Bathrooms"
-            value={property.bathroom ?? "N/A"}
-          />
-          {/* //new start */}
-          <Feature
-            icon={<TreePalm />}
-            label="Balconies"
-            value={property.balconies ?? "N/A"}
-          />
-          <Feature
-            icon={<Ruler />}
-            label="Carpet Area"
-            value={property.carpetArea ?? "N/A"}
-          />
-          <Feature
-            icon={<LayoutGrid />}
-            label="Builtup Area"
-            value={property.builtupArea ?? "N/A"}
-          />
-          <Feature
-            icon={<Layers />}
-            label="Super Builtup Area"
-            value={property.superBuiltupArea ?? "N/A"}
-          />
-          <Feature
-            icon={<BadgeCheck />}
-            label="Ownership Status"
-            value={property.ownershipStatus ?? "N/A"}
-          />
-          {/* //new end */}
-          <Feature
-            icon={<BadgeCheck />}
-            label="Status"
-            value={property.status ?? "N/A"}
-          />
-          <Feature
-            icon={<Calendar />}
-            label="Posted"
-            value={new Date(property.createdAt).toLocaleDateString()}
-          />
-          <Feature
-            icon={<User />}
-            label="Seller"
-            value={property.seller?.name || "N/A"}
-          />
-          <Feature
-            icon={<Calendar />}
-            label="Possession Date"
-            value={property.possessionDate}
-          />
+          <Feature icon={<Bed />} label="Bedrooms" value={property.bedrooms} />
+          <Feature icon={<Bath />} label="Bathrooms" value={property.bathroom} />
+          <Feature icon={<TreePalm />} label="Balconies" value={property.balconies} />
+          <Feature icon={<Ruler />} label="Carpet Area" value={property.carpetArea} />
+          <Feature icon={<LayoutGrid />} label="Builtup Area" value={property.builtupArea} />
+          <Feature icon={<Layers />} label="Super Builtup Area" value={property.superBuiltupArea} />
+          <Feature icon={<BadgeCheck />} label="Ownership" value={property.ownershipStatus} />
+          <Feature icon={<BadgeCheck />} label="Status" value={property.status} />
+          <Feature icon={<Calendar />} label="Posted" value={new Date(property.createdAt).toLocaleDateString()} />
+          <Feature icon={<User />} label="Seller" value={property.seller?.name} />
+          <Feature icon={<Calendar />} label="Possession" value={property.possessionDate} />
         </div>
 
         {/* Description */}
         {property.description && (
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">
-              About this property
-            </h2>
+            <h2 className="text-xl font-semibold text-[#2BBBC1] mb-2">About this property</h2>
             <p className="text-gray-700 leading-relaxed whitespace-pre-line">
               {property.description}
             </p>
@@ -227,15 +110,10 @@ console.log("Seller email:", sellerEmail);
         {/* Amenities */}
         {property.amenities?.length > 0 && (
           <section className="mb-10">
-            <h2 className="text-2xl font-semibold mb-2 text-[#2BBBC1]">
-              Amenities
-            </h2>
+            <h2 className="text-xl font-semibold text-[#2BBBC1] mb-2">Amenities</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {property.amenities.map((a: string, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-center text-sm text-gray-700"
-                >
+                <div key={i} className="flex items-center text-sm text-gray-700">
                   <Check className="w-4 h-4 text-green-500 mr-2" /> {a.trim()}
                 </div>
               ))}
@@ -243,40 +121,26 @@ console.log("Seller email:", sellerEmail);
           </section>
         )}
 
-        {/* Booking */}
-        {property.seller?.calendlyLink && (
-          <div className="mt-8">
+        {/* Bookings */}
+        <section className="space-y-4 mt-8">
+          {property.seller?.calendlyLink && (
             <CalendlyModal url={property.seller.calendlyLink} />
-          </div>
-        )}
-
-        {currentUser && sellerEmail && (
-          <SiteVisitForm
-            buyerEmail={currentUser.email}
-            sellerEmail={sellerEmail}
-          />
-        )}
-
-        <div className="mt-4 flex flex-col gap-3">
-          {/* Call Button */}
+          )}
+          {currentUser && sellerEmail && (
+            <SiteVisitForm buyerEmail={currentUser.email} sellerEmail={sellerEmail} />
+          )}
           <Button
             onClick={() => {
-              navigator.clipboard.writeText(sellerPhone);
-              alert("Phone number copied to clipboard.");
+              navigator.clipboard.writeText(property.seller?.phone);
+              alert("Seller phone number copied to clipboard.");
             }}
           >
-            📞 Copy Number
+            📞 Copy Seller Number
           </Button>
+        </section>
 
-          {/* ...other sections like media, amenities, etc. */}
-        </div>
-
-        {/* Media Modal */}
         {showSlider && (
-          <MediaSliderModal
-            media={mediaItems}
-            onClose={() => setShowSlider(false)}
-          />
+          <MediaSliderModal media={mediaItems} onClose={() => setShowSlider(false)} />
         )}
       </main>
     </div>
@@ -293,11 +157,11 @@ function Feature({
   value: string | number;
 }) {
   return (
-    <div className="flex items-center gap-2 p-3 border rounded-lg bg-white shadow-sm">
+    <div className="flex items-center gap-3 p-4 bg-gray-50 border rounded-lg shadow-sm">
       <div className="text-[#2BBBC1]">{icon}</div>
       <div>
         <p className="text-xs text-gray-500">{label}</p>
-        <p className="text-sm font-medium text-gray-900">{value}</p>
+        <p className="text-sm font-medium text-gray-900">{value ?? "N/A"}</p>
       </div>
     </div>
   );
