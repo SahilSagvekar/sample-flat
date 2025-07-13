@@ -5,7 +5,7 @@ import MapClientWrapper from "@/components/map/MapClientWrapper";
 import Footer from "@/components/ui/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+  
 type SearchParams = {
   city?: string;
   state?: string;
@@ -49,31 +49,37 @@ export default async function ListingPage(props: {
     };
   }
 
-  const [totalProperties, properties] = await Promise.all([
-    prisma.property.count({ where: filters }),
-    prisma.property.findMany({
-      where: filters,
-      select: {
-        id: true,
-        title: true,
-        price: true,
-        city: true,
-        state: true,
-        bhk: true,
-        latitude: true,
-        longitude: true,
-        status: true,
-        sellerId: true,
-        featured: true,
-        imageUrls: true,
-        bathroom: true, // ✅ add this
-        carpetArea: true, // ✅ add this
-      },
-      orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-      take: ITEMS_PER_PAGE,
-      skip,
-    }),
-  ]);
+ const approvedFilters = {
+  ...filters,
+  status: "approved", // ✅ Only approved listings
+};
+
+const [totalProperties, properties] = await Promise.all([
+  prisma.property.count({ where: approvedFilters }),
+  prisma.property.findMany({
+    where: approvedFilters,
+    select: {
+      id: true,
+      title: true,
+      price: true,
+      city: true,
+      state: true,
+      bhk: true,
+      latitude: true,
+      longitude: true,
+      status: true,
+      sellerId: true,
+      featured: true,
+      imageUrls: true,
+      bathroom: true,
+      carpetArea: true,
+    },
+    orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
+    take: ITEMS_PER_PAGE,
+    skip,
+  }),
+]);
+
 
   const totalPages = Math.max(1, Math.ceil(totalProperties / ITEMS_PER_PAGE));
   const hasPreviousPage = currentPage > 1;

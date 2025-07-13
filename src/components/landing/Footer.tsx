@@ -95,7 +95,7 @@ export default function LandingFooter() {
 
             {/* App Store Buttons */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 text-white">
+              {/* <h4 className="text-lg font-semibold mb-4 text-white">
                 Get the App
               </h4>
               <div className="space-y-3">
@@ -113,7 +113,7 @@ export default function LandingFooter() {
                     <p className="text-sm font-medium text-white">Google Play</p>
                   </div>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 

@@ -9,19 +9,9 @@ import { Button } from "@/components/ui/button";
 export default async function AdminPage() {
   const { userId } = await auth();
 
-  // Replace with your admin ID if needed
-  // if (userId !== "user_admin123") redirect("/");
-
-  // const properties = await prisma.property.findMany({
-  //   include: {
-  //     seller: true,
-  //   },
-  //   orderBy: { createdAt: "desc" },
-  // });
-
   const users = await prisma.user.findMany({
     include: {
-      properties: true, // get how many properties they listed
+      properties: true,
     },
   });
 
@@ -33,7 +23,6 @@ export default async function AdminPage() {
     getStats(),
   ]);
 
-  // ✅ Stats Helper
   async function getStats() {
     const [totalUsers, totalListings, approvedListings, pendingListings] =
       await Promise.all([
@@ -46,37 +35,34 @@ export default async function AdminPage() {
     return { totalUsers, totalListings, approvedListings, pendingListings };
   }
 
-  // ✅ StatCard Component
   function StatCard({ label, value }: { label: string; value: number }) {
     return (
-      <div className="bg-white dark:bg-zinc-900 rounded-xl shadow p-4 text-center">
-        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">
+      <div className="bg-[#E6F8F9] dark:bg-zinc-900 rounded-2xl shadow-md p-6 text-center">
+        <h3 className="text-sm font-semibold text-gray-600 dark:text-gray-400">
           {label}
         </h3>
-        <p className="text-2xl font-bold">{value}</p>
+        <p className="text-3xl font-extrabold text-[#2BBBC1]">{value}</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto py-10 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Admin Dashboard: Listings</h2>
-        <Link href="/dashboard/admin/users">
-          <Button variant="outline">Manage Users</Button>
-        </Link>
+    <div className="max-w-7xl mx-auto py-12 px-4 space-y-12">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+        <h2 className="text-3xl font-extrabold text-[#2BBBC1]">Admin Dashboard</h2>
+        <div className="flex gap-4">
+          <Link href="/dashboard/admin/users">
+            <Button variant="outline">Manage Users</Button>
+          </Link>
+          <Link href="/dashboard/admin/payments">
+            <Button variant="ghost">💳 View All Payments</Button>
+          </Link>
+        </div>
       </div>
 
-      <Link href="/dashboard/admin/payments">
-        <Button variant="ghost" className="w-full justify-start">
-          💳 View All Payments
-        </Button>
-      </Link>
-
-      {/* 📊 Stats Section */}
       <div>
-        <h2 className="text-2xl font-bold mb-4">📊 Admin Stats</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <h3 className="text-2xl font-bold text-gray-800 mb-4">📊 Platform Stats</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <StatCard label="Users" value={stats.totalUsers} />
           <StatCard label="Listings" value={stats.totalListings} />
           <StatCard label="Approved" value={stats.approvedListings} />
@@ -84,105 +70,86 @@ export default async function AdminPage() {
         </div>
       </div>
 
-      {/* 🏠 Listings Section
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Listings</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {properties.map((property) => (
-                  <div key={property.id} className="border p-4 rounded-xl relative">
-                    <PropertyCard property={property} />
-                    <p className="text-xs text-gray-500 mt-2">
-                      Seller: {property.seller?.email || "Unknown"}
-                    </p>
-                    <DeleteButton propertyId={property.id} />
-                  </div>
-                ))}
-              </div>
-            </div> */}
+      <div className="space-y-6">
+        <h3 className="text-2xl font-bold text-gray-800">🏡 All Listings</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {properties.map((property) => (
+            <div key={property.id} className="bg-white rounded-2xl shadow-md p-4 relative">
+              <PropertyCard
+                property={{
+                  ...property,
+                  bhk: property.bhk ?? "",
+                  price: property.price ?? 0,
+                  city: property.city ?? "",
+                  state: property.state ?? "",
+                  title: property.title ?? "",
+                  status: property.status ?? "",
+                  sellerId: property.sellerId ?? undefined,
+                }}
+              />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {properties.map((property) => (
-          <div key={property.id} className="border p-4 rounded-xl relative">
-            <PropertyCard
-              property={{
-                ...property,
-                bhk: property.bhk ?? "",
-                price: property.price ?? 0,
-                city: property.city ?? "",
-                state: property.state ?? "",
-                title: property.title ?? "",
-                status: property.status ?? "",
-                sellerId: property.sellerId ?? undefined, // 👈 THIS FIXES THE ERROR
-              }}
-            />
+              {/* {property.featured && (
+                <div className="absolute top-2 right-2 bg-yellow-400 text-black text-xs px-3 py-1 rounded-full font-semibold shadow">
+                  ⭐ Featured
+                </div>
+              )} */}
+              <p className="text-xs text-yellow-700 mt-2">
+                {property.featured ? "Featured Listing ✅" : "Not Featured"}
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Seller: {property.seller?.email || "Unknown"}
+              </p>
 
-            {property.featured && (
-              <div className="absolute top-2 right-2 bg-yellow-300 text-black text-xs px-2 py-1 rounded-full font-semibold shadow">
-                ⭐ Featured
-              </div>
-            )}
-            <p className="text-xs text-yellow-700 mt-1">
-              {property.featured ? "Featured Listing ✅" : "Not Featured"}
-            </p>
-
-            <p className="text-xs text-gray-500 mt-2">
-              Seller: {property.seller?.email || "Unknown"}
-            </p>
-
-            {/* Actions */}
-            <div className="flex flex-col gap-2 mt-2">
-              <DeleteButton propertyId={property.id} />
-
-              {property.status !== "approved" && (
-                <form
-                  action={`/api/properties/${property.id}/approve`}
-                  method="POST"
-                >
+              <div className="flex flex-col gap-2 mt-4">
+                <form action={`/api/properties/${property.id}/delete`} method="POST">
                   <Button type="submit" variant="default" className="w-full">
-                    ✅ Approve
+                    🗑️ Delete
                   </Button>
                 </form>
-              )}
 
-              {property.status !== "rejected" && (
-                <form
-                  action={`/api/properties/${property.id}/reject`}
-                  method="POST"
-                >
-                  <Button
-                    type="submit"
-                    variant="destructive"
-                    className="w-full"
-                  >
-                    ❌ Reject
-                  </Button>
-                </form>
-              )}
+                {property.status !== "approved" && (
+                  <form action={`/api/properties/${property.id}/approve`} method="POST">
+                    <Button type="submit" variant="default" className="w-full">
+                      ✅ Approve
+                    </Button>
+                  </form>
+                )}
+
+                {property.status !== "rejected" && (
+                  <form action={`/api/properties/${property.id}/reject`} method="POST">
+                    <Button type="submit" variant="destructive" className="w-full">
+                      ❌ Reject
+                    </Button>
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
-      <h2 className="text-xl font-bold mt-10 mb-4">Users</h2>
-      <div className="overflow-auto rounded-lg border">
-        <table className="min-w-full text-sm">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-3 text-left">User ID</th>
-              <th className="p-3 text-left">Email</th>
-              <th className="p-3 text-left">Properties</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="border-t">
-                <td className="p-3">{user.id}</td>
-                <td className="p-3">{user.email}</td>
-                <td className="p-3">{user.properties.length}</td>
+      <div className="space-y-4">
+        <h3 className="text-2xl font-bold text-gray-800">👤 Users</h3>
+        <div className="overflow-auto rounded-xl border shadow-sm">
+          <table className="min-w-full text-sm text-left">
+            <thead className="bg-[#2BBBC1]/10">
+              <tr>
+                <th className="p-4 font-semibold text-gray-600">User ID</th>
+                <th className="p-4 font-semibold text-gray-600">Email</th>
+                <th className="p-4 font-semibold text-gray-600">Properties</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id} className="border-t hover:bg-[#2BBBC1]/5">
+                  <td className="p-4 text-gray-700">{user.id}</td>
+                  <td className="p-4 text-gray-700">{user.email}</td>
+                  <td className="p-4 text-gray-700">{user.properties.length}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

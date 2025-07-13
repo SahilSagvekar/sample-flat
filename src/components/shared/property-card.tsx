@@ -173,13 +173,13 @@ export default function PropertyCard({
         </Link>
 
         {/* Status Badge */}
-        {property.status === "approved" && (
+        {/* {property.status === "approved" && (
           <div className="absolute top-2 left-2 z-10">
             <Badge className="bg-[#2BBBC1] text-white text-xs px-2 py-1 rounded-md shadow-sm">
-              For Rent
+              Featured
             </Badge>
           </div>
-        )}
+        )} */}
 
         {/* Favorite & Featured */}
         <div className="absolute top-2 right-2 z-10 flex gap-2">
