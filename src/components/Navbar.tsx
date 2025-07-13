@@ -7,26 +7,35 @@ import { Menu } from 'lucide-react';
 import { Dialog } from '@headlessui/react';
 import { SignInButton } from '@clerk/nextjs';
 
+import { useCurrentUser } from '@/hooks/useUserRoleFromDB';
+
 const navLinks = [
   { name: 'Home', href: '/' },
   { name: 'About Us', href: '/about' },
   { name: 'Properties', href: '/listing' },
   { name: 'Favourites', href: '/dashboard/favorites' },
-  { name: 'Profile', href: '/profile' },
   { name: 'Contact Us', href: '/contact' },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const user = useCurrentUser();
+
+  const profileHref =
+    user?.role === 'seller'
+      ? '/dashboard/seller'
+      : user?.role === 'buyer'
+      ? '/dashboard/buyer'
+      : user?.role === 'admin'
+      ? '/dashboard/admin'
+      : '/profile';
 
   return (
     <>
       <header className="bg-white shadow-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              {/* <img src="/logo.png" alt="SampleFlat Logo" className="h-8 w-auto" />  */}
               <span className="text-xl font-bold">
                 <span className="text-[#2BBBC1]">Buyer</span>
                 <span className="text-gray-900">Builder-Prod</span>
@@ -44,9 +53,17 @@ export default function Navbar() {
                   {link.name}
                 </Link>
               ))}
+
+              {user && (
+                <Link
+                  href={profileHref}
+                  className="text-gray-700 hover:text-orange-600 transition font-medium"
+                >
+                  Profile
+                </Link>
+              )}
             </nav>
 
-            {/* Auth Buttons */}
             <div className="hidden md:flex items-center space-x-4">
               <SignedOut>
                 <SignInButton mode="modal">
@@ -67,7 +84,6 @@ export default function Navbar() {
               </SignedIn>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden p-2 border rounded-md text-gray-600"
@@ -101,6 +117,16 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
+
+            {user && (
+              <Link
+                href={profileHref}
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-800 hover:text-orange-600"
+              >
+                Profile
+              </Link>
+            )}
 
             <SignedOut>
               <SignInButton mode="modal">

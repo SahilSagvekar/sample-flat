@@ -2,11 +2,31 @@ import { prisma } from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import { Webhook } from 'svix';
+import { Prisma } from '@prisma/client';
 
 const CLERK_WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET!;
 
+type ClerkEvent = {
+  data: {
+    id: string;
+    email_addresses: { email_address: string }[];
+    // unsafe_metadata: {
+    //   name?: string;
+    //   phone?: string;
+    //   role?: string;
+    // };
+    public_metadata: {
+      role?: string;
+      name?: string;
+      phone?: string;
+    };
+  };
+  type: string;
+};
+
 export async function POST(req: Request) {
   const headerPayload = await headers();
+
   const svixHeaders = {
     'svix-id': headerPayload.get('svix-id') || '',
     'svix-timestamp': headerPayload.get('svix-timestamp') || '',
@@ -14,38 +34,34 @@ export async function POST(req: Request) {
   };
 
   const payload = await req.text();
-  const body = JSON.parse(payload);
 
   try {
     const wh = new Webhook(CLERK_WEBHOOK_SECRET);
-    wh.verify(payload, svixHeaders);
+    const evt = wh.verify(payload, svixHeaders) as ClerkEvent;
 
-    const {
-      id,
-      email_addresses,
-      public_metadata,
-      unsafe_metadata,
-    } = body.data;
+    const user = evt.data;
 
-    const email = email_addresses?.[0]?.email_address || '';
-    const role = public_metadata?.role || unsafe_metadata?.role || 'buyer';
-    const clerkId = id;
+    const email = user.email_addresses?.[0]?.email_address || '';
+    const name = user.public_metadata?.name || '';
+    const phone = user.public_metadata?.phone || '';
+    const role = user.public_metadata?.role || 'buyer';
+    const clerkId = user.id;
 
-    console.log('✅ Creating user with:', { id, email, clerkId, role });
+    const newUser: Prisma.UserCreateInput = {
+  id: clerkId, // Using Clerk ID as DB ID
+  email,
+  name,
+  phone,
+  role,
+  clerkId,
+};
 
-    await prisma.user.create({
-      data: {
-        id,
-        clerkId,
-        email,
-        role,
-      },
-    });
 
-    console.log('✅ User saved to DB');
+    await prisma.user.create({ data: newUser });
+
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('❌ Webhook verification failed or DB error:', error);
-    return new NextResponse('Webhook signature invalid or DB error', { status: 400 });
+    console.error('❌ Error in webhook:', error);
+    return new NextResponse('Webhook failed', { status: 400 });
   }
 }

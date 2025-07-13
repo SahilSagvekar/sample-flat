@@ -6,7 +6,10 @@ export async function GET(req: Request) {
   const { userId } = await auth();
 
   if (!userId) {
-    return new Response(JSON.stringify([]), { status: 401 });
+    return new Response(JSON.stringify([]), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const properties = await prisma.property.findMany({
@@ -15,17 +18,18 @@ export async function GET(req: Request) {
     select: {
       id: true,
       title: true,
-      // description: true,       // 🆕 In case PropertyCard uses it
       bhk: true,
       price: true,
       city: true,
       state: true,
-      imageUrls: true,            // 🆕 Needed for thumbnails
+      imageUrls: true,
       status: true,
       paymentStatus: true,
       createdAt: true,
     },
   });
 
-  return new Response(JSON.stringify(properties));
+  return new Response(JSON.stringify(properties), {
+    headers: { "Content-Type": "application/json" },
+  });
 }

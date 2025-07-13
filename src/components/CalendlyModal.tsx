@@ -10,11 +10,13 @@ export function CalendlyModal({ url }: { url: string }) {
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-      >
-        📅 Book Video Call
-      </button>
+  onClick={() => setIsOpen(true)}
+  className="mt-4 flex items-center justify-center gap-2 w-full sm:w-auto bg-[#2BBBC1] hover:bg-[#25a5aa] text-white px-5 py-2.5 rounded-xl font-semibold shadow transition duration-200"
+>
+  <span>📅</span>
+  <span>Book a Video Call</span>
+</button>
+
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)} className="relative z-50">
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />

@@ -1,22 +1,14 @@
-fix forms issues change it like other forms
-auto detecting lakhs or crores
 seller && admin can edit property listings
-when user alread loged in  dont allow sign-in redirect(give alert user already looged in)
-add description in property form    
-sripe payments to razorpay
 admin ka route lock krna hai
 add calendar in add property date
-properties not loading on seller dashboard
-add seller name or nuyer name
+add seller name or nuyer name + phone numbers
 create seller profiles
-change the property form according to other file
-while signup role is not getting stored in db
-remove verify flow
 
-
-
+name and phone number of sellers not gettiong stored in db
 // changees
 
 change the filter card on listing page
 add line below navbar
 change each listing according to the input property form
+
+featured button ->avanish

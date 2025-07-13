@@ -17,9 +17,14 @@ export default async function AddPropertyPage() {
      },
   });
 
-  if (!user || (user.role !== "seller" && user.role !== "admin")) {
-  redirect("/dashboard/seller?error=unauthorized-role");
+ if (!user || !["seller", "admin"].includes(user.role)) {
+  throw new Error("Only sellers or admins can post a property");
 }
+  const showError = !user || !["seller", "admin"].includes(user.role);
+
+if (showError) {  
+    return <p className="text-red-500 text-sm">Only sellers or admins can post a property.</p>;
+  }  
 
 
   // ✅ Check if seller has paid access

@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -34,75 +32,43 @@ export default function FavoriteButton({ propertyId }: FavoriteButtonProps) {
     checkFavorite();
   }, [propertyId]);
 
-  const handleAdd = async () => {
+  const handleToggle = async () => {
     setIsLoading(true);
     try {
       const res = await fetch("/api/buyer/favourite", {
-        method: "POST",
+        method: isFavorited ? "DELETE" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ propertyId }),
       });
 
       if (res.ok) {
-        toast.success("Added to favorites!");
-        setIsFavorited(true);
+        setIsFavorited(!isFavorited);
+        toast.success(
+          isFavorited ? "Removed from favorites!" : "Added to favorites!"
+        );
       } else {
         const data = await res.json();
-        toast.error(data.error || "Failed to add favorite");
+        toast.error(data.error || "Something went wrong");
       }
     } catch (err) {
-      toast.error("Error adding to favorites");
+      toast.error("Server error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleRemove = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch("/api/buyer/favourite", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ propertyId }),
-      });
-
-      if (res.ok) {
-        toast.success("Removed from favorites!");
-        setIsFavorited(false);
-      } else {
-        const data = await res.json();
-        toast.error(data.error || "Failed to remove favorite");
-      }
-    } catch (err) {
-      toast.error("Error removing from favorites");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <button className="px-4 py-2 border rounded-lg text-gray-500 bg-gray-100" disabled>
-        Loading...
-      </button>
-    );
-  }
-
-  return isFavorited ? (
+  return (
     <button
-      onClick={handleRemove}
-      className="flex items-center gap-1 px-4 py-2 border rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition"
+      onClick={handleToggle}
+      disabled={isLoading}
+      className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm shadow-sm border transition ${
+        isFavorited
+          ? "bg-red-100 text-red-600 border-red-300 hover:bg-red-200"
+          : "bg-[#2BBBC1]/10 text-[#2BBBC1] border-[#2BBBC1]/30 hover:bg-[#2BBBC1]/20"
+      }`}
     >
-      <X className="w-4 h-4" />
-      Remove Favorite
-    </button>
-  ) : (
-    <button
-      onClick={handleAdd}
-      className="flex items-center gap-1 px-4 py-2 border rounded-lg bg-pink-100 text-pink-600 hover:bg-pink-200 transition"
-    >
-      <Heart className="w-4 h-4" />
-      Add to Favorites
+      {isFavorited ? <X size={16} /> : <Heart size={16} />}
+      {isFavorited ? "Remove" : "Favorite"}
     </button>
   );
 }
