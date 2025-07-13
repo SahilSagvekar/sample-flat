@@ -14,12 +14,16 @@ interface PropertyPageProps {
   params: { id: string };
 }
 
-export default async function PropertyPage({ params }: PropertyPageProps) {
+export default async function PropertyPage(
+  props: {
+    params: Promise<{ id: string }>;
+  }
+) {
+  const params = await props.params;
   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: { seller: true },
   });
-
   if (!property) return notFound();
 
   const mediaItems = [
