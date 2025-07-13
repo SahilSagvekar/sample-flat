@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCurrentUser } from "@/hooks/useUserRoleFromDB"; // assuming it returns current DB user
+import { SiteVisitForm } from "@/components/SiteVisitForm"; // import your form
 import { Badge } from "@/components/ui/badge";
 import {
   MapPin,
@@ -20,6 +22,7 @@ import ShareUrlButton from "@/components/landing/ShareUrlButton";
 import FavoriteButton from "@/components/landing/FavoriteButton";
 import { CalendlyModal } from "@/components/CalendlyModal";
 import MediaSliderModal from "@/components/MediaSliderModal";
+import { ZohoBookingModal } from "@/components/ZohoBookingModal";
 import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -35,6 +38,25 @@ export default function PropertyPageClient({ property }: { property: any }) {
   };
 
   const [showSlider, setShowSlider] = useState(false);
+  const currentUser = useCurrentUser(); // for logged-in user (buyer)
+  console.log("currentUser", currentUser);
+  const [sellerEmail, setSellerEmail] = useState("");
+
+  useEffect(() => {
+  const fetchSellerEmail = async () => {
+    if (!property?.sellerId) return;
+    try {
+      const res = await fetch(`/api/user/${property.sellerId}`);
+      const data = await res.json();
+      setSellerEmail(data.email || "");
+    } catch (err) {
+      console.error("Failed to fetch seller email:", err);
+    }
+  };
+
+  fetchSellerEmail();
+}, [property?.sellerId]);
+console.log("Seller email:", sellerEmail);
 
   const mediaItems = [
     ...(property.imageUrls?.map((url: string) => ({ type: "image", url })) ||
@@ -226,6 +248,13 @@ export default function PropertyPageClient({ property }: { property: any }) {
           <div className="mt-8">
             <CalendlyModal url={property.seller.calendlyLink} />
           </div>
+        )}
+
+        {currentUser && sellerEmail && (
+          <SiteVisitForm
+            buyerEmail={currentUser.email}
+            sellerEmail={sellerEmail}
+          />
         )}
 
         <div className="mt-4 flex flex-col gap-3">

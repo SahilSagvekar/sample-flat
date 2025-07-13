@@ -14,6 +14,7 @@ export async function GET(req: Request) {
     where: { clerkId: userId },
     select: {
       calendlyLink: true,
+      email: true, // ✅ Add this
     },
   });
 
